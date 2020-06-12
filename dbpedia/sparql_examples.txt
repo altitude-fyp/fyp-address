@@ -1,0 +1,18 @@
+// return cities in india along with country and population
+select * where {
+    ?city rdf:type dbo:City ;
+    dbo:populationTotal ?pop ;
+    dbo:country ?country 
+    filter regex(?country, ".*India") 
+}
+limit 10
+
+// return cities where population > 1000000 along with country and population
+select * where {
+    ?city rdf:type dbo:City ;
+    dbo:populationTotal ?pop ;
+    dbo:country ?country 
+    filter($pop > 1000000) 
+}
+limit 10
+
