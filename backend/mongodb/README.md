@@ -22,4 +22,4 @@ mongo "mongodb+srv://fypaddress.tefd1.mongodb.net/main" --username LZL
 ## Connecting via python
 
 1. pip install pymongo
-2. run connect.py
+2. check out connection_example.py
