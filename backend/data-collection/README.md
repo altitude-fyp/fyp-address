@@ -1,6 +1,8 @@
 # Data Collection Functions
 
+## DBPedia
 ```
 cd data-collection
-(to be updated)
+python3 dbpedia/run.py
+(IMPORTANT NOTE: run from data-collection directory)
 ```

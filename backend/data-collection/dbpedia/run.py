@@ -1,3 +1,8 @@
+import os
+from dotenv import load_dotenv
+
+load_dotenv(dotenv_path="../mongodb/.env")
+
 import requests
 from helper import extract_urls, jsonify_dbpedia_url
 
@@ -17,10 +22,17 @@ def get_data(url=SINGAPORE_URL):
 
     return singapore
 
+def get_database(url):
+    """
+        returns pymongo database object
+    """
+    return pymongo.MongoClient(url)["main"]
+
 
 if __name__ == "__main__":
     data = get_data()
     print(data)
     
+
 
 
