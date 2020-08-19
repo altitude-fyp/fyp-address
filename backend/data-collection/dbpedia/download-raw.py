@@ -1,4 +1,6 @@
 """
+Downloads raw dbpedia data and stores in mongodb 
+
 This script is meant to be run from the backend/data-collection directory
     eg. python dbpedia/run.py
 """
