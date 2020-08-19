@@ -8,9 +8,9 @@ adding to sys.path to import data-collection/mongodb_helper.py
 """
 import sys
 here = sys.path[0]
-sys.path.append(here[:len(here)-len("/dbpedia")])
+sys.path.append(here[:len(here)-len("/data-collection/dbpedia")])
 
-from mongodb_helper import *
+from mongodb.mongodb_helper import *
 import requests
 
 SINGAPORE_URL = "http://dbpedia.org/data/Singapore.json"
@@ -50,7 +50,7 @@ if __name__ == "__main__":
         upsert=True
     )
 
-    print(result.modified_count)
+    print("number of entries inserted/modified:",result.modified_count)
 
 
 
