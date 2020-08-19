@@ -3,5 +3,7 @@
 ## DBPedia data collection
 
 ```
+cd data-collection
+python run.py
 
 ```
