@@ -1,10 +1,17 @@
-import os
-from dotenv import load_dotenv
+"""
+This script is meant to be run from the backend/data-collection directory
+    eg. python dbpedia/run.py
+"""
 
-load_dotenv(dotenv_path="../mongodb/.env")
+"""
+adding to sys.path to import data-collection/mongodb_helper.py
+"""
+import sys
+here = sys.path[0]
+sys.path.append(here[:len(here)-len("/dbpedia")])
 
+from mongodb_helper import *
 import requests
-from helper import extract_urls, jsonify_dbpedia_url
 
 SINGAPORE_URL = "http://dbpedia.org/data/Singapore.json"
 
@@ -22,17 +29,28 @@ def get_data(url=SINGAPORE_URL):
 
     return singapore
 
-def get_database(url):
-    """
-        returns pymongo database object
-    """
-    return pymongo.MongoClient(url)["main"]
-
-
 if __name__ == "__main__":
     data = get_data()
-    print(data)
-    
+
+    db = get_database(os.getenv("MONGODB_CONNECTION_URL"))
+    dbpedia_collection = db["dbpedia"]
+
+    """
+        replace_one with usert=True
+            - replaces if exists else inserts
+    """
+    result = dbpedia_collection.replace_one(
+        {   "_id": "Singapore" },    
+        
+        {
+            "_id": "Singapore",
+            "data": str(data)
+        },
+
+        upsert=True
+    )
+
+    print(result.modified_count)
 
 
 
