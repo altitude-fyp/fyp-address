@@ -1,8 +1,6 @@
 """
 Downloads raw dbpedia data and stores in mongodb 
-
-This script is meant to be run from the backend/data-collection directory
-    eg. python dbpedia/run.py
+    This script is meant to be run from the data-collection directory
 """
 
 """
@@ -10,9 +8,10 @@ adding to sys.path to import data-collection/mongodb_helper.py
 """
 import sys
 here = sys.path[0]
-sys.path.append(here[:len(here)-len("/data-collection/dbpedia")])
+sys.path.append(here[:len(here)-len("/dbpedia")])
 
-from mongodb.mongodb_helper import *
+
+from mongodb_helper import *
 import requests
 
 SINGAPORE_URL = "http://dbpedia.org/data/Singapore.json"
