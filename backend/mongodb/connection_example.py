@@ -19,7 +19,7 @@ def get_database(url):
     client = pymongo.MongoClient(url)
     return client["main"]
 
-CONNECTION_URL = os.getenv("CONNECTION_URL")
+CONNECTION_URL = os.getenv("MONGODB_CONNECTION_URL")
 
 db = get_database(CONNECTION_URL)
 
