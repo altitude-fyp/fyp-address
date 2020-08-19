@@ -1,6 +1,6 @@
 # Backend application for FYP address
 
-### Environment set-up
+## Environment set-up
 ```
 cd backend
 
@@ -12,3 +12,10 @@ source env/bin/activate
 pip3 install -r requirements.txt
 
 ```
+
+## Running flask app (development server)
+```
+python3 run.py
+```
+
+Go to localhost:5000 on your browser
