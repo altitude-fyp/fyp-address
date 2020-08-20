@@ -18,7 +18,7 @@ pip3 install -r requirements.txt
 
 ## Running fastapi app 
 ```
-uvicorn main:app --reload
+uvicorn app:app --reload
 ```
 
 visit localhost:8000 to visit app
