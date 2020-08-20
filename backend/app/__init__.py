@@ -1,15 +1,10 @@
-"""
-    placehholder app as of now
-"""
+import fastapi
 
-import flask
-from flask_cors import CORS
+app = fastapi.FastAPI()
 
-app = flask.Flask(__name__)
-CORS(app)
+@app.get("/")
+def root():
+    return {"message": "hello world"}
 
-@app.route("/")
-def home():
-    return flask.jsonify({"message": "hello from homepage"})
+from app.components.exampleModule import *
 
-from app.api.exampleAPI import * 
