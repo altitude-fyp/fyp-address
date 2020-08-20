@@ -1,8 +1,14 @@
 # Data Collection Functions
 
+## Preliminary tests
+```
+cd data-collection
+pytest tests/run.py
+```
+
 ## DBPedia
 ```
 cd data-collection
-python3 dbpedia/run.py
-(IMPORTANT NOTE: run from data-collection directory)
+python3 dbpedia/download-raw.py
 ```
+
