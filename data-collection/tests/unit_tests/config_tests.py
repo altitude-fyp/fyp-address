@@ -6,7 +6,7 @@ home = here[:-len("/tests")]
 
 def test_dotenv():
     """
-        test if .env file is present in data-collection
-        throws assertion error 
+    checks if .env file is present in data-collection directory
     """
     assert ".env" in os.listdir(home)
+
