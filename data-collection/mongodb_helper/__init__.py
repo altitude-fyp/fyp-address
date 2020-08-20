@@ -30,3 +30,13 @@ def mongo_upsert(data, collection_name, replacement_pattern):
     )
 
     print("Number of articles inserted/modified:", result.modified_count)
+
+def mongo_find_one(collection_name, find_options):
+    """
+    retrieves one entry from collection with collection_name with key
+    """
+    db = get_database(os.getenv("MONGODB_CONNECTION_URL"))
+    collection = db[collection_name]
+
+    return collection.find_one(find_options)
+
