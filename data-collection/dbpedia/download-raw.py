@@ -19,5 +19,5 @@ AREAS_OF_SINGAPORE_URL = "http://dbpedia.org/page/Planning_Areas_of_Singapore"
 if __name__ == "__main__":
     data = get_data(main_url=SINGAPORE_URL, areas_url=AREAS_OF_SINGAPORE_URL)
 
-    data = {"_id": "Singapore", "data": str(data)}
+    data = {"_id": "Singapore", "data": data}
     mongo_upsert(data=data, collection_name="dbpedia", replacement_pattern={"_id": "Singapore"})

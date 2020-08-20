@@ -12,3 +12,9 @@ sys.path.append(here[:len(here)-len("/dbpedia")])
 
 from helpers.clean_helper import *
 from mongodb_helper import *
+
+import json
+
+data = mongo_find_one("dbpedia", {"_id": "Singapore"})["data"]
+
+print(type(data))
