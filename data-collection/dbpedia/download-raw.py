@@ -14,10 +14,10 @@ from helpers.download_raw_helper import *
 from mongodb_helper import *
 
 SINGAPORE_URL = "http://dbpedia.org/page/Singapore"
-
+AREAS_OF_SINGAPORE_URL = "http://dbpedia.org/page/Planning_Areas_of_Singapore"
 
 if __name__ == "__main__":
-    data = get_data(url=SINGAPORE_URL)
+    data = get_data(main_url=SINGAPORE_URL, areas_url=AREAS_OF_SINGAPORE_URL)
 
     db = get_database(os.getenv("MONGODB_CONNECTION_URL"))
     dbpedia_collection = db["dbpedia"]
