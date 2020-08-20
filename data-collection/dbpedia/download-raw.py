@@ -19,25 +19,5 @@ AREAS_OF_SINGAPORE_URL = "http://dbpedia.org/page/Planning_Areas_of_Singapore"
 if __name__ == "__main__":
     data = get_data(main_url=SINGAPORE_URL, areas_url=AREAS_OF_SINGAPORE_URL)
 
-    db = get_database(os.getenv("MONGODB_CONNECTION_URL"))
-    dbpedia_collection = db["dbpedia"]
-
-    """
-        replace_one with usert=True
-            - replaces if exists else inserts
-    """
-    result = dbpedia_collection.replace_one(
-        {   "_id": "Singapore" },    
-        
-        {
-            "_id": "Singapore",
-            "data": str(data)
-        },
-
-        upsert=True
-    )
-
-    print("number of entries inserted/modified:",result.modified_count)
-
-
-
+    data = {"_id": "Singapore", "data": str(data)}
+    mongo_upsert(data=data, collection_name="dbpedia", replacement_pattern={"_id": "Singapore"})
