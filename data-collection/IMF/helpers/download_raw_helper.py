@@ -6,8 +6,6 @@ import requests
 import time
 import pandas as pd 
 import sys
-from helpers.download_raw_helper import *
-from mongodb_helper import *
 
 def get_data(country):
     """

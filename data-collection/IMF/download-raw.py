@@ -8,7 +8,7 @@ adding to sys.path to import data-collection/mongodb_helper.py
 """
 import sys
 here = sys.path[0]
-sys.path.append(here[:len(here)-len("/dbpedia")])
+sys.path.append(here[:len(here)-len("/imf")])
 
 from helpers.download_raw_helper import *
 from mongodb_helper import *
