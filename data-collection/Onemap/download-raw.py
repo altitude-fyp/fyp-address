@@ -10,7 +10,7 @@ from constants import *
 from mongodb_helper import *
 
 if __name__ == "__main__":
-    # area_list = get_area_list()
+    area_list = get_area_list()
     """
     { 
       _id: “aljunied”
@@ -20,22 +20,20 @@ if __name__ == "__main__":
         }
     }
     """
-
-    area_list = ["BEDOK"]
-
+    
     # Loop through area list
+    data = {}
     for area in area_list:
+        print(area)
         data_object = {}
-
         # Loop through API list
         for key, value in URL_LIST_POP_AREA.items():
             data_value = get_data(value, area)
             data_object[key] = data_value
-        data = {"_id": area, "data": data_object}
-        
-        # Upsert to MongoDB
-        mongo_upsert(data=data, collection_name="onemap", replacement_pattern={"_id": area})
-    
-    print(data)
-
             
+        data[area] = data_object
+        print("Finish writing " + str(area) + " data")
+    
+    final_data = {"_id": "Singapore", "data": data}
+    mongo_upsert(data=final_data, collection_name="onemap", replacement_pattern={"_id": "Singapore"})
+    print("Finish writing to MongoDB")
