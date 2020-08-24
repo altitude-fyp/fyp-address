@@ -9,22 +9,38 @@ from helpers.download_raw_helper import *
 from constants import *
 from mongodb_helper import *
 
-if __name__ == "__main__":
-    area_list = get_area_list()
+def get_area_polygons():
     """
-    { 
-      _id: “aljunied”
-       data:  {.  
-            economicStatus: []
-            religion: []
-        }
-    }
+    gets polygons (list of all latlon coordinates) of all planning areas in singapore
     """
+    endpoint = "https://developers.onemap.sg/privateapi/popapi/getAllPlanningarea?token=" + os.getenv("ONEMAP_TOKEN")
+
+    print("Getting polygon data")
+
+    raw = requests.get(endpoint).json()
+    out = {}
+
+    for item in raw:
+        k = item["pln_area_n"].lower()
+        v = item["geojson"]
+        out[k] = v
     
-    # Loop through area list
+    return out
+
+def get_population_data():
+    """
+    gets economic data about singaporeans, segregated by area eg. orchard, seragoon, aljunied etc
+    """
+
+    print("Getting population data")
+
+    area_list = get_area_list()
+
     data = {}
     for area in area_list:
-        print(area)
+        
+        area = area.lower()
+
         data_object = {}
         # Loop through API list
         for key, value in URL_LIST_POP_AREA.items():
@@ -32,8 +48,23 @@ if __name__ == "__main__":
             data_object[key] = data_value
             
         data[area] = data_object
-        print("Finish writing " + str(area) + " data")
+
+        print("Finish pulling " + str(area) + " data")
     
-    final_data = {"_id": "Singapore", "data": data}
-    mongo_upsert(data=final_data, collection_name="onemap", replacement_pattern={"_id": "Singapore"})
-    print("Finish writing to MongoDB")
+    return data
+
+if __name__ == "__main__":
+    
+    data = {
+        "_id": "Singapore",
+
+        "data": {
+            "polygons": get_area_polygons(),
+            "population": get_population_data()
+        }
+    
+    }
+
+    mongo_upsert(data=data, collection_name="onemap", replacement_pattern={"_id": "Singapore"})
+
+    print("\nFinish writing to MongoDB\n")
