@@ -1,4 +1,5 @@
 <template>
+<!--  You can access this page via /admin/my-people-->
   <div>
     MY PEOPLE
   </div>

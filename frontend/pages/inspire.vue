@@ -1,4 +1,5 @@
 <template>
+<!--  This is the greeting page-->
   <v-layout>
     <v-flex class="text-center">
       <img
