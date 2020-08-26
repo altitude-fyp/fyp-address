@@ -2,6 +2,21 @@ import requests
 from bs4 import BeautifulSoup
 
 def get_countries_and_cities():
+    wiki, wiki_errors = get_wikipedia_countries_and_cities()
+    citi = get_citibank_countries()
+
+    return sorted([(k,v) for k,v in wiki.items() if k in citi], key=lambda x:x[0])
+
+
+def get_citibank_countries():
+    """
+    reads list of countries citibank operates in (from citi website)
+    returns set of countries
+    """
+    with open("dbpedia/citibank_countries.txt") as f:
+        return set([line.strip() for line in f])
+
+def get_wikipedia_countries_and_cities():
     
     """
     returns large dictionary of countries and cities inside countries
@@ -39,9 +54,11 @@ def get_countries_and_cities():
     """
     arrange out by alphabetical order
     """
-    out = sorted([(k,v) for k,v in out.items()])
         
     return out, errors
+
+
+
 
 def parse_dbpedia_page(url):
     """
