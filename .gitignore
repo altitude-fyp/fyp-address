@@ -4,3 +4,5 @@ __pycache__
 env
 .env
 .pytest_cache
+.ipynb_checkpoints
+pickled
