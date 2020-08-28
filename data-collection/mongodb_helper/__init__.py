@@ -29,7 +29,12 @@ def mongo_upsert(data, collection_name, replacement_pattern):
         upsert=True
     )
 
-    print("Number of articles inserted/modified:", result.modified_count)
+    print("mongodb upsert results:")
+    print("result.matched_coun (number of documents matched for this update):", result.matched_count)
+    print("result.modified_count (number of documents modified):", result.modified_count)
+    print("result.raw_result:", result.raw_result)
+    print("result.upserted_id:", result.upserted_id)
+    print()
 
 def mongo_find_one(collection_name, find_options):
     """
