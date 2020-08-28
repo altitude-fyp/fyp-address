@@ -45,3 +45,10 @@ def mongo_find_one(collection_name, find_options):
 
     return collection.find_one(find_options)
 
+def mongo_clear(collection_name):
+    """
+    empties collection
+    """
+    db = get_database(os.getenv("MONGODB_CONNECTION_URL"))
+    collection = db[collection_name]
+    return collection.delete_many({})
