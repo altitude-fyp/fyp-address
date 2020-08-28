@@ -12,22 +12,22 @@ def get_age_structure():
         "age over 65 years"
     ]
     return {
+        "name": "age structure",
+        "url": url,
         "desc": "age structure by country (as of 2017)",
         "data": read_table(table, custom_headers=custom_headers)
     }
 
 def get_homeless_population():
-    """
-    returns homeless population by country
-    """
-
     url = "https://en.wikipedia.org/wiki/List_of_countries_by_homeless_population"
     soup = get_soup(url)
     table = soup.find("table", {"class": "wikitable"})
 
     return {
+        "name": "homeless population",
+        "url": url,
         "desc": "homeless population by country",
-        "data": read_table(table)
+        "data": read_table(table, ckey=0)
     }
 
 def get_number_of_births():
@@ -36,8 +36,10 @@ def get_number_of_births():
     table = soup.find("table", {"class": "wikitable"})
 
     return {
+        "name": "number of births",
+        "url": url,
         "desc": "number of births by country (in thousands, as of year 2017)",
-        "data": read_table(table)
+        "data": read_table(table, ckey=1)
     }
 
 def get_national_capitals_by_population():
@@ -46,8 +48,10 @@ def get_national_capitals_by_population():
     table = soup.find("table", {"class": "wikitable"})
 
     return {
+        "name": "capital population",
+        "url": url,
         "desc": "list of national capitals, ordered according to population",
-        "data": read_table(table)
+        "data": read_table(table, ckey=1)
     }
 
 def get_total_fertility_rate():
@@ -56,8 +60,10 @@ def get_total_fertility_rate():
     table = soup.find("table", {"class": "wikitable"})
 
     return {
+        "name": "fertility rate",
+        "url": url,
         "desc": "total fertility rate ranked by country",
-        "data": read_table(table)
+        "data": read_table(table, ckey=1)
     }
 
 def get_literacy_rate():
@@ -75,6 +81,8 @@ def get_literacy_rate():
     ]
 
     return {
+        "name": "literacy rate",
+        "url": url,
         "desc": "Literacy rate by country",
         "data": read_table(table, custom_headers=custom_headers)
     }
@@ -85,8 +93,10 @@ def get_median_age():
     table = soup.find("table", {"class": "wikitable"})
 
     return {
+        "name": "median age",
+        "url": url,
         "desc": "median age by country",
-        "data": read_table(table)
+        "data": read_table(table, ckey=0)
     }
 
 def get_labour_force_composition():
@@ -95,8 +105,10 @@ def get_labour_force_composition():
     table = soup.find("table", {"class": "wikitable"})
 
     return {
+        "name": "labour force composition",
+        "url": url,
         "desc": "labour force compositions by country",
-        "data": read_table(table)
+        "data": read_table(table, ckey=1)
     }
 
 def get_sex_ratio():
@@ -105,8 +117,10 @@ def get_sex_ratio():
     table = soup.find("table", {"class": "wikitable"})
 
     return {
+        "name": "sex ratio",
+        "url": url,
         "desc": "sex ratio (male/female ratio) by country",
-        "data": read_table(table)
+        "data": read_table(table, ckey=0)
     }
 
 def get_tertiary_education_attainment():
@@ -124,6 +138,8 @@ def get_tertiary_education_attainment():
     ]
 
     return {
+        "name": "tertiary education",
+        "url": url,
         "desc": "tertiary education attainment by country",
         "data": read_table(table, custom_headers=custom_headers)
     }
@@ -144,6 +160,8 @@ def get_traffic_related_death_rate():
     ]
 
     return {
+        "name": "traffic-related death rate",
+        "url": url,
         "desc": "Traffic-related death rate by country - annual number of road fatalities per capita per year, per number of motor vehicles, and per vehicle-km",
         "data": read_table(table, custom_headers=custom_headers)
     }

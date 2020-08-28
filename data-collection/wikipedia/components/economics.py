@@ -14,13 +14,13 @@ def get_dependency_ratio():
     ]
 
     return {
-        "desc":"""returns dependency ratio by country
-       - economically/financially dependent on working class 
-
-        total dependency ratio - The total dependency ratio is the ratio of combined youth population (ages 0-14) and elderly population (ages 65+) per 100 people of working age (ages 15-64). A high total dependency ratio indicates that the working-age population and the overall economy face a greater burden to support and provide social services for youth and elderly persons, who are often economically dependent.
-        youth dependency ratio - The youth dependency ratio is the ratio of the youth population (ages 0-14) per 100 people of working age (ages 15-64). A high youth dependency ratio indicates that a greater investment needs to be made in schooling and other services for children.
-        elderly dependency ratio - The elderly dependency ratio is the ratio of the elderly population (ages 65+) per 100 people of working age (ages 15-64). Increases in the elderly dependency ratio put added pressure on governments to fund pensions and healthcare.
-        potential support ratio - The potential support ratio is the number of working-age people (ages 15-64) per one elderly person (ages 65+). As a population ages, the potential support ratio tends to fall, meaning there are fewer potential workers to support the elderly.""",
+        "name": "dependency ratio",
+        "url": url,
+        "desc":"""returns dependency ratio by country - economically/financially dependent on working class 
+    total dependency ratio - The total dependency ratio is the ratio of combined youth population (ages 0-14) and elderly population (ages 65+) per 100 people of working age (ages 15-64). A high total dependency ratio indicates that the working-age population and the overall economy face a greater burden to support and provide social services for youth and elderly persons, who are often economically dependent.
+    youth dependency ratio - The youth dependency ratio is the ratio of the youth population (ages 0-14) per 100 people of working age (ages 15-64). A high youth dependency ratio indicates that a greater investment needs to be made in schooling and other services for children.
+    elderly dependency ratio - The elderly dependency ratio is the ratio of the elderly population (ages 65+) per 100 people of working age (ages 15-64). Increases in the elderly dependency ratio put added pressure on governments to fund pensions and healthcare.
+    potential support ratio - The potential support ratio is the number of working-age people (ages 15-64) per one elderly person (ages 65+). As a population ages, the potential support ratio tends to fall, meaning there are fewer potential workers to support the elderly.""",
         
         "data": read_table(table, custom_headers=custom_headers)
     }
@@ -31,19 +31,23 @@ def get_male_female_income_ratio():
     table = soup.find("table", {"class": "wikitable"})
 
     return {
+        "name": "male female income ratio",
+        "url": url,
         "desc": "male to female income ratio by country (as of 2017)",
-        "data": read_table(table)
+        "data": read_table(table, ckey=0)
     }
 
 
-def get_government_bidget_per_capita():
+def get_government_budget_per_capita():
     url = "https://en.wikipedia.org/wiki/List_of_countries_by_government_budget_per_capita"
     soup = get_soup(url)
     table = soup.find("table", {"class": "wikitable"})
 
     return {
+        "name": "government budget per capita",
+        "url": url,
         "desc": "total government budget (in USD) divided by total population (as of 2018)",
-        "data": read_table(table)
+        "data": read_table(table, ckey=0)
     }
 
 def get_oil_exports():
@@ -52,8 +56,10 @@ def get_oil_exports():
     table = soup.find("table", {"class": "wikitable"})
 
     return {
+        "name": "oil exports",
+        "url": url,
         "desc": "oil exports by country",
-        "data": read_table(table)
+        "data": read_table(table, ckey=1)
     }
 
 def get_oil_imports():
@@ -62,8 +68,10 @@ def get_oil_imports():
     table = soup.find("table", {"class": "wikitable"})
 
     return {
+        "name": "oil imports",
+        "url": url,
         "desc": "oil imports by country",
-        "data": read_table(table)
+        "data": read_table(table, ckey=1)
     }
 
 def get_net_oil_exports():
@@ -72,8 +80,10 @@ def get_net_oil_exports():
     table = soup.find("table", {"class": "wikitable"})
 
     return {
+        "name": "net oil exports",
+        "url": url,
         "desc": "net oil exports (oil exports - oil imports) by country",
-        "data": read_table(table)
+        "data": read_table(table, ckey=1)
     }
 
 def get_oil_production():
@@ -85,8 +95,10 @@ def get_oil_production():
         headers[0] = "number"
 
     return {
+        "name": "oil production",
+        "url": url,
         "desc": "oil production by country",
-        "data": read_table(table, edit_headers=edit_headers)
+        "data": read_table(table, edit_headers=edit_headers, ckey=1)
     }
 
 def get_foreign_exchange_reserves():
@@ -95,8 +107,10 @@ def get_foreign_exchange_reserves():
     table = soup.find("table", {"class": "wikitable"})
 
     return {
+        "name": "foreign exchange reserves",
+        "url": url,
         "desc": "foreign exchange reserves by country - the foreign-currency deposits held by national central banks and monetary authorities (See List of countries by foreign-exchange reserves (excluding gold)). However, in popular usage and in the list below, it also includes gold reserves, special drawing rights (SDRs) and International Monetary Fund (IMF) reserve position because this total figure, which is usually more accurately termed as official reserves or international reserves or official international reserves",
-        "data": read_table(table)
+        "data": read_table(table, ckey=1)
     }
 
 def get_tariff_rate():
@@ -120,6 +134,8 @@ def get_tariff_rate():
         except:pass
 
     return {
+        "name": "tariff rate",
+        "url": url,
         "desc": "tariff rate by country - import duty refers to taxes levied on imported goods, capital and services",
         "data": data
     }
@@ -130,6 +146,8 @@ def get_unemployment_rate():
     table = soup.find("table", {"class": "wikitable"})
 
     return {
+        "name": "unemployment rate",
+        "url": url,
         "desc": "unempployment rate by country",
-        "data": read_table(table)
+        "data": read_table(table, ckey=0)
     }
