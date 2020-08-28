@@ -95,11 +95,7 @@ sys.path.append(here[:-len("wikipedia")])
 
 from mongodb_helper import *
 
-mongo_upsert(
-    data={
-            "_id": "wiki",
-            "data": data
-        },
-    collection_name="wikipedia",
-    replacement_pattern={"_id": "wiki"}
-)
+mongo_clear("wikipedia")
+
+for table in data:
+    print(table["name"], mongo_insert(table, "wikipedia"))

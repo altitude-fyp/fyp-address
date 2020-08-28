@@ -23,19 +23,14 @@ def mongo_upsert(data, collection_name, replacement_pattern):
     db = get_database(os.getenv("MONGODB_CONNECTION_URL"))
     collection = db[collection_name]
 
-    result = collection.replace_one(
+    return collection.replace_one(
         replacement_pattern,
         data,
         upsert=True
     )
 
-    print("mongodb upsert results:")
-    print("result.matched_coun (number of documents matched for this update):", result.matched_count)
-    print("result.modified_count (number of documents modified):", result.modified_count)
-    print("result.raw_result:", result.raw_result)
-    print("result.upserted_id:", result.upserted_id)
-    print()
 
+    
 def mongo_find_one(collection_name, find_options):
     """
     retrieves one entry from collection with collection_name with key
@@ -52,3 +47,11 @@ def mongo_clear(collection_name):
     db = get_database(os.getenv("MONGODB_CONNECTION_URL"))
     collection = db[collection_name]
     return collection.delete_many({})
+
+def mongo_insert(data, collection_name):
+    """
+    inserts data into collection with collection_name
+    """
+    db = get_database(os.getenv("MONGODB_CONNECTION_URL"))
+    collection = db[collection_name]
+    return collection.insert(data, check_keys=False)
