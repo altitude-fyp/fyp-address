@@ -20,7 +20,7 @@ crime = [
     get_terrorist_incidents()
 ]
 
-print("done scraping crime data")
+print("done scraping crime data\n")
 print("scraping demographics data")
 
 demographics = [
@@ -37,13 +37,13 @@ demographics = [
     get_traffic_related_death_rate()
 ]
 
-print("done scraping demographics data")
+print("done scraping demographics data\n")
 print("scraping economics data")
 
 economics = [
     get_dependency_ratio(),
     get_male_female_income_ratio(),
-    get_government_bidget_per_capita(),
+    get_government_budget_per_capita(),
     get_oil_exports(),
     get_oil_imports(),
     get_net_oil_exports(),
@@ -53,7 +53,7 @@ economics = [
     get_unemployment_rate()
 ]
 
-print("done scraping economics data")
+print("done scraping economics data\n")
 print("scraping environment data")
 
 environment = [
@@ -61,7 +61,7 @@ environment = [
     get_natural_gas_consumption()
 ]
 
-print("done scraping environment data")
+print("done scraping environment data\n")
 print("scraping health data")
 
 health = [
@@ -76,7 +76,7 @@ health = [
     get_cigarette_consumption_per_capita()
 ]
 
-print("done scraping health data")
+print("done scraping health data\n")
 print("scraping technology data")
 
 technology = [
@@ -85,7 +85,7 @@ technology = [
 
 ]
 
-print("done scraping technology data")
+print("done scraping technology data\n")
 
 data = crime + demographics + economics + environment + health + technology
 

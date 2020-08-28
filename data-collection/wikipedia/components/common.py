@@ -7,7 +7,7 @@ def get_soup(url):
     soup = BeautifulSoup(r.content, "html.parser")
     return soup
 
-def read_table(table, custom_headers=False, edit_headers=None, verbose=False):
+def read_table(table, custom_headers=False, edit_headers=None, verbose=False, ckey=None):
     """
     input: table BeautifulSoup object
     output: json representation of table
@@ -33,6 +33,9 @@ def read_table(table, custom_headers=False, edit_headers=None, verbose=False):
 
     if edit_headers is not None:
         edit_headers(headers)
+
+    if ckey is not None:
+        headers[ckey] = "country"
     
     out = []
 

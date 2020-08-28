@@ -10,7 +10,9 @@ def get_co2_emissions():
     table = soup.find("table", {"class": "wikitable"})
 
     return {
-        "desc": "",
+        "name": "co2 emissions",
+        "url": url,
+        "desc": "co2 emissions per capita by country (in tons)",
         "data": read_table(table, edit_headers=edit_headers)
     }
 
@@ -20,6 +22,8 @@ def get_natural_gas_consumption():
     table = soup.find("table", {"class": "wikitable"})
 
     return {
-        "desc": "natural gas consumption bby country",
-        "data": read_table(table)    
+        "name": "natural gas consumption",
+        "url": url,
+        "desc": "natural gas consumption by country",
+        "data": read_table(table, ckey=1)    
     }
