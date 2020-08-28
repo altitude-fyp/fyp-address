@@ -10,15 +10,21 @@ from helper import *
 
 countries_and_cities = get_countries_and_cities()
 
+# clear everyting in dbpedia.countries collection
+mongo_clear("dbpedia.countries")
+
 for country, cities in countries_and_cities:
 
     try:
         assert len(country) > 0
+        country = country.replace(" ", "_")
         print("="*150)
         print("parsing country:", country)
         print("="*150)
 
         country_data = parse_dbpedia_page(DBPEDIA_BASE + country)
+
+        print(country, " --> data length:", len(country_data))
         
         mongo_upsert(
             data = {"_id": country, "data": country_data},
@@ -29,20 +35,20 @@ for country, cities in countries_and_cities:
     except Exception as err:
         print(f"ERROR parsing country {country}:", str(err))
 
-    for city in cities:
-        try:
-            assert len(city) > 0
-            print("parsing city:", city)
+    # for city in cities:
+    #     try:
+    #         assert len(city) > 0
+    #         print("parsing city:", city)
 
-            city_data = parse_dbpedia_page(DBPEDIA_BASE + city)
-            city_data["country"] = country
+    #         city_data = parse_dbpedia_page(DBPEDIA_BASE + city)
+    #         city_data["country"] = country
 
-            mongo_upsert(
-                data = {"_id": city, "data": city_data},
-                collection_name="dbpedia.cities",
-                replacement_pattern={"_id": city}
-            )
+    #         mongo_upsert(
+    #             data = {"_id": city, "data": city_data},
+    #             collection_name="dbpedia.cities",
+    #             replacement_pattern={"_id": city}
+    #         )
 
-        except Exception as err:
-            print(f"ERROR parsing city {city}:", str(err))
+    #     except Exception as err:
+    #         print(f"ERROR parsing city {city}:", str(err))
 
