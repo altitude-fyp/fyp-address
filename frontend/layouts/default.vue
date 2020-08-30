@@ -98,11 +98,11 @@ export default {
       items: [
         {title: 'Home', icon: 'mdi-home', link: '/home'},
         {title: 'Analytics', icon: 'mdi-chart-areaspline',link: '/analytics'},
-        {title: 'Request History', icon: 'mdi-history',link: '/requestHistory'},
+        {title: 'Scheduled Job', icon: 'mdi-history',link: '/scheduledJob'},
         {title: 'Notifications', icon: 'mdi-bell',link: '/notifications'},
       ],
       items2: [
-        {title: 'User Account', icon: 'mdi-account',link: '/userAccount'},
+        {title: 'User Management', icon: 'mdi-account',link: '/userManagement'},
         {title: 'Chatbot', icon: 'mdi-chat', link: '/chatbot'},
         {title: 'Settings', icon: 'mdi-cog', link: '/Settings'},
       ],

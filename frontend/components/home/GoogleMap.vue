@@ -15,6 +15,7 @@
       style="width: 100%; height: 100%;"
       @click="addMarker"
     >
+
       <!--if you require markers, unpack this-->
       <GmapMarker
         :key="index"
@@ -37,7 +38,7 @@
 
 <script>
 import {gmapApi} from 'vue2-google-maps'
-import GoogleBottomSheet from "@/components/GoogleBottomSheet";
+import GoogleBottomSheet from "@/components/home/GoogleBottomSheet";
 
 export default {
   name: "GoogleMap",

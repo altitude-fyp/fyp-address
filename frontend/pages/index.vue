@@ -1,15 +1,20 @@
 <template>
   <!--This is the main page where it is just '/'-->
-  <google-map/>
+  <v-app>
+    <c-s-v-search/>
+    <google-map/>
 
+  </v-app>
 </template>
 
 <script>
 
-import GoogleMap from "@/components/GoogleMap";
+import GoogleMap from "@/components/home/GoogleMap";
+import CSVSearch from "@/components/home/CSVSearch";
 
 export default {
   components: {
+    CSVSearch,
     GoogleMap,
   }
 }
