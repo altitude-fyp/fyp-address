@@ -8,20 +8,35 @@
       permanent
       app
     >
+
+      <v-list dense>
+        <v-list-item>
+          <v-list-item-icon>
+            <v-icon style="color: white;">mdi-menu</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title style="color: white;">CITILOGO GOES HERE</v-list-item-title>
+          </v-list-item-content>
+          <v-btn
+            icon
+            @click.stop="mini = !mini"
+          >
+            <v-icon style="color: white;">mdi-chevron-left</v-icon>
+          </v-btn>
+        </v-list-item>
+      </v-list>
+
+
+      <v-divider></v-divider>
+
       <v-list-item class="px-2">
 
         <v-list-item-avatar>
           <v-img src="https://randomuser.me/api/portraits/men/85.jpg"></v-img>
         </v-list-item-avatar>
-
-        <v-list-item-title style="color: white;">Xavier Lur </v-list-item-title>
-
-        <v-btn
-          icon
-          @click.stop="mini = !mini"
-        >
-          <v-icon style="color: white;">mdi-chevron-left</v-icon>
-        </v-btn>
+``
+        <v-list-item-title style="color: white;">HELP Lur </v-list-item-title>
 
       </v-list-item>
 
@@ -31,7 +46,8 @@
         <v-list-item
           v-for="item in items"
           :key="item.title"
-          link
+          :to="item.link"
+          nuxt
         >
           <v-list-item-icon>
             <v-icon style="color: white;">{{ item.icon }}</v-icon>
@@ -43,12 +59,14 @@
         </v-list-item>
       </v-list>
       <v-divider></v-divider>
+
       <v-list dense>
         <v-list-item
           v-for="item in items2"
           :key="item.title"
-          link
+          :to="item.link"
         >
+
           <v-list-item-icon>
             <v-icon style="color: white;">{{ item.icon }}</v-icon>
           </v-list-item-icon>
@@ -56,8 +74,11 @@
           <v-list-item-content>
             <v-list-item-title style="color: white;">{{ item.title }}</v-list-item-title>
           </v-list-item-content>
+
+
         </v-list-item>
       </v-list>
+
     </v-navigation-drawer>
 
     <!--This is the code to render the page do not remove-->
@@ -75,13 +96,15 @@ export default {
     return {
       drawer: true,
       items: [
-        {title: 'Home', icon: 'mdi-home'},
-        {title: 'Analytics', icon: 'mdi-chart-areaspline'},
-        {title: 'Request History', icon: 'mdi-history'},
+        {title: 'Home', icon: 'mdi-home', link: '/home'},
+        {title: 'Analytics', icon: 'mdi-chart-areaspline',link: '/analytics'},
+        {title: 'Request History', icon: 'mdi-history',link: '/requestHistory'},
+        {title: 'Notifications', icon: 'mdi-bell',link: '/notifications'},
       ],
       items2: [
-        {title: 'User Account', icon: 'mdi-account'},
-        {title: 'Settings', icon: 'mdi-cog'},
+        {title: 'User Account', icon: 'mdi-account',link: '/userAccount'},
+        {title: 'Chatbot', icon: 'mdi-chat', link: '/chatbot'},
+        {title: 'Settings', icon: 'mdi-cog', link: '/Settings'},
       ],
       mini: true,
     }

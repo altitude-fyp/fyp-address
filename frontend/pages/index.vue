@@ -1,20 +1,16 @@
 <template>
-  <!--This is the main page-->
+  <!--This is the main page where it is just '/'-->
   <google-map/>
-
 
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
-import VuetifyLogo from '~/components/VuetifyLogo.vue'
+
 import GoogleMap from "@/components/GoogleMap";
 
 export default {
   components: {
     GoogleMap,
-    Logo,
-    VuetifyLogo
   }
 }
 </script>
