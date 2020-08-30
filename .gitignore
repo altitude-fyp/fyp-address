@@ -6,3 +6,5 @@ env
 .pytest_cache
 .ipynb_checkpoints
 pickled
+.idea
+node_modules
