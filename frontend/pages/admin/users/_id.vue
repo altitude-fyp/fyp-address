@@ -10,11 +10,12 @@
 
 <script>
 export default {
+  // Get data from API
   asyncData({$axios, params: {id}}) {
     return $axios.$get(`https://jsonplaceholder.typicode.com/todos/${id}`)
       .then((todo) => {
         return {
-          todo
+          todo // Put inside an object
         }
       })
   },

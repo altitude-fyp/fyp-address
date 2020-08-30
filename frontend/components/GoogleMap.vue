@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid style="padding:0px width: 100%; height: 100%;">
+  <v-container fluid style="padding:0px;  width: 100%; height: 100%;">
     <GmapMap
       :options="{
          zoomControl: true,
@@ -8,65 +8,89 @@
          streetViewControl: false,
          rotateControl: false,
          fullscreenControl: false,
-         disableDefaultUi: true
+         disableDefaultUi: false
        }"
       :center="center"
       :zoom="12"
       style="width: 100%; height: 100%;"
+      @click="addMarker"
     >
-      <gmap-marker
+      <!--if you require markers, unpack this-->
+      <GmapMarker
         :key="index"
         v-for="(m, index) in markers"
         :position="m.position"
-        @click="center=m.position"
-      ></gmap-marker>
+        :clickable="true"
+        :draggable="true"
+        @click="removeMarker"
+      />
+
+<!-- This is to remove info window on first click-->
+      <gmap-info-window :opened="false" />
+
     </GmapMap>
+
+  <google-bottom-sheet :sheet=this.sheet :details=this.markers @click="changeSheet" />
+
   </v-container>
 </template>
 
 <script>
+import {gmapApi} from 'vue2-google-maps'
+import GoogleBottomSheet from "@/components/GoogleBottomSheet";
+
 export default {
   name: "GoogleMap",
+  components: {GoogleBottomSheet},
   data() {
     return {
-      // default to Montreal to keep it simple
-      // change this to whatever makes sense
-      center: {lat: 45.508, lng: -73.587},
+      //lat and lng returns singapore by default
+      center: {lat: 1.3521, lng: 103.8198},
       markers: [],
-      places: [],
-      currentPlace: null
+      coordinates: null,
+      sheet: false
     };
   },
 
   mounted() {
-    this.geolocate();
+    //this.geolocate();
   },
 
   methods: {
-    // receives a place object via the autocomplete component
-    setPlace(place) {
-      this.currentPlace = place;
+    changeSheet(){
+      this.sheet = false
     },
-    addMarker() {
-      if (this.currentPlace) {
-        const marker = {
-          lat: this.currentPlace.geometry.location.lat(),
-          lng: this.currentPlace.geometry.location.lng()
-        };
-        this.markers.push({position: marker});
-        this.places.push(this.currentPlace);
-        this.center = marker;
-        this.currentPlace = null;
+    addMarker(event) {
+      this.sheet = true
+      const marker = {
+        lat: event.latLng.lat(),
+        lng: event.latLng.lng()
+      };
+      this.markers.push({position: marker});
+    },
+    removeMarker(event) {
+      this.sheet = true
+      const marker = {
+        lat: event.latLng.lat(),
+        lng: event.latLng.lng()
+      };
+      for (var i = 0; i < this.markers.length; i ++ ){
+        var accessed = this.markers[i]['position']
+        if (marker.lat == accessed['lat'] && marker.lng == accessed['lng']){
+          this.markers.splice(i,1)
+        }
       }
     },
-    geolocate: function () {
+    /*geolocate: function () { //Get current user position to fix map
       navigator.geolocation.getCurrentPosition(position => {
         this.center = {
           lat: position.coords.latitude,
           lng: position.coords.longitude
         };
-      });
-    }
+      });*/
+    //}
+  },
+  computed: {
   }
 };
 </script>
