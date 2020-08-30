@@ -6,5 +6,4 @@ app = fastapi.FastAPI()
 def root():
     return {"message": "hello world"}
 
-from app.components.exampleModule import *
-
+from app.api.countries import *
