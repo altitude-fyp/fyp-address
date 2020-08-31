@@ -8,11 +8,11 @@ load_dotenv()
 
 import pymongo
 
-def get_database(url):
+def get_database():
     """
         returns pymongo database object
     """
-    return pymongo.MongoClient(url)["main"]
+    return pymongo.MongoClient(os.getenv("MONGODB_CONNECTION_URL"))["main"]
 
 def mongo_upsert(data, collection_name, replacement_pattern):
     """
@@ -20,22 +20,36 @@ def mongo_upsert(data, collection_name, replacement_pattern):
         - if data doesnt exist (based on repalcement_pattern), inserts
         - else if data exists, replaces
     """
-    db = get_database(os.getenv("MONGODB_CONNECTION_URL"))
+    db = get_database()
     collection = db[collection_name]
 
-    result = collection.replace_one(
+    return collection.replace_one(
         replacement_pattern,
         data,
         upsert=True
     )
-
-    print("Number of articles inserted/modified:", result.modified_count)
-
+    
 def mongo_find_one(collection_name, find_options):
     """
     retrieves one entry from collection with collection_name with key
     """
-    db = get_database(os.getenv("MONGODB_CONNECTION_URL"))
+    db = get_database()
     collection = db[collection_name]
 
     return collection.find_one(find_options)
+
+def mongo_clear(collection_name):
+    """
+    empties collection
+    """
+    db = get_database()
+    collection = db[collection_name]
+    return collection.delete_many({})
+
+def mongo_insert(data, collection_name):
+    """
+    inserts data into collection with collection_name
+    """
+    db = get_database()
+    collection = db[collection_name]
+    return collection.insert(data, check_keys=False)
