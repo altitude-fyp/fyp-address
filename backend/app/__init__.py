@@ -4,7 +4,6 @@ app = fastapi.FastAPI()
 
 @app.get("/")
 def root():
-    return {"message": "hello world"}
+    return {"message": "This is the backend for address-fyp"}
 
-from app.components.exampleModule import *
-
+from app.api.countries import *
