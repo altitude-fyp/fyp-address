@@ -2,35 +2,21 @@
 fetch data from all sources, clean, combine and store
 """
 
-import sys
-here = sys.path[0]
-sys.path.append(here[:-len("data-aggregator")])
-from mongodb_helper import *
+from common import *
+from cleaner.dbpedia import * 
+from cleaner.wikipedia import *
 
-db = get_database()
+print("pulling dbpedia countries")
+countries = get_dbpedia_countries()
 
-dbpedia_countries_collection = db["dbpedia.countries"]
-wikipedia_collection = db["wikipedia"]
+print("pulling wikipedia tables")
+wikipedia = get_wikipedia_tables()
+
+print("pulling imf data")
 imf_collection = db["imf"]
-
-countries = {j["_id"]: j["data"] for j in [i for i in dbpedia_countries_collection.find()]}
-wikipedia = [i for i in wikipedia_collection.find()]
 imf = {j["_id"]: j["data"] for j in [i for i in imf_collection.find()]}
 
-"""
-pickling for development purposes as pulling data takes 5 seconds
-"""
-# import pickle
-# pickle.dump((countries, wikipedia), open("pickled/data.sav", "wb"))
-# countries, wikipedia = pickle.load(open("pickled/data.sav", "rb"))
-
-from helper import *
-from helper.nlp import *
-
-# filter only useful features in countries (see helper/__init__.py)
-countries = {country: {k:v for k,v in info.items() if k in useful_fields} for country,info in countries.items()}
-
-# appending metadata from wikipedia
+print("appending wikipedia table data into respective countries")
 for meta in wikipedia:
     data = meta["data"]
     for row in data:
@@ -38,17 +24,17 @@ for meta in wikipedia:
         if score > 0.8:
             countries[ckey][meta["name"]] = row
 
-# appending IMF data
-
+print("appending IMF data")
 for country, dataflows in imf.items():
-    print(country)
     for dataflow_name, indicators in dataflows.items():
         ckey, score = match(country, countries)
         if score > 0.8:
             countries[ckey][dataflow_name] = indicators
 
+print("clearing mongodb database")
 mongo_clear("aggregate.countries")
 
+print("inserting country-level data into mongodb database")
 for country, data in countries.items():
     result = mongo_insert(
         {   
