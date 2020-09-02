@@ -1,4 +1,4 @@
-from common import *
+from helper.common import *
 
 wikipedia_collection = db["wikipedia"]
 

@@ -1,60 +1,67 @@
-from common import *
+from helper.common import *
 
 def clean_dbpedia(data):
+
+    def filter_useful_fields(data):
+        """
+        returns only fields in useful_fields set
+        """
+        useful_fields = set([
+            'dbo:PopulatedPlace/areaTotal', 
+            'dbo:areaTotal',
+            'dbp:gdpNominal', 
+            'dbp:gdpNominalPerCapita', 
+            'dbp:gdpNominalYear', 
+            'dbp:gdpPpp', 
+            'dbp:gdpPppPerCapita', 
+            'dbp:gdpPppYear', 
+            'dbp:hdi', 
+            'dbp:hdiYear', 
+            'dbp:hdiChange', 
+            'dbo:PopulatedPlace/populationDensity', 
+            'dbo:populationDensity', 
+            'dbp:hdiRank', 
+            'dbp:areaRank', 
+            'dbp:gini', 
+            'dbp:giniYear', 
+            'dbp:populationDensityRank', 
+            'dbo:populationTotal', 
+            'dbp:gdpPppRank', 
+            'dbp:gdpNominalRank', 
+            'dbp:gdpPppPerCapitaRank', 
+            'dbp:gdpNominalPerCapitaRank',
+        ])
+
+        for country_name, country in data.items():
+            data[country_name] = {k:v for k,v in country.items() if k in useful_fields}
+
+        return data
+
+    def clean_number(number):
+        """
+        cleans a number string into a float
+            if number is list:
+                return average of numbers inside
+        """
+        def remove_brackets(number):
+            for i, ch in enumerate(number):
+                if ch in "{[(":
+                    return number[:i].strip()
+            return number.strip()
+
+        if type(number) == str:
+            number = remove_brackets(number)
+            try: return float(number)
+            except: return number
+
+        elif type(number) == list:
+            numbers = [remove_brackets(n) for n in number]
+            try: return sum([float(n) for n in numbers]) / len(numbers)
+            except: return numbers
+
+    data = filter_useful_fields(data)
+    for country_name, country in data.items():
+        for k, v in country.items():
+            country[k] = clean_number(v)
+
     return data
-
-# def get_dbpedia_countries():
-#     """
-#     returns cleaned dictionary representing dbpedia countries
-#         key = country name
-#         value = useful fields
-#     """
-
-#     def clean(text):
-#         """
-#             1. removes brackets
-#                 eg. 1.345 (SGD) -> 1.345
-
-#         """
-
-#         def remove_brackets(text):
-#             for i,ch in enumerate(text):
-#                 if ch in "{([":
-#                     return text[:i].strip()
-#             return text.strip()
-
-#         if type(text) == str:
-#             text = remove_brackets(text)
-#             try: return float(text)
-#             except: return text
-
-#         else:
-#             return [clean(i) for i in text]
-
-#     exceptions = {"geo:geometry"}
-
-#     countries = get_dbpedia_countries_raw()
-
-#     for country, info in countries.items():
-
-#         for k,v in info.items():
-#             if k not in exceptions:
-#                 info[k] = clean(v)
-
-#     return countries
-
-
-
-# def get_dbpedia_countries_raw():
-#     """
-#     returns dict (raw)
-#         key = country name
-#         value = useful fields
-#     """
-#     countries = {j["_id"]: j["data"] for j in [i for i in dbpedia_countries_collection.find()]}
-    
-#     # filtering features in dict "useful_fields"
-#     countries = {country: {k:v for k,v in info.items() if k in useful_fields} for country,info in countries.items()}
-    
-#     return countries
-    
