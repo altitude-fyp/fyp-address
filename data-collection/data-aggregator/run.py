@@ -1,50 +1,57 @@
 """
-fetch data from all sources, clean, combine and store
+1. runs pull.py to pickle store all raw data
+2. runs combine.py to process and combine data, and store in mongodb
+
+everything below here is old and needs to be updated
 """
 
-from common import *
-from cleaner.dbpedia import * 
-from cleaner.wikipedia import *
+# """ 
+# fetch data from all sources, clean, combine and store
+# """
 
-print("pulling dbpedia countries")
-countries = get_dbpedia_countries()
+# from common import *
+# from cleaner.dbpedia import * 
+# from cleaner.wikipedia import *
 
-print("pulling wikipedia tables")
-wikipedia = get_wikipedia_tables()
+# print("pulling dbpedia countries")
+# countries = get_dbpedia_countries()
 
-print("pulling imf data")
-imf_collection = db["imf"]
-imf = {j["_id"]: j["data"] for j in [i for i in imf_collection.find()]}
+# print("pulling wikipedia tables")
+# wikipedia = get_wikipedia_tables()
 
-print("appending wikipedia table data into respective countries")
-for meta in wikipedia:
-    data = meta["data"]
-    for row in data:
-        ckey, score = match(row["country"], countries)
-        if score > 0.8:
-            countries[ckey][meta["name"]] = row
+# print("pulling imf data")
+# imf_collection = db["imf"]
+# imf = {j["_id"]: j["data"] for j in [i for i in imf_collection.find()]}
 
-print("appending IMF data")
-for country, dataflows in imf.items():
-    for dataflow_name, indicators in dataflows.items():
-        ckey, score = match(country, countries)
-        if score > 0.8:
-            countries[ckey][dataflow_name] = indicators
+# print("appending wikipedia table data into respective countries")
+# for meta in wikipedia:
+#     data = meta["data"]
+#     for row in data:
+#         ckey, score = match(row["country"], countries)
+#         if score > 0.8:
+#             countries[ckey][meta["name"]] = row
 
-print("clearing mongodb database")
-mongo_clear("aggregate.countries")
+# print("appending IMF data")
+# for country, dataflows in imf.items():
+#     for dataflow_name, indicators in dataflows.items():
+#         ckey, score = match(country, countries)
+#         if score > 0.8:
+#             countries[ckey][dataflow_name] = indicators
 
-print("inserting country-level data into mongodb database")
-for country, data in countries.items():
-    result = mongo_insert(
-        {   
-            "_id": country,
-            "data": data
-        },
+# print("clearing mongodb database")
+# mongo_clear("aggregate.countries")
 
-        collection_name="aggregate.countries"
-    )
+# print("inserting country-level data into mongodb database")
+# for country, data in countries.items():
+#     result = mongo_insert(
+#         {   
+#             "_id": country,
+#             "data": data
+#         },
 
-    print(f"Added {country} into aggregate.countries: {result}")
+#         collection_name="aggregate.countries"
+#     )
 
-print("done")
+#     print(f"Added {country} into aggregate.countries: {result}")
+
+# print("done")
