@@ -4,7 +4,7 @@ contains combine_as_embeddings function, which combines dbpedia, wikipedia and i
     - no dicts, lists or nested dicts etc
     - for machine readability
 """
-
+from copy import deepcopy
 from helper.nlp import *
 
 def combine_as_embeddings(countries, wikipedia, imf):
@@ -14,7 +14,7 @@ def combine_as_embeddings(countries, wikipedia, imf):
             key = country anme
             value = dictionary representing combined cleaned data from all 3 sources
     """
-
+    countries = deepcopy(countries)
     for feature in wikipedia:
         
         print("Embeddings combiner: combining wikipedia feature with dbpedia countries:", feature["name"])

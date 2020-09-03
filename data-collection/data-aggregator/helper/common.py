@@ -7,6 +7,3 @@ import os
 import pickle
 
 from mongodb_helper import *
-
-
-

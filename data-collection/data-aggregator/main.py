@@ -31,8 +31,8 @@ api_data = combine_as_api_data(countries, wikipedia, imf)
 
 from helper.db_insert import *
 
-insert_into_db(data=embeddings, collection_name="embeddings.countries")
+insert_into_db(data=embeddings, collection_name="embeddings.countries", tag="EMBEDDINGS:")
 print("done inserting embeddings data into mongodb")
 
-# insert_into_db(data=api_data, collection_name="aggregate.countries")
+# insert_into_db(data=api_data, collection_name="aggregate.countries", tag="API DATA")
 # print("done inserting api data into mongodb")

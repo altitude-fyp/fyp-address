@@ -3,11 +3,13 @@ contains combine_as_api_data, which combines all 3 data sources
     - output is meant for frontend to call 
     - human readability takes precedence over machine readability here
 """
-
+from copy import deepcopy
 from helper.nlp import *
 
 def combine_as_api_data(countries, wikipedia, imf):
     
+    countries = deepcopy(countries)
+
     for feature in wikipedia:
 
         print("Api data combiner: combining wikipedia feature with dbpedia countries", feature["name"])

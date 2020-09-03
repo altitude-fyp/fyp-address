@@ -1,10 +1,10 @@
 from helper.common import *
 
-def insert_into_db(data, collection_name):
+def insert_into_db(data, collection_name, tag=""):
     mongo_clear(collection_name)
 
     for country_name, country in data.items():
-        print(f"inserting {country_name} into mongodb")
+        print(tag, f"inserting {country_name} into mongodb")
 
         mongo_insert(
             data = {
