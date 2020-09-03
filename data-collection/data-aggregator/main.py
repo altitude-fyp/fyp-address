@@ -14,7 +14,8 @@ from cleaner.dbpedia_cleaner import clean_dbpedia
 from cleaner.wikipedia_cleaner import clean_wikipedia
 # from cleaner.imf_cleaner import clean_imf
 
-from helper.combiner import combine
+from combiners.embeddings_combiner import combine_as_embeddings
+from combiners.api_combiner import combine_as_api_data
 
 countries = pickle.load(open("pickled/dbpedia_countries.sav", "rb"))
 wikipedia = pickle.load(open("pickled/wikipedia.sav", "rb"))
@@ -24,17 +25,17 @@ wikipedia = pickle.load(open("pickled/wikipedia.sav", "rb"))
 countries = clean_dbpedia(countries)
 wikipedia = clean_wikipedia(wikipedia)
 # imf = clean_imf(imf)
+imf = {}
 
-# """
-# combining data sources
-#     output: dictionary
-#         key = country name
-#         value = combination of dbpedia, wikipedia and imf data
-# """
 
-data = combine(countries, wikipedia, {})
 
-print("inserting data into mongodb")
+embeddings = combine_as_embeddings(countries, wikipedia, imf)
+api_data = combine_as_api_data(countries, wikipedia, imf)
+
+for k,v in embeddings["Singapore"].items():
+    print(k,v)
+
+print("inserting embeddings data into mongodb")
 
 mongo_clear("embeddings.countries")
 

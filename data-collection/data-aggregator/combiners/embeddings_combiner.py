@@ -1,6 +1,13 @@
+"""
+contains combine_as_embeddings function, which combines dbpedia, wikipedia and imf data into embedings
+    - in an embedidng, every value shall be a float, string, or null
+    - no dicts, lists or nested dicts etc
+    - for machine readability
+"""
+
 from helper.nlp import *
 
-def combine(countries, wikipedia, imf):
+def combine_as_embeddings(countries, wikipedia, imf):
     """
         input: cleaned data from dbpedia.countries, wikipedia and imf
         output: dictionary
