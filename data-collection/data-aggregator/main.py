@@ -39,16 +39,3 @@ wikipedia = clean_wikipedia(wikipedia)
 # """
 
 
-for feature in wikipedia:
-    print(feature["name"])
-
-    data = feature["data"]
-    main = feature["main"]
-    main = [main] if type(main) == str else main
-
-    for row in data:
-        for k in main:
-            if k not in row:
-                print([k], "not in row", row)
-
-    input(">>>")
