@@ -34,11 +34,20 @@ wikipedia = clean_wikipedia(wikipedia)
 
 data = combine(countries, wikipedia, {})
 
-for k,v in data.get("Singapore", {}).items():
-    print(k, "==>", v)
+print("inserting data into mongodb")
 
-# """
-# inserting data into mongodb
-# """
+mongo_clear("embeddings.countries")
 
+for country_name, country in data.items():
 
+    print(f"inserting {country_name} into mongodb")
+
+    mongo_insert(
+        data = {
+            "_id": country_name,
+            "data": country
+        },
+        collection_name = "embeddings.countries"
+    )
+
+print("done")

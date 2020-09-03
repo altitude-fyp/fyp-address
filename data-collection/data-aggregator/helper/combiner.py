@@ -28,7 +28,7 @@ def combine(countries, wikipedia, imf):
 
                 elif type(main) == list:
                     for k in main:
-                        k_cleaned = feature["name"] + k
+                        k_cleaned = feature["name"] + "_" + k
                         k_cleaned = k_cleaned.replace(" ", "_")
                         countries[best_match][k_cleaned] = row[k]
 
