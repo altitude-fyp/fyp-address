@@ -17,7 +17,7 @@ def combine_as_embeddings(countries, wikipedia, imf):
 
     for feature in wikipedia:
         
-        print("combining wikipedia feature with dbpedia countries:", feature["name"])
+        print("Embeddings combiner: combining wikipedia feature with dbpedia countries:", feature["name"])
         data = feature["data"]
 
         for row in data:

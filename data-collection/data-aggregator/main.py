@@ -12,43 +12,27 @@ from helper.common import *
 
 from cleaner.dbpedia_cleaner import clean_dbpedia
 from cleaner.wikipedia_cleaner import clean_wikipedia
-# from cleaner.imf_cleaner import clean_imf
+from cleaner.imf_cleaner import clean_imf
 
 from combiners.embeddings_combiner import combine_as_embeddings
 from combiners.api_combiner import combine_as_api_data
 
 countries = pickle.load(open("pickled/dbpedia_countries.sav", "rb"))
 wikipedia = pickle.load(open("pickled/wikipedia.sav", "rb"))
-# imf = pickle.load(open("pickled/imf.sav", "rb"))
+imf = pickle.load(open("pickled/imf.sav", "rb"))
 
 # cleaning all raw data sources
 countries = clean_dbpedia(countries)
 wikipedia = clean_wikipedia(wikipedia)
-# imf = clean_imf(imf)
-imf = {}
-
-
+imf = clean_imf(imf)
 
 embeddings = combine_as_embeddings(countries, wikipedia, imf)
 api_data = combine_as_api_data(countries, wikipedia, imf)
 
-for k,v in embeddings["Singapore"].items():
-    print(k,v)
+from helper.db_insert import *
 
-print("inserting embeddings data into mongodb")
+insert_into_db(data=embeddings, collection_name="embeddings.countries")
+print("done inserting embeddings data into mongodb")
 
-mongo_clear("embeddings.countries")
-
-for country_name, country in data.items():
-
-    print(f"inserting {country_name} into mongodb")
-
-    mongo_insert(
-        data = {
-            "_id": country_name,
-            "data": country
-        },
-        collection_name = "embeddings.countries"
-    )
-
-print("done")
+# insert_into_db(data=api_data, collection_name="aggregate.countries")
+# print("done inserting api data into mongodb")
