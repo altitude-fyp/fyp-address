@@ -38,7 +38,7 @@ def get_infant_and_under_five_mortality_rate():
         "url": url,
         "desc": "mortality rate of infants/children under 5 per 1000 live births (as of 2018)",
         "data": read_table(table, ckey=0),
-        "main": "2018mortality rate,under-5(per 1000livebirths)"
+        "main": "2018mortality rate,under-5(per 1000live births)"
     }
 
 def get_life_expectancy():

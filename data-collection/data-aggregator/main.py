@@ -38,11 +38,17 @@ wikipedia = clean_wikipedia(wikipedia)
 # inserting data into mongodb
 # """
 
-for i,feature in enumerate(wikipedia):
-    print(feature["name"])
-    for k in feature["data"]:
-        print(k)
-        break
-    print()
 
-    if i%4==0: input(">>>")
+for feature in wikipedia:
+    print(feature["name"])
+
+    data = feature["data"]
+    main = feature["main"]
+    main = [main] if type(main) == str else main
+
+    for row in data:
+        for k in main:
+            if k not in row:
+                print([k], "not in row", row)
+
+    input(">>>")

@@ -96,7 +96,7 @@ def get_literacy_rate():
         "url": url,
         "desc": "Literacy rate by country",
         "data": read_table(table, custom_headers=custom_headers),
-        "main": ["literacy rate (all)", "male literacy", "female literacy", "gender difference", "non-UNESCO literacy rate"]
+        "main": ["literacy rate (all)", "male literacy", "female literacy", "gender difference"]
     }
 
 def get_median_age():
@@ -130,12 +130,14 @@ def get_sex_ratio():
     soup = get_soup(url)
     table = soup.find("table", {"class": "wikitable"})
 
+    headers = ["country", "at birth", "0 to 14 years", "15 to 24 years", "25 to 54 years", "55 to 64 years", "over 65", "total"]
+
     return {
         "name": "sex ratio",
         "url": url,
         "desc": "sex ratio (male/female ratio) by country",
-        "data": read_table(table, ckey=0),
-        "main": ["At birth", "0-14 years", "15-24 years", "25-54 years", "55-64 years", "Over 65", "Total"]
+        "data": read_table(table, ckey=0, custom_headers=headers),
+        "main": ["at birth", "0 to 14 years", "15 to 24 years", "25 to 54 years", "55 to 64 years", "over 65", "total"]
     }
 
 def get_tertiary_education_attainment():
@@ -159,8 +161,8 @@ def get_tertiary_education_attainment():
         "data": read_table(table, custom_headers=custom_headers),
         "main": [   
             "equivalent to 2 year degree or higher (%)",
-            "equivalent to a 4 year degree or higher (%)",
-            "equivalent to a 6 year degree or higher"
+            "equivalent to 4 year degree or higher (%)",
+            "equivalent to 6 year degree or higher (%)"
         ]
     }
 
