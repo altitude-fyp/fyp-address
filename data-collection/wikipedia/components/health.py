@@ -9,7 +9,8 @@ def get_bmi():
         "name": "bmi",
         "url": url,
         "desc": "body mass index by country (as of 2015)",
-        "data": read_table(table, ckey=0)
+        "data": read_table(table, ckey=0),
+        "main": ["Overall mean BMI (kg/m2)", "Female mean BMI (kg/m2)", "Male mean BMI (kg/m2)"]
     }
 
 def get_HIV_AIDS_prevalence():
@@ -17,11 +18,14 @@ def get_HIV_AIDS_prevalence():
     soup = get_soup(url)
     table = soup.find("table", {"class": "wikitable"})
 
+    headers = ["country", "adult prevalence", "number of people with HIV/AIDS", "annual deaths from HIV/AIDS", "year of estimate"]
+
     return {
         "name": "HIV and AIDS prevalence",
         "url": url,
         "desc": "HIV/AIDS prevalence estimates by country",
-        "data": read_table(table, ckey=0)
+        "data": read_table(table, ckey=0, custom_headers=headers),
+        "main": ["adult prevalence", "number of people with HIV/AIDS", "annual deaths from HIV/AIDS"]
     }
 
 def get_infant_and_under_five_mortality_rate():
@@ -33,7 +37,8 @@ def get_infant_and_under_five_mortality_rate():
         "name": "infant mortality rate",
         "url": url,
         "desc": "mortality rate of infants/children under 5 per 1000 live births (as of 2018)",
-        "data": read_table(table, ckey=0)
+        "data": read_table(table, ckey=0),
+        "main": "2018mortality rate,under-5(per 1000livebirths)"
     }
 
 def get_life_expectancy():
@@ -53,7 +58,8 @@ def get_life_expectancy():
         "name": "life expectancy",
         "url": url,
         "desc": "life expectancy (as of 2018)",
-        "data": read_table(table, custom_headers=custom_headers)
+        "data": read_table(table, custom_headers=custom_headers),
+        "main": ["overall", "female", "male"]
     }
 
 def get_maternal_mortality_ratio():
@@ -83,7 +89,8 @@ def get_maternal_mortality_ratio():
         "name": "maternal mortality rate",
         "url": url,
         "desc": "maternal mortality rate (per 100,000 live births) by country - the death of a woman while pregnant or within 42 days of termination of pregnancy, irrespective of the duration and site of the pregnancy, from any cause related to or aggravated by the pregnancy or its management but not from accidental or incidental causes",
-        "data": data
+        "data": data,
+        "main": "maternal mortality ratio per 100,000 live births"
     }
 
 def get_mortality_rate():
@@ -110,7 +117,8 @@ def get_mortality_rate():
         "name": "mortality rate",
         "url": url,
         "desc": "mortality rate per 1000 people (as of 2017)",
-        "data": data
+        "data": data,
+        "main": "mortality rate per 1000"
     }
 
 def get_number_of_physicians():
@@ -124,7 +132,8 @@ def get_number_of_physicians():
         "name": "number of physicians",
         "url": url,
         "desc": "number of physicians per 1000 people by country",
-        "data": read_table(table, custom_headers=custom_headers)
+        "data": read_table(table, custom_headers=custom_headers),
+        "main": "physicians per 1000 people (2007-2013)"
     }
 
 def get_proportion_of_population_using_improved_sanitation_facilities():
@@ -133,7 +142,7 @@ def get_proportion_of_population_using_improved_sanitation_facilities():
     table = soup.find("table", {"class": "wikitable"})
 
     return {
-        "name": "population using improved sanitation",
+        "name": "proportion of population using improved sanitation",
         "url": url,
         "desc": """proportion of population using improved sanitation facilities -
                         Flush toilet
@@ -145,7 +154,8 @@ def get_proportion_of_population_using_improved_sanitation_facilities():
                         Composting toilet
                     """,
 
-        "data": read_table(table, ckey=0)
+        "data": read_table(table, ckey=0),
+        "main": "2017 or most recent year"
     }
 
 def get_cigarette_consumption_per_capita():
@@ -157,5 +167,6 @@ def get_cigarette_consumption_per_capita():
         "name": "cigarette consumption",
         "url": url,
         "desc": "cigarette consumption per year per capita (persons aged >= 15)",
-        "data": read_table(table, ckey=1)
+        "data": read_table(table, ckey=1),
+        "main": "Cigarettes"
     }
