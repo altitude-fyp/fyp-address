@@ -16,7 +16,7 @@
         <v-text-field type="password" placeholder="Password" outlined color="#004D8E"/>
 
         <v-btn class="save-btn" color="#004D8E" large depressed @click="login">Sign In</v-btn>
-        
+
       </div>
     </div>
   </v-container>
@@ -29,4 +29,11 @@ export default {
 </script>
 
 <style scoped>
+  .v-text-field .v-input__control .v-input__slot {
+    min-height: 50px !important;
+    max-width: 420px !important;
+    display: flex !important;
+    align-items: center !important;
+    background: #F9F9F9;
+  }
 </style>

@@ -40,13 +40,6 @@ body {
     text-transform: none;
     font-weight: 700;
 }
-.v-text-field .v-input__control .v-input__slot {
-    min-height: 50px !important;
-    max-width: 420px !important;
-    display: flex !important;
-    align-items: center !important;
-    background: #F9F9F9;
-  }
 </style>
 
 <style lang="scss">
