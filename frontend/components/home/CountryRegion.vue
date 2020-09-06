@@ -1,116 +1,106 @@
 <template>
-    <v-row justify="center">
-      <v-dialog v-model="dialog" scrollable max-width="500px">
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn
-            v-bind="attrs"
-            v-on="on"
-            absolute
+  <div>
+    <v-row
+      justify="center"
+    >
+
+      <v-dialog
+        v-model="dialog"
+        fullscreen
+        hide-overlay
+        transition="dialog-bottom-transition"
+        scrollable
+      >
+        <v-card tile>
+          <v-toolbar
+            flat
             dark
-            fab
-            bottom
-            left
-            color="pink"
+            color="primary"
           >
-            <v-icon>mdi-earth</v-icon>
-          </v-btn>
+            <v-btn
+              icon
+              dark
+              @click="$emit('close','hello')"
+            >
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+            <v-toolbar-title>Select {{ access }} for Comparison</v-toolbar-title>
+            <v-spacer></v-spacer>
+          </v-toolbar>
+          <v-card-text>
 
-        </template>
-        <v-card>
-          <v-card-title>Select Country</v-card-title>
-          <v-divider></v-divider>
-          <v-card-text style="height: 300px;">
-            <v-radio-group v-model="countrySelect" column>
-              <v-radio
-                v-for="item in country"
-                :value="item.value"
-                :label="item.label"
-                ></v-radio>
-            </v-radio-group>
+            <v-list
+              three-line
+              subheader
+            >
+              <v-list-item>
+                <v-list-item-content>
+                  FOR LOOP FOR REGION AND COUNTRIES
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
           </v-card-text>
-          <v-divider></v-divider>
-          <br>
-          <v-card-text>You have selected : {{ countrySelect }}</v-card-text>
-          <v-card-actions>
-            <v-btn color="red darken-1" text @click="dialog = false">Close</v-btn>
-            <v-btn color="blue darken-1" text @click="dialog = false, regionDialog = true">Next: Region</v-btn>
-          </v-card-actions>
+
         </v-card>
       </v-dialog>
-
-
-
-
-      <v-dialog v-model="regionDialog" scrollable max-width="500px">
-        <v-card>
-        <v-card-title>Select Region in {{countrySelect}}</v-card-title>
-        <v-divider></v-divider>
-        <v-card-text style="height: 300px;">
-          <v-checkbox
-            v-if="countrySelect"
-            v-model="regionSelect"
-            v-for="item in region"
-            :label="item.label"
-            :value="item.value"></v-checkbox>
-        </v-card-text>
-        <v-divider></v-divider>
-        <v-card-text>You have selected : {{ regionSelect }}</v-card-text>
-          <v-card-actions>
-            <v-btn color="grey darken-1" text @click="dialog = true, regionDialog = false, regionSelect = []">Back</v-btn>
-            <v-btn color="blue darken-1" text @click="regionDialog = false">Analyse</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-
-
     </v-row>
-  </template>
+  </div>
+</template>
 
 
-
-
-
-    <script>
-      export default {
-      name: "CountryRegion",
-    data () {
-      return {
-        countrySelect: '',
-        regionSelect: [],
-        dialog: false,
-        regionDialog: false,
-        country: [
-          {label:"Country1", value:"Country1"},
-          {label:"Country2", value:"Country2"},
-          {label:"Country3", value:"Country3"},
-          {label:"Country4", value:"Country4"},
-          {label:"Country5", value:"Country5"},
-          {label:"China", value:"China"},
-          {label:"Japan", value:"Japan"},
-          {label:"Korea", value:"Korea"},
-          {label:"Singapore", value:"Singapore"},
-          {label:"United States of America", value:"USA"},
-          {label:"Country10", value:"Country1"},
-          {label:"Country20", value:"Country2"},
-          {label:"Country30", value:"Country3"},
-          {label:"Country40", value:"Country4"},
-          {label:"Country50", value:"Country5"},
-        ],
-        region: [
-          {label:"Ang Mo Kio", value:"Country1"},
-          {label:"Bishan", value:"Country2"},
-          {label:"Braddell", value:"Country3"},
-          {label:"Toa Payoh", value:"Country4"},
-          {label:"Yio Chu Kang", value:"Country5"},
-          {label:"Some Ulu", value:"China"},
-          {label:"Somewhere Ulu", value:"Japan"},
-          {label:"Kpop", value:"Korea"},
-          {label:"Region1", value:"Region1"},
-
-
-        ],
-      }
+<script>
+export default {
+  name: "CountryRegion",
+  props: {
+    dialog: {
+      type: Boolean,
     },
-  }
+    access: {
+      type: String,
+    },
+  },
+  data() {
+    return {
+      countrySelect: [],
+      countryRegion: '',
+      regionSelect: [],
+      country: [
+        {label: "Country1", value: "Country1"},
+        {label: "Country2", value: "Country2"},
+        {label: "Country3", value: "Country3"},
+        {label: "Country4", value: "Country4"},
+        {label: "Country5", value: "Country5"},
+        {label: "China", value: "China"},
+        {label: "Japan", value: "Japan"},
+        {label: "Korea", value: "Korea"},
+        {label: "Singapore", value: "Singapore"},
+        {label: "United States of America", value: "USA"},
+        {label: "Country10", value: "Country1"},
+        {label: "Country20", value: "Country2"},
+        {label: "Country30", value: "Country3"},
+        {label: "Country40", value: "Country4"},
+        {label: "Country50", value: "Country5"},
+      ],
+      region: [
+        {label: "Ang Mo Kio", value: "Country1"},
+        {label: "Bishan", value: "Country2"},
+        {label: "Braddell", value: "Country3"},
+        {label: "Toa Payoh", value: "Country4"},
+        {label: "Yio Chu Kang", value: "Country5"},
+        {label: "Some Ulu", value: "China"},
+        {label: "Somewhere Ulu", value: "Japan"},
+        {label: "Kpop", value: "Korea"},
+        {label: "Region1", value: "Region1"},
+
+
+      ],
+    }
+  },
+  methods: {
+    resetDialog() {
+      this.$emit('resetDialog', false)
+    }
+  },
+}
 </script>
 

@@ -1,12 +1,11 @@
 <template>
   <v-app>
 
-      <v-card class="overflow-hidden">
+      <v-card>
         <v-app-bar
           absolute
           color="white"
-          elevate-on-scroll
-          scroll-target="#scrolling-techniques-7"
+
         >
           <v-app-bar-nav-icon  @click="drawer = true"></v-app-bar-nav-icon>
 
@@ -64,22 +63,15 @@
 
         </v-navigation-drawer>
 
-        <v-sheet
-          id="scrolling-techniques-7"
-          class="overflow-y-auto"
-          width="100%"
-        >
-          <v-container>
-            HI THERE
-<!--            &lt;!&ndash;This is the code to render the page do not remove&ndash;&gt;
+          <v-sheet style="padding-top: 50px;">
+            <!--This is the code to render the page do not remove-->
             <v-main>
               <nuxt/>
             </v-main>
-            -->
-          </v-container>
-        </v-sheet>
-      </v-card>
+          </v-sheet>
 
+
+      </v-card>
 
 
 

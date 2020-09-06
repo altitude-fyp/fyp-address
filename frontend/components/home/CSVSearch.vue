@@ -1,13 +1,13 @@
 <template>
   <div>
 
-    <v-container fluid style="padding-top: 500px; padding-left: 150px; position:absolute; z-index: 1;">
+    <v-container fluid style="padding-top: 400px; padding-left: 150px; position:absolute; z-index: 1;">
       <v-row>
 
         <v-col cols="9">
           <v-text-field
             prepend-inner-icon="mdi-magnify"
-            placeholder="Enter an address"
+            placeholder="Enter an address in full only"
             rounded
             solo
           >

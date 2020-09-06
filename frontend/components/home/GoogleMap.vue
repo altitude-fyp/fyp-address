@@ -1,6 +1,5 @@
 <template>
-  <div>
-  <v-container fluid style="width: 100%; height: 60%;">
+  <v-container fluid style="width: 100%; height: 50%; padding:0px">
     <c-s-v-search/>
     <GmapMap
       :options="{
@@ -34,7 +33,6 @@
     </GmapMap>
   </v-container>
 
-  </div>
 </template>
 
 <script>
@@ -44,7 +42,7 @@ import CSVSearch from "@/components/home/CSVSearch";
 
 export default {
   name: "GoogleMap",
-  components: {CountryRegion, CSVSearch, GoogleBottomSheet},
+  components: {CSVSearch, GoogleBottomSheet},
   data() {
     return {
       //lat and lng returns singapore by default
@@ -56,15 +54,10 @@ export default {
   },
 
   mounted() {
-    //this.geolocate();
   },
 
   methods: {
-    changeSheet() {
-      this.sheet = false
-    },
     addMarker(event) {
-      this.sheet = true
       const marker = {
         lat: event.latLng.lat(),
         lng: event.latLng.lng()
