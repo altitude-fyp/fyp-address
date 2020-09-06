@@ -1,10 +1,105 @@
 <template>
-  <v-card
-    class="pa-4"
-    flat
-    height="300px"
-    img="https://cdn.vuetifyjs.com/images/toolbar/map.jpg"
-  >
+  <v-app>
+    <!--This is the code to render the page do not remove-->
+    <v-main style="padding: 0px;">
+      <nuxt/>
+    </v-main>
+    <div class="overflow-hidden">
 
+      <v-bottom-navigation
+        v-model="activeBtn"
+        color="indigo"
+      >
+
+        <v-btn
+          v-for="item in items"
+          :key="item.title"
+          :to="item.link"
+        >
+          <span>{{item.title}}</span>
+          <v-icon>{{ item.icon }}</v-icon>
+        </v-btn>
+
+      </v-bottom-navigation>
+    </div>
+
+
+  </v-app>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      activeBtn: 0,
+      items: [
+        {title: 'Home', icon: 'mdi-home', link: '/home'},
+        {title: 'Analytics', icon: 'mdi-chart-areaspline',link: '/analytics'},
+        {title: 'Scheduled Job', icon: 'mdi-history',link: '/scheduledJob'},
+        {title: 'Notifications', icon: 'mdi-bell',link: '/notifications'},
+        {title: 'User Management', icon: 'mdi-account',link: '/userManagement'},
+        {title: 'Chatbot', icon: 'mdi-chat', link: '/chatbot'},
+        {title: 'Settings', icon: 'mdi-cog', link: '/Settings'},
+      ],
+    }
+  },
+}
+</script>
+
+
+
+
+<template>
+  <v-card
+    class="mx-auto overflow-hidden"
+    height="400"
+  >
+    <v-app-bar
+      color="deep-purple"
+      dark
+    >
+      <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
+
+      <v-toolbar-title>Title</v-toolbar-title>
+    </v-app-bar>
+
+    <v-navigation-drawer
+      v-model="drawer"
+      absolute
+      temporary
+    >
+      <v-list
+        nav
+        dense
+      >
+        <v-list-item-group
+          v-model="group"
+          active-class="deep-purple--text text--accent-4"
+        >
+          <v-list-item>
+            <v-list-item-icon>
+              <v-icon>mdi-home</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Home</v-list-item-title>
+          </v-list-item>
+
+          <v-list-item>
+            <v-list-item-icon>
+              <v-icon>mdi-account</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Account</v-list-item-title>
+          </v-list-item>
+
+        </v-list-item-group>
+      </v-list>
+    </v-navigation-drawer>
   </v-card>
 </template>
+
+<script>
+export default {
+  data: () => ({
+    drawer: false,
+  }),
+}
+</script>

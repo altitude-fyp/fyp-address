@@ -1,33 +1,32 @@
 <template>
-  <div>
-    <div v-for="anythingElse in lists" class="card">
-      <n-link :to="`/admin/users/${anythingElse.id}`">
-        <v-card>
-          <cool-todo :id="anythingElse.id" :title="anythingElse.title"></cool-todo>
-        </v-card>
-      </n-link>
+  <v-container>
+    <v-file-input @change="onInput"/>
+
+    <div>
+        <pre>
+          {{ data }}
+        </pre>
     </div>
-  </div>
+  </v-container>
 </template>
 
 <script>
-import CoolTodo from "~/components/CoolTodo";
+import Papa from "papaparse"
 
 export default {
-  components: {CoolTodo},
-  asyncData({$axios}) {
-    return $axios.$get('https://jsonplaceholder.typicode.com/todos')
-      .then((data) => {
-        return {
-          lists: data
+  data() {
+    return {
+      data: null //return nothing when initialise
+    }
+  },
+  methods: {
+    onInput(file) {
+      Papa.parse(file, {
+        complete: (results) => {
+          this.data = results.data
         }
       })
-  },
+    }
+  }
 }
 </script>
-
-<style scoped lang="scss">
-.card {
-  padding-bottom: 24px;
-}
-</style>
