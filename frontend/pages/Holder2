@@ -25,38 +25,3 @@
     </v-card-actions>
   </v-card>
 </template>
-
-<script>
-export default {
-  name: "GoogleBottomSheet",
-  props: ['details', 'sheet'],
-  data() {
-    return {
-      retrievedCity: {
-        city: 'Ang Mo Kio',
-        hdb: 70258,
-        condo: 15022,
-        landed: 2801,
-        employed: 40155,
-        unemployment: '2.17%',
-        household: '5500',
-        bus: 40118,
-        mrt: 39023,
-        car: 2801,
-        taxi: 5221,
-        motor: 3123,
-        lorry: 543
-      },
-    }
-  },
-  methods: {
-    onClickButton() {
-      this.$emit('click')
-    }
-  }
-}
-</script>
-
-<style scoped>
-
-</style>

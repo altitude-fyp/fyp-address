@@ -1,9 +1,10 @@
 <template>
   <!--This is the main page where it is just '/'-->
   <v-app>
-    <c-s-v-search/>
     <google-map/>
-
+    <v-container>
+      <google-bottom-sheet/>
+    </v-container>
   </v-app>
 </template>
 
