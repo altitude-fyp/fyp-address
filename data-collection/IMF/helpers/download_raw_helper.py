@@ -1,10 +1,9 @@
 """
 helper function for imf/download-raw.py
 """
-
 import requests
 import time
-import pandas as pd
+import pandas as pd 
 
 def get_dataflow_mapping():
     print('Getting all parameters...')
@@ -34,35 +33,36 @@ def get_data(country):
     url = 'http://dataservices.imf.org/REST/SDMX_JSON.svc/'
     key = 'Dataflow'
 
-    data = requests.get(f'{url}{key}').json()
+    try:
+        data = requests.get(f'{url}{key}').json()
+        dataflows = data['Structure']['Dataflows']['Dataflow'] #Gather dataflows
+    except:
+        pass
 
-    dataflows = data['Structure']['Dataflows']['Dataflow'] #Gather dataflows
-    
     dataflow_ids = ['APDREO', 'BOP', 'BOPAGG', 'DOT', 'CPI', 'FAS', 'FDI', 'FSI']
-    
+
     dataflow_id_names = {}
-    
+
     for dataflow in dataflows:
         dataflow_name = dataflow['Name']['#text'] # Name of dataflow
         dataflow_id = dataflow['@id'].replace('DS-','') 
         if dataflow_id in dataflow_ids:
             dataflow_id_names[dataflow_id] = dataflow_name
-            
-    all_data = {}
 
+    all_data = {}
+    
     for dataflow_id in dataflow_ids:
 
         columns = ['Geographical Areas', 'Indicator']
 
-        
         url = 'http://dataservices.imf.org/REST/SDMX_JSON.svc/'
         key = 'DataStructure/' + dataflow_id
 
         try:
             codelists_data = requests.get(f'{url}{key}').json()['Structure']['CodeLists']['CodeList']
-            
+
             all_codelists = {'dataflow_id': dataflow_id}
-        
+
             country_details = {}
 
             for codelist in codelists_data:
@@ -74,13 +74,13 @@ def get_data(country):
                     codes = codelist['Code']
 
                     if type(codes) is dict:
-                        
+
                         if category == 'Indicator':
                             all_codelists[category].append(codes)
                         else:
                             all_codelists[category].append(codes)
                     else:
-                        
+
                         for code in codes:
                             if category == 'Indicator':
                                 all_codelists[category].append(code)
@@ -92,9 +92,10 @@ def get_data(country):
         except:
             pass
 
-    df = pd.DataFrame(all_data)
-    df = df.transpose()
-    df = df.reset_index()
+        df = pd.DataFrame(all_data)
+        df = df.transpose()
+        df = df.reset_index()
+
 #     to mongoDB
 
 #     get dataflow_id
@@ -172,7 +173,6 @@ def get_common_data():
                     codes = codelist['Code']
 
                     if type(codes) is dict:
-                        
                         if category == 'Indicator':
                             all_codelists[category].append(codes)
                         else:
@@ -188,7 +188,7 @@ def get_common_data():
             all_data[dataflow_id_names[dataflow_id]] = all_codelists    
         
         except:
-            pass
+            del all_data[dataflow_id_names[dataflow_id]]
 
     df = pd.DataFrame(all_data)
     df = df.transpose()
@@ -204,7 +204,6 @@ def get_batch_country_data(unique_countries):
         print(all_output[country].keys())
     return all_output
 
-#need to fix
 def get_indicator_mapping(dataflow_mapping, df):
     print('Getting all indicator names...')
     indicator_mapping = {}
@@ -234,7 +233,7 @@ def get_common_countries(all_data):
     unique_countries = []
 
     for key, value in common_countries.items():
-        if value == 8:
+        if value == 1:
             unique_countries.append(key)
     
     return unique_countries
@@ -288,3 +287,38 @@ def convert_all_country_data(indicator_mapping, all_country_data):
                 converted_all_country_data[country][dataflow][indicator_mapping[dataflow][indicator['@INDICATOR']]] = indicator['Obs']
     
     return converted_all_country_data
+
+def get_npl_countries(common_data):
+
+    must_indicators = {}
+
+    #only non-performing loans by percent
+    for country_indicators in common_data['Indicator']:
+        for indicator in country_indicators:
+            description = indicator['Description']['#text'].lower()
+            if 'non-performing loans' in description and 'percent' in description:
+                must_indicators[indicator['@value']] = indicator['Description']['#text']
+
+    fsi_countries = {}           
+
+    for countries in common_data['Geographical Areas']:
+        for country_description in countries:
+            fsi_countries[country_description['Description']['#text']] = {}
+            print(country_description['Description']['#text'])
+            for indicator in must_indicators:
+                url = 'http://dataservices.imf.org/REST/SDMX_JSON.svc/CompactData/'
+                key = 'FSI' +'/A.'+ country_description['@value'] +'.' + indicator + '.'
+#                 print(must_indicators[indicator])
+                try:
+                    data = (requests.get(f'{url}{key}').json()['CompactData']['DataSet']['Series'])
+                    fsi_countries[country_description['Description']['#text']][must_indicators[indicator]] = data
+                except:
+                    pass
+    
+    finalised_countries = {}
+    
+    for country in fsi_countries:
+        if (len(fsi_countries[country])) >= 2:
+            finalised_countries[country] = fsi_countries[country]
+
+    return finalised_countries.keys()
