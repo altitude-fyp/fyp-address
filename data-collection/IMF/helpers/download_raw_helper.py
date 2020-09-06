@@ -32,70 +32,69 @@ def get_data(country):
 #     To query all Dataflows
     url = 'http://dataservices.imf.org/REST/SDMX_JSON.svc/'
     key = 'Dataflow'
+
     try:
-
         data = requests.get(f'{url}{key}').json()
-
         dataflows = data['Structure']['Dataflows']['Dataflow'] #Gather dataflows
+    except:
+        pass
 
-        dataflow_ids = ['APDREO', 'BOP', 'BOPAGG', 'DOT', 'CPI', 'FAS', 'FDI', 'FSI']
+    dataflow_ids = ['APDREO', 'BOP', 'BOPAGG', 'DOT', 'CPI', 'FAS', 'FDI', 'FSI']
 
-        dataflow_id_names = {}
+    dataflow_id_names = {}
 
-        for dataflow in dataflows:
-            dataflow_name = dataflow['Name']['#text'] # Name of dataflow
-            dataflow_id = dataflow['@id'].replace('DS-','') 
-            if dataflow_id in dataflow_ids:
-                dataflow_id_names[dataflow_id] = dataflow_name
+    for dataflow in dataflows:
+        dataflow_name = dataflow['Name']['#text'] # Name of dataflow
+        dataflow_id = dataflow['@id'].replace('DS-','') 
+        if dataflow_id in dataflow_ids:
+            dataflow_id_names[dataflow_id] = dataflow_name
 
-        all_data = {}
+    all_data = {}
+    
+    for dataflow_id in dataflow_ids:
 
-        for dataflow_id in dataflow_ids:
+        columns = ['Geographical Areas', 'Indicator']
 
-            columns = ['Geographical Areas', 'Indicator']
+        url = 'http://dataservices.imf.org/REST/SDMX_JSON.svc/'
+        key = 'DataStructure/' + dataflow_id
 
-            url = 'http://dataservices.imf.org/REST/SDMX_JSON.svc/'
-            key = 'DataStructure/' + dataflow_id
+        try:
+            codelists_data = requests.get(f'{url}{key}').json()['Structure']['CodeLists']['CodeList']
 
-            try:
-                codelists_data = requests.get(f'{url}{key}').json()['Structure']['CodeLists']['CodeList']
+            all_codelists = {'dataflow_id': dataflow_id}
 
-                all_codelists = {'dataflow_id': dataflow_id}
+            country_details = {}
 
-                country_details = {}
+            for codelist in codelists_data:
+                category = codelist['Name']['#text']
 
-                for codelist in codelists_data:
-                    category = codelist['Name']['#text']
+                if category in columns:
 
-                    if category in columns:
+                    all_codelists[category] = []
+                    codes = codelist['Code']
 
-                        all_codelists[category] = []
-                        codes = codelist['Code']
+                    if type(codes) is dict:
 
-                        if type(codes) is dict:
-
-                            if category == 'Indicator':
-                                all_codelists[category].append(codes)
-                            else:
-                                all_codelists[category].append(codes)
+                        if category == 'Indicator':
+                            all_codelists[category].append(codes)
                         else:
+                            all_codelists[category].append(codes)
+                    else:
 
-                            for code in codes:
-                                if category == 'Indicator':
-                                    all_codelists[category].append(code)
-                                else:
-                                    all_codelists[category].append(code)
+                        for code in codes:
+                            if category == 'Indicator':
+                                all_codelists[category].append(code)
+                            else:
+                                all_codelists[category].append(code)
 
-                print('Running ' + dataflow_id_names[dataflow_id] + '...')
-                all_data[dataflow_id_names[dataflow_id]] = all_codelists 
-            except:
-                pass
+            print('Running ' + dataflow_id_names[dataflow_id] + '...')
+            all_data[dataflow_id_names[dataflow_id]] = all_codelists 
+        except:
+            pass
 
         df = pd.DataFrame(all_data)
         df = df.transpose()
         df = df.reset_index()
-    except:
-        pass
 
 #     to mongoDB
 
