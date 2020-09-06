@@ -24,8 +24,8 @@ if __name__ == "__main__":
     #retrieve all data parameters
     common_data = get_common_data()
 
-    #retrieve all common countries (33)
-    common_countries = get_common_countries(common_data)
+    #retrieve all common countries (243)
+    common_countries = get_npl_countries(common_data)
 
     #retrieve all country data
     all_country_data = get_batch_country_data(common_countries)
@@ -36,7 +36,7 @@ if __name__ == "__main__":
     #find common all indicators and map to indicator names
     common_mapping = get_common_mapping(indicator_mapping, all_country_data)
 
-    #convert all indicator_ids to indicator names
+    # convert all indicator_ids to indicator names
     converted_all_country_data = convert_all_country_data(indicator_mapping, all_country_data)
 
     countries_to_add = converted_all_country_data.keys()
