@@ -139,7 +139,7 @@ def get_common_data():
 
     dataflows = data['Structure']['Dataflows']['Dataflow'] #Gather dataflows
     
-    dataflow_ids = ['FSI']
+    dataflow_ids = ['APDREO', 'BOP', 'BOPAGG', 'DOT', 'CPI', 'FAS', 'FDI', 'FSI']
     
     dataflow_id_names = {}
     
