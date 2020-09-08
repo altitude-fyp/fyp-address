@@ -39,8 +39,18 @@ def combine_as_embeddings(countries, wikipedia, imf):
                         k_cleaned = k_cleaned.replace(" ", "_")
                         countries[best_match][k_cleaned] = row[k]
 
-    """
-    insert code to combine imf data below
-    """
+    for country_name, country_data in imf.items():
+
+        print("Embeddings combiner: combining IMF data for", country_name, end=": ")
     
+        best_match, score = match(country_name, countries)
+
+        if score > 0.85:
+            print("Best match found:", best_match)
+            for k,v in country_data.items():
+                countries[best_match][k] = v[-1]["@OBS_VALUE"]
+
+        else:
+            print("No match found")
+
     return countries

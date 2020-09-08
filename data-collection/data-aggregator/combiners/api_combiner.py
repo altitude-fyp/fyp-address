@@ -24,8 +24,18 @@ def combine_as_api_data(countries, wikipedia, imf):
             if score > 0.85:
                 countries[best_match][feature["name"]] = row
 
-        """
-        insert imf code here after mr wan is done with his code
-        """
+    for country_name, country_data in imf.items():
+
+        print("Api data combiner: combining IMF data for", country_name, end=": ")
+
+        best_match, score = match(country_name, countries)
+
+        if score > 0.85:
+            print("Best match found:", best_match)
+            for k,v in country_data.items():
+                countries[best_match][k] = v
+
+        else:
+            print("No match found")
     
     return countries

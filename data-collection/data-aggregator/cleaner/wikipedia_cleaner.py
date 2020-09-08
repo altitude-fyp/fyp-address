@@ -49,7 +49,7 @@ def clean_wikipedia(wikipedia):
                 try: 
                     row[k] = clean_number(row[k])
                 except: 
-                    row[k] = "null"
+                    row[k] = None
                     error += 1
                 total += 1
 
