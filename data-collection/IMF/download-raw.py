@@ -18,15 +18,17 @@ sys.path.append(here[:len(here)-len("/imf")])
 
 if __name__ == "__main__":
 
+    all_mapping = dictionary_mapping(get_dataflow_parameters())
+
     npl_countries = get_npl_countries()
 
     all_data = get_data(chosen_indicators, 'A' , npl_countries)
 
-    all_mapping = dictionary_mapping(get_dataflow_parameters())
-
     converted = convert_dictionary(all_data, all_mapping)
 
     countries_to_add = converted.keys()
+
+    print(countries_to_add)
 
     for country in countries_to_add:
         data = converted[country]
