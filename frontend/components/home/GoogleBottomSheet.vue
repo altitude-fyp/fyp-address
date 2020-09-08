@@ -1,70 +1,128 @@
 <template>
-  <!--This is the bottom sheet-->
-  <div class="text-center">
+  <v-row>
+    <v-col cols="3">
 
-    <v-bottom-sheet v-model="this.sheet"
-                    persistent
-                    :hide-overlay=true
-    >
-      <v-sheet class="text-center pl-16" height="400px">
-        <v-btn
-          class="mt-6"
-          text
-          color="error"
-          @click="$emit('click')"
-        >close
-        </v-btn>
+      <v-card
+        class="mx-auto"
+        outlined
+      >
+        <v-list-item>
 
-        <div class="py-3">{{ this.details }}</div>
+          <v-list-item-avatar
+            size="100"
+            tile
+            style="padding-top:10px"
+          >
+            <img src="@/assets/SingaporeFlag.png"/>
+          </v-list-item-avatar>
+            <div class="overline mb-4" >SINGAPORE</div>
 
-        <v-row class="text-left">
-          <v-col>
-            <h3>At a Glance</h3>
-          </v-col>
-        </v-row>
+        </v-list-item>
 
-        <v-row class="text-left">
-          <v-col>
-            <h4>Household Type</h4>
-            <v-list>
-              <v-list-item>
-                <v-row>
-                  <v-col>
-                    <h4>HDB</h4>
-                  </v-col>
-                  <v-col>
-                    {{ retrievedCity.hdb }}
-                  </v-col>
-                </v-row>
-              </v-list-item>
-              <v-list-item>
-                <h4>Condos</h4>{{ retrievedCity.condo }}
-              </v-list-item>
-              <v-list-item>
-                <h4>Landed</h4>{{ retrievedCity.landed }}
-              </v-list-item>
-            </v-list>
-          </v-col>
-          <v-divider vertical inset></v-divider>
-          <v-col>
+      </v-card>
 
-          </v-col>
-          <v-divider vertical></v-divider>
-          <v-col>
-            <h4>Mode of Transport(Work)</h4>
-          </v-col>
-        </v-row>
-        <v-divider></v-divider>
-      </v-sheet>
+      <v-card class="mx-auto"
+              outlined>
+        <v-col style="padding-top:20px;">
+          <v-row style="padding-bottom: 8px;" justify="center">
+            <v-btn small outlined color="primary" @click="dialog = true, access= 'Regions'">Select Regions in Singapore</v-btn>
+          </v-row>
 
-    </v-bottom-sheet>
-  </div>
+          <v-row style="padding-bottom: 8px;" justify="center">
+            <v-btn small outlined color="primary" @click="dialog = true, access= 'Countries'">Select Countries to Compare</v-btn>
+          </v-row>
+
+          <v-row justify="center">
+            <v-btn small outlined color="primary" @click="">Filter By</v-btn>
+          </v-row>
+
+        </v-col>
+      </v-card>
+    </v-col>
+
+    <v-col cols="9">
+      <v-card class="mx-auto">
+        <v-container>
+          <v-row>
+            <v-col cols="3">
+              <v-row>
+                <v-col>
+                  <v-card-subtitle>Total GDP :</v-card-subtitle>
+                  <v-card-text style="font-size: 16px;">S${{ retrievedCountry.total }} billion</v-card-text>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col>
+                  <v-card-subtitle>Per Capital : </v-card-subtitle>
+                  <v-card-text style="font-size: 16px;">S${{ retrievedCountry.percap }}</v-card-text>
+                </v-col>
+              </v-row>
+            </v-col>
+            <v-divider vertical></v-divider>
+            <v-col cols="2.5">
+              <v-row>
+                <v-col>
+                  <v-card-subtitle>Gini : </v-card-subtitle>
+                  <v-card-text style="font-size: 16px;">{{ retrievedCountry.gini }}</v-card-text>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col>
+                  <v-card-subtitle>HDI : </v-card-subtitle>
+                  <v-card-text style="font-size: 16px;">{{ retrievedCountry.hdi }}</v-card-text>
+                </v-col>
+              </v-row>
+            </v-col>
+            <v-divider vertical></v-divider>
+            <v-col cols="3">
+              <v-row>
+                <v-col>
+                  <v-card-subtitle>Inflation Rate : </v-card-subtitle>
+                  <v-card-text style="font-size: 16px;">{{ retrievedCountry.inflation }}</v-card-text>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col>
+                  <v-card-subtitle>Employed Persons : </v-card-subtitle>
+                  <v-card-text style="font-size: 16px;">{{ retrievedCountry.employed }} million
+                  </v-card-text>
+                </v-col>
+              </v-row>
+            </v-col>
+            <v-divider vertical></v-divider>
+            <v-col cols="3">
+              <v-row>
+                <v-col>
+                  <v-card-subtitle>Population : </v-card-subtitle>
+                  <v-card-text style="font-size: 16px;">{{ retrievedCountry.pop }} millions</v-card-text>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col>
+                  <v-card-subtitle>Area : </v-card-subtitle>
+                  <v-card-text style="font-size: 16px;">{{ retrievedCountry.area }} km</v-card-text>
+                </v-col>
+              </v-row>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-card>
+    </v-col>
+    <country-region :dialog="dialog" :access="access"  @close="onClose"/>
+  </v-row>
+
 </template>
 
 <script>
+import CountryRegion from "@/components/home/CountryRegion";
+
 export default {
   name: "GoogleBottomSheet",
-  props: ['details', 'sheet'],
+  components: {CountryRegion},
+  props: {
+    dialog: Boolean,
+    access: String
+  },
   data() {
     return {
       retrievedCity: {
@@ -82,11 +140,23 @@ export default {
         motor: 3123,
         lorry: 543
       },
+      retrievedCountry: {
+        city: 'Singapore',
+        total: 70258,
+        percap: 15022,
+        gini: 45.9,
+        hdi: 0.935,
+        inflation: '2.17%',
+        employed: '3.54',
+        pop: 57.1,
+        area: 725.7,
+      },
     }
   },
   methods: {
-    onClickButton() {
-      this.$emit('click')
+    onClose(anything) {
+      this.dialog = false;
+      console.log(anything)
     }
   }
 }

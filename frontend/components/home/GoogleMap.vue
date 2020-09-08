@@ -1,5 +1,6 @@
 <template>
-  <v-container fluid style="padding:0px;  width: 100%; height: 100%;">
+  <v-container fluid style="width: 100%; height: 50%; padding:0px">
+    <c-s-v-search/>
     <GmapMap
       :options="{
          zoomControl: true,
@@ -26,23 +27,22 @@
         @click="removeMarker"
       />
 
-<!-- This is to remove info window on first click-->
-      <gmap-info-window :opened="false" />
+      <!-- This is to remove info window on first click-->
+      <gmap-info-window :opened="false"/>
 
     </GmapMap>
-
-  <google-bottom-sheet :sheet=this.sheet :details=this.markers @click="changeSheet" />
-
   </v-container>
+
 </template>
 
 <script>
 import {gmapApi} from 'vue2-google-maps'
 import GoogleBottomSheet from "@/components/home/GoogleBottomSheet";
+import CSVSearch from "@/components/home/CSVSearch";
 
 export default {
   name: "GoogleMap",
-  components: {GoogleBottomSheet},
+  components: {CSVSearch, GoogleBottomSheet},
   data() {
     return {
       //lat and lng returns singapore by default
@@ -54,15 +54,10 @@ export default {
   },
 
   mounted() {
-    //this.geolocate();
   },
 
   methods: {
-    changeSheet(){
-      this.sheet = false
-    },
     addMarker(event) {
-      this.sheet = true
       const marker = {
         lat: event.latLng.lat(),
         lng: event.latLng.lng()
@@ -75,23 +70,14 @@ export default {
         lat: event.latLng.lat(),
         lng: event.latLng.lng()
       };
-      for (var i = 0; i < this.markers.length; i ++ ){
+      for (var i = 0; i < this.markers.length; i++) {
         var accessed = this.markers[i]['position']
-        if (marker.lat == accessed['lat'] && marker.lng == accessed['lng']){
-          this.markers.splice(i,1)
+        if (marker.lat == accessed['lat'] && marker.lng == accessed['lng']) {
+          this.markers.splice(i, 1)
         }
       }
     },
-    /*geolocate: function () { //Get current user position to fix map
-      navigator.geolocation.getCurrentPosition(position => {
-        this.center = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        };
-      });*/
-    //}
   },
-  computed: {
-  }
+  computed: {}
 };
 </script>

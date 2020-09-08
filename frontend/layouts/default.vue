@@ -1,91 +1,80 @@
 <template>
-<!--  This is the navbar and also the main single page render-->
   <v-app>
-    <v-navigation-drawer
-      v-model="drawer"
-      :mini-variant.sync="mini"
-      color="primary"
-      permanent
-      app
-    >
 
-      <v-list dense>
-        <v-list-item>
-          <v-list-item-icon>
-            <v-icon style="color: white;">mdi-menu</v-icon>
-          </v-list-item-icon>
+      <v-card>
+        <v-app-bar
+          absolute
+          color="white"
 
-          <v-list-item-content>
-            <v-list-item-title style="color: white;">CITILOGO GOES HERE</v-list-item-title>
-          </v-list-item-content>
-          <v-btn
-            icon
-            @click.stop="mini = !mini"
+        >
+          <v-app-bar-nav-icon  @click="drawer = true"></v-app-bar-nav-icon>
+
+          <v-toolbar-title>{{ username }}</v-toolbar-title>
+
+          <v-spacer></v-spacer>
+          <v-btn justify-left outlined color="secondary" dark>Log Out</v-btn>
+        </v-app-bar>
+
+        <v-navigation-drawer
+          v-model="drawer"
+          absolute
+          temporary
+        >
+
+          <v-list
+            nav
+            dense
           >
-            <v-icon style="color: white;">mdi-chevron-left</v-icon>
-          </v-btn>
-        </v-list-item>
-      </v-list>
+            <v-list-item>
+              <v-list-item-avatar>
+                <v-img src="https://cdn.vuetifyjs.com/images/john.png"></v-img>
+              </v-list-item-avatar>
+            </v-list-item>
+
+            <v-list-item link>
+              <v-list-item-content>
+                <v-list-item-title class="title">{{ username }}</v-list-item-title>
+                <v-list-item-subtitle>john@vuetifyjs.com</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+
+            <v-divider></v-divider>
 
 
-      <v-divider></v-divider>
-
-      <v-list-item class="px-2">
-
-        <v-list-item-avatar>
-          <v-img src="https://randomuser.me/api/portraits/men/85.jpg"></v-img>
-        </v-list-item-avatar>
-``
-        <v-list-item-title style="color: white;">HELP Lur </v-list-item-title>
-
-      </v-list-item>
-
-      <v-divider></v-divider>
-
-      <v-list dense>
-        <v-list-item
-          v-for="item in items"
-          :key="item.title"
-          :to="item.link"
-          nuxt
-        >
-          <v-list-item-icon>
-            <v-icon style="color: white;">{{ item.icon }}</v-icon>
-          </v-list-item-icon>
-
-          <v-list-item-content>
-            <v-list-item-title style="color: white;">{{ item.title }}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-      <v-divider></v-divider>
-
-      <v-list dense>
-        <v-list-item
-          v-for="item in items2"
-          :key="item.title"
-          :to="item.link"
-        >
-
-          <v-list-item-icon>
-            <v-icon style="color: white;">{{ item.icon }}</v-icon>
-          </v-list-item-icon>
-
-          <v-list-item-content>
-            <v-list-item-title style="color: white;">{{ item.title }}</v-list-item-title>
-          </v-list-item-content>
+            <v-list-item-group
+              active-class="deep-blue--text text--accent-4"
+              v-model="selectNav"
+            >
+              <v-list-item
+                v-for="(item, i) in items"
+                :key="i"
+                :to="item.link">
+                <v-list-item-icon>
+                  <v-icon>{{item.icon}}</v-icon>
+                </v-list-item-icon>
+                <v-list-item-title>{{ item.title }}</v-list-item-title>
+              </v-list-item>
+            </v-list-item-group>
 
 
-        </v-list-item>
-      </v-list>
 
-    </v-navigation-drawer>
 
-    <!--This is the code to render the page do not remove-->
-    <v-main style="padding: 0px;">
-        <nuxt/>
-    </v-main>
-    <!--   -------    -->
+          </v-list>
+
+        </v-navigation-drawer>
+
+          <v-sheet style="padding-top: 50px;">
+            <!--This is the code to render the page do not remove-->
+            <v-main>
+              <nuxt/>
+            </v-main>
+          </v-sheet>
+
+
+      </v-card>
+
+
+
 
   </v-app>
 </template>
@@ -94,22 +83,20 @@
 export default {
   data() {
     return {
-      drawer: true,
+      selectNav: 1,
+      drawer: false,
+      username: 'Xavier Lur',
+      activeBtn: 0,
       items: [
-        {title: 'Home', icon: 'mdi-home', link: '/home'},
+        {title: 'Home', icon: 'mdi-home', link: '/'},
         {title: 'Analytics', icon: 'mdi-chart-areaspline',link: '/analytics'},
         {title: 'Scheduled Job', icon: 'mdi-history',link: '/scheduledJob'},
         {title: 'Notifications', icon: 'mdi-bell',link: '/notifications'},
-      ],
-      items2: [
         {title: 'User Management', icon: 'mdi-account',link: '/userManagement'},
         {title: 'Chatbot', icon: 'mdi-chat', link: '/chatbot'},
         {title: 'Settings', icon: 'mdi-cog', link: '/Settings'},
       ],
-      mini: true,
     }
   },
 }
 </script>
-
-
