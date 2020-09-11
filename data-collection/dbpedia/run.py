@@ -34,7 +34,7 @@ for country, cities in countries_and_cities:
 
     except Exception as err:
         print(f"ERROR parsing country {country}:", str(err))
-
+            
     # for city in cities:
     #     try:
     #         assert len(city) > 0
