@@ -8,3 +8,4 @@ def root():
 
 from app.api.countries import *
 from app.api.regions import *
+from app.api.email_notifications import *
