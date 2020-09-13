@@ -19,19 +19,20 @@ from cleaner.imf_cleaner import clean_imf
 
 from combiner import *
 
-countries = pickle.load(open("pickled/dbpedia_countries.sav", "rb"))
+dbpedia = pickle.load(open("pickled/dbpedia_countries.sav", "rb"))
 wikipedia = pickle.load(open("pickled/wikipedia.sav", "rb"))
 imf = pickle.load(open("pickled/imf.sav", "rb"))
 
 # cleaning all raw data sources
-countries = clean_dbpedia(countries)
+dbpedia = clean_dbpedia(dbpedia)
 wikipedia = clean_wikipedia(wikipedia)
 imf = clean_imf(imf)
 
-embeddings, charts = combine(countries, wikipedia, imf)
+countries, charts, embeddings = combine(dbpedia, wikipedia, imf)
 
 from helper.db_insert import *
 
-insert_into_db(data=embeddings, collection_name="test.aggregate.embeddings", tag="EMBEDDINGS")
-insert_into_db(data=charts, collection_name="test.aggregate.charts", tag="CHARTS")
+insert_into_db(data=countries, collection_name="aggregate.countries", tag="aggregate.countries")
+insert_into_db(data=charts, collection_name="aggregate.charts", tag="aggregate.charts")
+insert_into_db(data=embeddings, collection_name="aggregate.embeddings", tag="aggregate.embeddings")
 

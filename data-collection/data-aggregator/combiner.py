@@ -64,7 +64,12 @@ def combine(dbpedia, wikipedia, imf):
 
                 elif type(main) == dict:
                     for key, display_name in main.items():
-                        embeddings[best_match][display_name] = row[key]
+                        if key in row:
+                            embeddings[best_match][display_name] = row[key]
+                        else:
+                            embeddings[best_match][display_name] = None
+
+    countries = deepcopy(embeddings)
 
     print()
 
@@ -84,9 +89,9 @@ def combine(dbpedia, wikipedia, imf):
             # inserting imf data into charts
             charts[country][imf_key] = {k:float(v) for k,v in imf_value.items()}
 
-    assert len(embeddings) == len(charts)
+    assert len(embeddings) == len(charts) and len(embeddings) == len(countries)
 
-    return embeddings, charts
+    return countries, charts, embeddings
 
 
 
