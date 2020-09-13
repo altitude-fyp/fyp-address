@@ -68,7 +68,11 @@ def combine(dbpedia, wikipedia, imf):
                         k_cleaned = k_cleaned.replace(" ", "_")
                         embeddings[best_match][k_cleaned] = row[k]
 
+    print()
+
     for country, imf_country in dbpedia_imf_mappings.items():
+
+        print("Combining with IMF data: Matching", country)
 
         for imf_key, imf_value in imf[imf_country].items():
             
@@ -80,9 +84,7 @@ def combine(dbpedia, wikipedia, imf):
             embeddings[country][imf_key] = latest
 
             # inserting imf data into charts
-            """
-            DINGYANG InSERT YOUR CODE HERE
-            """
+            charts[country][imf_key] = {k:float(v) for k,v in imf_value.items()}
 
     assert len(embeddings) == len(charts)
 
