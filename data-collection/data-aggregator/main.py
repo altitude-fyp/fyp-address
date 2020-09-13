@@ -28,6 +28,12 @@ countries = clean_dbpedia(countries)
 wikipedia = clean_wikipedia(wikipedia)
 imf = clean_imf(imf)
 
+sg = countries["Singapore"]
+for k,v in sg.items():
+    print(k, v)
+
+exit()
+
 embeddings, charts = combine(countries, wikipedia, imf)
 
 from helper.db_insert import *
