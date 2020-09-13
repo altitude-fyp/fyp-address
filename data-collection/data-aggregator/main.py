@@ -28,12 +28,12 @@ countries = clean_dbpedia(countries)
 wikipedia = clean_wikipedia(wikipedia)
 imf = clean_imf(imf)
 
-aggregate, embeddings = combine(countries, wikipedia, imf)
+embeddings, charts = combine(countries, wikipedia, imf)
 
 from helper.db_insert import *
 
-insert_into_db(data=aggregate, collection_name="aggregate.countries", tag="AGGREGATE")
-print("done inserting aggregate data into mongodb\n")
+insert_into_db(data=embeddings, collection_name="test.embeddings.countries", tag="EMBEDDINGS")
+print("done inserting embeddings data into mongodb\n")
 
-insert_into_db(data=embeddings, collection_name="embeddings.countries", tag="EMBEDDINGS")
-print("done inserting embeddings data into mongodb")
+insert_into_db(data=charts, collection_name="test.aggregate.charts", tag="CHARTS")
+print("done inserting embeddings data into mongodb\n")

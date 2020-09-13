@@ -41,11 +41,10 @@ def combine(dbpedia, wikipedia, imf):
 
     dbpedia_imf_mappings = get_dbpedia_imf_mappings(dbpedia, imf)
 
-    aggregate = {k:v for k,v in dbpedia.items() if k in dbpedia_imf_mappings}
-    embeddings = deepcopy(aggregate)
+    embeddings = {k:v for k,v in dbpedia.items() if k in dbpedia_imf_mappings}
+    charts = {k:{} for k in dbpedia if k in dbpedia_imf_mappings}
 
-
-    # combining both aggregate and embeddings with wikipedia data
+    # combining embeddings with wikipedia data
     for feature in wikipedia:
 
         print("Combining with wikipedia tables:", feature["name"])
@@ -58,9 +57,6 @@ def combine(dbpedia, wikipedia, imf):
             
             if score > 0.85:
                 
-                # inserting wiki data into aggregate
-                aggregate[best_match][feature["name"]] = row
-
                 # inserting wiki data into embeddings
                 main = feature["main"]
                 if type(main) == str:
@@ -76,9 +72,6 @@ def combine(dbpedia, wikipedia, imf):
 
         for imf_key, imf_value in imf[imf_country].items():
             
-            # inserting imf data into aggregate
-            aggregate[country][imf_key] = imf_value
-
             # inserting imf data into embeddings
             latest = sorted([(k,v) for k,v in imf_value.items()], key=lambda x:x[0])[-1][-1]
             try: latest = float(latest)
@@ -86,7 +79,14 @@ def combine(dbpedia, wikipedia, imf):
 
             embeddings[country][imf_key] = latest
 
-    return aggregate, embeddings
+            # inserting imf data into charts
+            """
+            DINGYANG InSERT YOUR CODE HERE
+            """
+
+    assert len(embeddings) == len(charts)
+
+    return embeddings, charts
 
 
 
