@@ -28,18 +28,10 @@ countries = clean_dbpedia(countries)
 wikipedia = clean_wikipedia(wikipedia)
 imf = clean_imf(imf)
 
-sg = countries["Singapore"]
-for k,v in sg.items():
-    print(k, v)
-
-exit()
-
 embeddings, charts = combine(countries, wikipedia, imf)
 
 from helper.db_insert import *
 
-insert_into_db(data=embeddings, collection_name="test.embeddings.countries", tag="EMBEDDINGS")
-print("done inserting embeddings data into mongodb\n")
-
+insert_into_db(data=embeddings, collection_name="test.aggregate.embeddings", tag="EMBEDDINGS")
 insert_into_db(data=charts, collection_name="test.aggregate.charts", tag="CHARTS")
-print("done inserting embeddings data into mongodb\n")
+
