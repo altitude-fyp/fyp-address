@@ -60,13 +60,11 @@ def combine(dbpedia, wikipedia, imf):
                 # inserting wiki data into embeddings
                 main = feature["main"]
                 if type(main) == str:
-                    embeddings[best_match][feature["name"].replace(" ", "_")] = row[main]
+                    embeddings[best_match][feature["name"]] = row[main]
 
-                elif type(main) == list:
-                    for k in main:
-                        k_cleaned = feature["name"] + "_" + k
-                        k_cleaned = k_cleaned.replace(" ", "_")
-                        embeddings[best_match][k_cleaned] = row[k]
+                elif type(main) == dict:
+                    for key, display_name in main.items():
+                        embeddings[best_match][display_name] = row[key]
 
     print()
 

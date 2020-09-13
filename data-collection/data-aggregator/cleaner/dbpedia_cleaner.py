@@ -48,8 +48,7 @@ def clean_dbpedia(data):
 
             return " ".join([i for i in out if i])
 
-
-        return convert(key)
+        return convert(key).lower()
 
     useful_fields = set([
         'dbo:areaTotal',

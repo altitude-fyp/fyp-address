@@ -34,9 +34,5 @@ def get_nummber_of_internet_users():
         "url": url,
         "desc": "number of internet users (any person who has accessed the internet in the last 12 months using any device)",
         "data": read_table(table, custom_headers=custom_headers),
-        "main": [
-            "internet users",
-            "population",
-            "internet users percentage",
-        ]
+        "main": "internet users"
     }
