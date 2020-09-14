@@ -119,10 +119,13 @@ def get_data(chosen_indicators, period, npl_countries):
                     for entry in data:
                         time_period_value = entry['@TIME_PERIOD']
                         obs_value = entry["@OBS_VALUE"]
-                        cleaned_data[time_period_value] = obs_value
+                        if int(time_period_value) >= 2000:
+                            print(time_period_value, obs_value)
+                            cleaned_data[time_period_value] = obs_value
                         if obs_value == 0 or obs_value == None:
                             empty = True
                     if empty == False:
+                        print(cleaned_data)
                         all_country[country_code][indicator] = cleaned_data
                         print(country_code, indicator, cleaned_data.keys())
                 except:
