@@ -31,8 +31,8 @@ def get_regions():
     return out 
 
 
-@app.get("/api/regions/{country_name}")
-def get_regions_data(country_name: str):
+@app.get("/api/regions/{region_name}")
+def get_regions_data(region_name: str):
     
     db = get_database()
     imf_collection = db["onemap"]
