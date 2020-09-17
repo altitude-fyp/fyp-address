@@ -28,10 +28,14 @@ def clean_wikipedia(wikipedia):
             a,b = float(a), float(b)
             return (a+b)/2
 
-        if number[0] != "-" and "-" in number:
-            return handle_range(number)
+        try:
+            if number[0] != "-" and "-" in number:
+                return handle_range(number)
 
-        return float(number) * multiplier
+            return float(number) * multiplier
+
+        except:
+            return number
 
     total = 0
     error = 0
@@ -42,16 +46,16 @@ def clean_wikipedia(wikipedia):
 
             main = feature["main"]
 
-            if type(main) != list:
-                main = [main]
+            if type(main) == str:
+                row[main] = clean_number(row[main])
 
-            for k in main:
-                try: 
-                    row[k] = clean_number(row[k])
-                except: 
-                    row[k] = None
-                    error += 1
-                total += 1
+            elif type(main) == dict:
+                for k in main:
+                    
+                    try:
+                        row[k] = clean_number(row[k])
+                    except:
+                        pass
 
-    # print(error, total)
+
     return wikipedia

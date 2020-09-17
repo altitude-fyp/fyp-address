@@ -23,12 +23,12 @@ def get_dependency_ratio():
     potential support ratio - The potential support ratio is the number of working-age people (ages 15-64) per one elderly person (ages 65+). As a population ages, the potential support ratio tends to fall, meaning there are fewer potential workers to support the elderly.""",
         
         "data": read_table(table, custom_headers=custom_headers),
-        "main": [
-            "total dependency ratio",
-            "youth dependency ratio",
-            "elderly dependency ratio",
-            "potential support ratio"
-        ]
+        "main": {
+            "total dependency ratio": "dependency ratio (total)",
+            "youth dependency ratio": "dependency ratio (youth)",
+            "elderly dependency ratio": "dependency ratio (elderly)",
+            "potential support ratio": "potential support ratio"
+        }
     }
 
 def get_male_female_income_ratio():
@@ -41,7 +41,11 @@ def get_male_female_income_ratio():
         "url": url,
         "desc": "male to female income ratio by country (as of 2017)",
         "data": read_table(table, ckey=0),
-        "main": ["GNI per capita (women)", "GNI per capita (men)", "Ratio male to female"]
+        "main": {
+            "GNI per capita (women)": "GNI per capita (female)",
+            "GNI per capita (men)": "GNI per capita (male)",
+            "Ratio male to female": "male to female income ratio"
+        }
     }
 
 
@@ -109,7 +113,7 @@ def get_oil_production():
         "url": url,
         "desc": "oil production by country",
         "data": read_table(table, ckey=1, custom_headers=headers),
-        "main": ["oil production", "oil production per capita"]
+        "main": "oil production"
     }
 
 def get_foreign_exchange_reserves():
@@ -118,11 +122,11 @@ def get_foreign_exchange_reserves():
     table = soup.find("table", {"class": "wikitable"})
 
     return {
-        "name": "foreign exchange reserves",
+        "name": "foreign exchange reserves (million USD)",
         "url": url,
         "desc": "foreign exchange reserves by country - the foreign-currency deposits held by national central banks and monetary authorities (See List of countries by foreign-exchange reserves (excluding gold)). However, in popular usage and in the list below, it also includes gold reserves, special drawing rights (SDRs) and International Monetary Fund (IMF) reserve position because this total figure, which is usually more accurately termed as official reserves or international reserves or official international reserves",
         "data": read_table(table, ckey=1),
-        "main": ["Foreign exchangereserves(millions of US$)", "Change from previous data (millions of US$) weekly/monthly"]
+        "main": "Foreign exchangereserves(millions of US$)"
     }
 
 def get_tariff_rate():

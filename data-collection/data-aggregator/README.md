@@ -1,27 +1,39 @@
 # Data aggregator
 - this module is to be run after all data-collection scripts have been run
 
-## For developers
-1. Run pull.py first to pull all raw data sources and store them using pickle
-    - create a pickled folder under the data-collection directory
-    - all raw data will be stored isnide the pickled folder so we dont need to wait 25 seconds everytime we pull data from mongodb
-    - don't worry as the pickled folder is gitignored
+## For development/maintenance purposes
+1. data-aggregator/pull.py
+- this script pulls data from mongodb (which takes quite a while) and stores it using pickle in the data-aggregator/pickled folder
+- don't worry as the pickled folder is gitignored
+```
+python data-aggregator/pull.py
+```
+
+
+2. data-aggregator/main.py
+- this script does the data-processing and combination
+- this script does not pull any data from mongodb, but reads pickled data from the data-aggregator/pickled folder
+- this saves an average of 10 seconds every time you run main.py for development purposes
+```
+python data-aggregator/main.py
+```
+
+3. data-aggregator/run.py
+- this script simply runs pull.py, then main.py
 ```
 python data-aggregator/run.py
 ```
 
-2. You can now work on and run main.py, which pulls data from the pickled folder
-    - main.py does not touch mongodb at all - it interacts only with the pickled folder
+## Structure of aggregated data on mongodb
+1. aggregate.countries
+- this collection contains cleaned and combined data from dbpedia and wikipedia
+- this collection is to be used with aggregate.charts for the frontend display
 
-3. Data is combined in 2 ways - combine as embeddings and combine as api data
+2. aggregate.charts
+- this collection contains cleaned data only from imf (time-series data)
+- this collection is to be used with aggregate.countries for the frontend display
 
-### Combine as embeddings
-- purpose: make data machine readable
-- every value in each country object is either a float, string or null value
-- no nested list/dict data structures for machine readability 
-- stored in embeddings.countries collection on mongodb
-
-### Combine as api data
-- purpose: make data human readable for frontend use
-- more nested data structures and descriptions about data
-- stored in aggregate.countries collection on mongodb
+3. aggregate.embeddings
+- this collection contains cleaned data from dbpedia, wikipedia and imf
+- this collection is meant to be as machine-readable as possible, and the values in the key-value pairs contained here are either numbers, string or null (no lists or dictionaries)
+- for time series data, the latest value is taken as the main value

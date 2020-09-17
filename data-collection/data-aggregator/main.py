@@ -13,27 +13,22 @@ from helper.common import *
 from cleaner.dbpedia_cleaner import clean_dbpedia
 from cleaner.wikipedia_cleaner import clean_wikipedia
 from cleaner.imf_cleaner import clean_imf
-
-# from combiners.embeddings_combiner import combine_as_embeddings
-# from combiners.api_combiner import combine_as_api_data
-
 from combiner import *
 
-countries = pickle.load(open("pickled/dbpedia_countries.sav", "rb"))
+dbpedia = pickle.load(open("pickled/dbpedia_countries.sav", "rb"))
 wikipedia = pickle.load(open("pickled/wikipedia.sav", "rb"))
 imf = pickle.load(open("pickled/imf.sav", "rb"))
 
 # cleaning all raw data sources
-countries = clean_dbpedia(countries)
+dbpedia = clean_dbpedia(dbpedia)
 wikipedia = clean_wikipedia(wikipedia)
 imf = clean_imf(imf)
 
-aggregate, embeddings = combine(countries, wikipedia, imf)
+countries, charts, embeddings = combine(dbpedia, wikipedia, imf)
 
 from helper.db_insert import *
 
-insert_into_db(data=aggregate, collection_name="aggregate.countries", tag="AGGREGATE")
-print("done inserting aggregate data into mongodb\n")
+insert_into_db(data=countries, collection_name="aggregate.countries", tag="aggregate.countries")
+insert_into_db(data=charts, collection_name="aggregate.charts", tag="aggregate.charts")
+insert_into_db(data=embeddings, collection_name="aggregate.embeddings", tag="aggregate.embeddings")
 
-insert_into_db(data=embeddings, collection_name="embeddings.countries", tag="EMBEDDINGS")
-print("done inserting embeddings data into mongodb")

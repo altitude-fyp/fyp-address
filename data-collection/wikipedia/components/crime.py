@@ -31,7 +31,10 @@ def get_intentional_homicide_rate():
         "url": url,
         "desc": "number of intentional homicide victims per 100,000 inhabitants",
         "data": data,
-        "main": ["rate", "count"]
+        "main": {
+            "rate": "intentional homicide rate",
+            "count": "intentional homicide rate count"
+        }
     }
 
 def get_prevalence_of_cocaine_use():
@@ -57,7 +60,14 @@ def get_firearm_death_rate():
         "url": url,
         "desc": "firearm death rate per 100,000 population per year by country",
         "data": read_table(table, ckey=0),
-        "main": ["Total", "Homicide", "Suicide", "Unintentional", "Undetermined", "Guns per 100 inhabitants"]
+        "main": {
+            "Total": "total firearm death rate",
+            "Homicide": "firearm death rate by homicide",
+            "Suicide": "firearm death rate by suicide",
+            "Unintentional": "unintentional firearm death rate",
+            "Undetermined": "undetermined firearm death rate",
+            "Guns per 100 inhabitants": "guns per 100 inhabitants"
+        }
     }
 
 def get_prevalence_of_opiates_use():
@@ -83,7 +93,13 @@ def get_suicide_rate():
         "url": url,
         "desc": "suicide rate (per 100,000 people) by country",
         "data": read_table(table, ckey=1),
-        "main": ["Both sexes", "Males", "Females", "Male:Femaleratio", "Rank"]
+        "main": {
+            "Both sexes": "suicide rate",
+            "Males": "male suicide rate",
+            "Females": "female suicide rate",
+            "Male:Femaleratio": "suicide rate (male:female ratio)",
+            "Rank": "suicide rate rank"
+        }
     }
 
 def get_terrorist_incidents():
@@ -96,5 +112,9 @@ def get_terrorist_incidents():
         "url": url,
         "desc": "number of terrorist incidents by country",
         "data": read_table(table, ckey=0),
-        "main": ["Number ofincidents", "Deaths", "Injuries"]
+        "main": {
+            "Number ofincidents": "terrorist incident count",
+            "Deaths": "terrorist incident death count",
+            "Injuries": "terrorist injury count"
+        }
     }

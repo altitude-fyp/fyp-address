@@ -10,7 +10,11 @@ def get_bmi():
         "url": url,
         "desc": "body mass index by country (as of 2015)",
         "data": read_table(table, ckey=0),
-        "main": ["Overall mean BMI (kg/m2)", "Female mean BMI (kg/m2)", "Male mean BMI (kg/m2)"]
+        "main": {
+            "Overall mean BMI (kg/m2)": "overall mean BMI",
+            "Female mean BMI (kg/m2)": "female mean BMI",
+            "Male mean BMI (kg/m2)": "male mean BMI"
+        }
     }
 
 def get_HIV_AIDS_prevalence():
@@ -25,7 +29,11 @@ def get_HIV_AIDS_prevalence():
         "url": url,
         "desc": "HIV/AIDS prevalence estimates by country",
         "data": read_table(table, ckey=0, custom_headers=headers),
-        "main": ["adult prevalence", "number of people with HIV/AIDS", "annual deaths from HIV/AIDS"]
+        "main": {
+            "adult prevalence": "HIV/AIDS prevalence (adults)",
+            "number of people with HIV/AIDS": "number of people with HIV/AIDS",
+            "annual deaths from HIV/AIDS": "annual deaths from HIV/AIDS"
+        }
     }
 
 def get_infant_and_under_five_mortality_rate():
@@ -34,7 +42,7 @@ def get_infant_and_under_five_mortality_rate():
     table = soup.find("table", {"class": "wikitable", "id": "worldbank"})
 
     return {
-        "name": "infant mortality rate",
+        "name": "infant mortality rate under 5 (per 1000 lives births)",
         "url": url,
         "desc": "mortality rate of infants/children under 5 per 1000 live births (as of 2018)",
         "data": read_table(table, ckey=0),
@@ -59,7 +67,11 @@ def get_life_expectancy():
         "url": url,
         "desc": "life expectancy (as of 2018)",
         "data": read_table(table, custom_headers=custom_headers),
-        "main": ["overall", "female", "male"]
+        "main": {
+            "overall": "life expectancy (overall)",
+            "female": "life expectancy (female)",
+            "male": "life expectancy (male)"
+        }
     }
 
 def get_maternal_mortality_ratio():
@@ -86,7 +98,7 @@ def get_maternal_mortality_ratio():
         except:pass
 
     return {
-        "name": "maternal mortality rate",
+        "name": "maternal mortality rate (per 100,000 live births)",
         "url": url,
         "desc": "maternal mortality rate (per 100,000 live births) by country - the death of a woman while pregnant or within 42 days of termination of pregnancy, irrespective of the duration and site of the pregnancy, from any cause related to or aggravated by the pregnancy or its management but not from accidental or incidental causes",
         "data": data,
@@ -114,7 +126,7 @@ def get_mortality_rate():
         except:pass
 
     return {
-        "name": "mortality rate",
+        "name": "mortality rate (per 1000 people)",
         "url": url,
         "desc": "mortality rate per 1000 people (as of 2017)",
         "data": data,
@@ -129,7 +141,7 @@ def get_number_of_physicians():
     custom_headers = ["country", "size (2000-2009)", "physicians per 1000 people (2000-2009)", "physicians per 1000 people (2007-2013)"]
 
     return {
-        "name": "number of physicians",
+        "name": "number of physicians (per 1000 people)",
         "url": url,
         "desc": "number of physicians per 1000 people by country",
         "data": read_table(table, custom_headers=custom_headers),
@@ -164,7 +176,7 @@ def get_cigarette_consumption_per_capita():
     table = soup.find("table", {"class": "sortable"})
 
     return {
-        "name": "cigarette consumption",
+        "name": "cigarette consumption (per year per capita)",
         "url": url,
         "desc": "cigarette consumption per year per capita (persons aged >= 15)",
         "data": read_table(table, ckey=1),

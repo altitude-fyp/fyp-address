@@ -1,5 +1,6 @@
 from copy import deepcopy
 from helper.nlp import *
+from helper.preprocessor import preprocess, check_preprocess
 
 def combine(dbpedia, wikipedia, imf):
     """
@@ -41,11 +42,10 @@ def combine(dbpedia, wikipedia, imf):
 
     dbpedia_imf_mappings = get_dbpedia_imf_mappings(dbpedia, imf)
 
-    aggregate = {k:v for k,v in dbpedia.items() if k in dbpedia_imf_mappings}
-    embeddings = deepcopy(aggregate)
+    embeddings = {k:v for k,v in dbpedia.items() if k in dbpedia_imf_mappings}
+    charts = {k:{} for k in dbpedia if k in dbpedia_imf_mappings}
 
-
-    # combining both aggregate and embeddings with wikipedia data
+    # combining embeddings with wikipedia data
     for feature in wikipedia:
 
         print("Combining with wikipedia tables:", feature["name"])
@@ -58,27 +58,29 @@ def combine(dbpedia, wikipedia, imf):
             
             if score > 0.85:
                 
-                # inserting wiki data into aggregate
-                aggregate[best_match][feature["name"]] = row
-
                 # inserting wiki data into embeddings
                 main = feature["main"]
                 if type(main) == str:
-                    embeddings[best_match][feature["name"].replace(" ", "_")] = row[main]
+                    embeddings[best_match][feature["name"]] = row[main]
 
-                elif type(main) == list:
-                    for k in main:
-                        k_cleaned = feature["name"] + "_" + k
-                        k_cleaned = k_cleaned.replace(" ", "_")
-                        embeddings[best_match][k_cleaned] = row[k]
+                elif type(main) == dict:
+                    for key, display_name in main.items():
+                        if key in row:
+                            embeddings[best_match][display_name] = row[key]
+                        else:
+                            embeddings[best_match][display_name] = None
+
+    embeddings = {cname: {k[0].upper() + k[1:]: v for k,v in cdata.items()} for cname,cdata in embeddings.items()}
+    countries = deepcopy(embeddings)
+
+    print()
 
     for country, imf_country in dbpedia_imf_mappings.items():
 
+        print("Combining with IMF data: Matching", country)
+
         for imf_key, imf_value in imf[imf_country].items():
             
-            # inserting imf data into aggregate
-            aggregate[country][imf_key] = imf_value
-
             # inserting imf data into embeddings
             latest = sorted([(k,v) for k,v in imf_value.items()], key=lambda x:x[0])[-1][-1]
             try: latest = float(latest)
@@ -86,7 +88,18 @@ def combine(dbpedia, wikipedia, imf):
 
             embeddings[country][imf_key] = latest
 
-    return aggregate, embeddings
+            # inserting imf data into charts
+            charts[country][imf_key] = {k:float(v) for k,v in imf_value.items()}
+
+    assert len(embeddings) == len(charts) and len(embeddings) == len(countries)
+
+    countries = preprocess(countries)
+    embeddings = preprocess(embeddings)
+
+    check_preprocess(countries)
+    check_preprocess(embeddings)
+
+    return countries, charts, embeddings
 
 
 
