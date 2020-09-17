@@ -22,6 +22,8 @@ if __name__ == "__main__":
 
     npl_countries = get_npl_countries()
 
+    print(npl_countries)
+    
     all_data = get_data(chosen_indicators, 'A' , npl_countries)
 
     converted = convert_dictionary(all_data, all_mapping)

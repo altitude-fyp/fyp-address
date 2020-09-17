@@ -1,4 +1,4 @@
-YEAR = "2010"
+YEAR = "2015"
 
 PROTOCOL = "https://"
 DOMAIN = "developers.onemap.sg"
