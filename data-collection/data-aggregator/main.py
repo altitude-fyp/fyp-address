@@ -13,10 +13,6 @@ from helper.common import *
 from cleaner.dbpedia_cleaner import clean_dbpedia
 from cleaner.wikipedia_cleaner import clean_wikipedia
 from cleaner.imf_cleaner import clean_imf
-
-# from combiners.embeddings_combiner import combine_as_embeddings
-# from combiners.api_combiner import combine_as_api_data
-
 from combiner import *
 
 dbpedia = pickle.load(open("pickled/dbpedia_countries.sav", "rb"))

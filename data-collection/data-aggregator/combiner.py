@@ -1,5 +1,6 @@
 from copy import deepcopy
 from helper.nlp import *
+from helper.preprocessor import preprocess, check_preprocess
 
 def combine(dbpedia, wikipedia, imf):
     """
@@ -69,6 +70,7 @@ def combine(dbpedia, wikipedia, imf):
                         else:
                             embeddings[best_match][display_name] = None
 
+    embeddings = {cname: {k[0].upper() + k[1:]: v for k,v in cdata.items()} for cname,cdata in embeddings.items()}
     countries = deepcopy(embeddings)
 
     print()
@@ -90,6 +92,12 @@ def combine(dbpedia, wikipedia, imf):
             charts[country][imf_key] = {k:float(v) for k,v in imf_value.items()}
 
     assert len(embeddings) == len(charts) and len(embeddings) == len(countries)
+
+    countries = preprocess(countries)
+    embeddings = preprocess(embeddings)
+
+    check_preprocess(countries)
+    check_preprocess(embeddings)
 
     return countries, charts, embeddings
 
