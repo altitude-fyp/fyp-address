@@ -8,10 +8,10 @@ def get_countries_list():
     constant_collection = db["constant"]
     data = constant_collection.find_one({"_id": "continents"})
 
-    out = {"status": "error", "data": None}
+    out = {"status": "error", "data": {}}
     if data:
         out["status"] = "success"
-        out["data"] = data
+        out["data"]["items"] = data["data"]
     return out
 
 def format_countries_filter(data_dict):
