@@ -31,6 +31,10 @@ def get_intentional_homicide_rate():
         "url": url,
         "desc": "number of intentional homicide victims per 100,000 inhabitants",
         "data": data,
+        "main": {
+            "rate": "intentional homicide rate",
+            "count": "intentional homicide rate count"
+        }
     }
 
 def get_prevalence_of_cocaine_use():
@@ -43,6 +47,7 @@ def get_prevalence_of_cocaine_use():
         "url": url,
         "desc": "prevalence of cocaine use: percentage of adults and youths who have consumed the drug at least once in the past year",
         "data": read_table(table, ckey=0),
+        "main": "Annual prevalence(percent)"
     }
 
 def get_firearm_death_rate():
@@ -54,7 +59,15 @@ def get_firearm_death_rate():
         "name": "firearm death rate",
         "url": url,
         "desc": "firearm death rate per 100,000 population per year by country",
-        "data": read_table(table, ckey=0)
+        "data": read_table(table, ckey=0),
+        "main": {
+            "Total": "total firearm death rate",
+            "Homicide": "firearm death rate by homicide",
+            "Suicide": "firearm death rate by suicide",
+            "Unintentional": "unintentional firearm death rate",
+            "Undetermined": "undetermined firearm death rate",
+            "Guns per 100 inhabitants": "guns per 100 inhabitants"
+        }
     }
 
 def get_prevalence_of_opiates_use():
@@ -66,7 +79,8 @@ def get_prevalence_of_opiates_use():
         "name": "opiate use",
         "url": url,
         "desc": "annual prevalence of opiates use by country",
-        "data": read_table(table, ckey=1)
+        "data": read_table(table, ckey=1),
+        "main": "Annual prevalence(percent)"
     }
 
 def get_suicide_rate():
@@ -78,7 +92,14 @@ def get_suicide_rate():
         "name": "suicide rate",
         "url": url,
         "desc": "suicide rate (per 100,000 people) by country",
-        "data": read_table(table, ckey=1)
+        "data": read_table(table, ckey=1),
+        "main": {
+            "Both sexes": "suicide rate",
+            "Males": "male suicide rate",
+            "Females": "female suicide rate",
+            "Male:Femaleratio": "suicide rate (male:female ratio)",
+            "Rank": "suicide rate rank"
+        }
     }
 
 def get_terrorist_incidents():
@@ -90,5 +111,10 @@ def get_terrorist_incidents():
         "name": "terrorist incident count",
         "url": url,
         "desc": "number of terrorist incidents by country",
-        "data": read_table(table, ckey=0)
+        "data": read_table(table, ckey=0),
+        "main": {
+            "Number ofincidents": "terrorist incident count",
+            "Deaths": "terrorist incident death count",
+            "Injuries": "terrorist injury count"
+        }
     }

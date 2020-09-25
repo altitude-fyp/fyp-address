@@ -37,8 +37,10 @@ def get_population_data():
     area_list = get_area_list()
 
     data = {}
+
+    print(area_list)
+
     for area in area_list:
-        
         area = area.lower()
 
         data_object = {}
@@ -46,9 +48,8 @@ def get_population_data():
         for key, value in URL_LIST_POP_AREA.items():
             data_value = get_data(value, area)
             data_object[key] = data_value
-            
+        
         data[area] = data_object
-
         print("Finish pulling " + str(area) + " data")
     
     return data
@@ -59,10 +60,10 @@ if __name__ == "__main__":
         "_id": "Singapore",
 
         "data": {
-            "polygons": get_area_polygons(),
+            # "polygons": get_area_polygons(),
             "population": get_population_data()
         }
-    
+
     }
 
     mongo_upsert(data=data, collection_name="onemap", replacement_pattern={"_id": "Singapore"})

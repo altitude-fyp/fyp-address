@@ -10,7 +10,7 @@ def get_dependency_ratio():
         "total dependency ratio",
         "youth dependency ratio",
         "elderly dependency ratio",
-        "potentail support ratio"
+        "potential support ratio"
     ]
 
     return {
@@ -22,7 +22,13 @@ def get_dependency_ratio():
     elderly dependency ratio - The elderly dependency ratio is the ratio of the elderly population (ages 65+) per 100 people of working age (ages 15-64). Increases in the elderly dependency ratio put added pressure on governments to fund pensions and healthcare.
     potential support ratio - The potential support ratio is the number of working-age people (ages 15-64) per one elderly person (ages 65+). As a population ages, the potential support ratio tends to fall, meaning there are fewer potential workers to support the elderly.""",
         
-        "data": read_table(table, custom_headers=custom_headers)
+        "data": read_table(table, custom_headers=custom_headers),
+        "main": {
+            "total dependency ratio": "dependency ratio (total)",
+            "youth dependency ratio": "dependency ratio (youth)",
+            "elderly dependency ratio": "dependency ratio (elderly)",
+            "potential support ratio": "potential support ratio"
+        }
     }
 
 def get_male_female_income_ratio():
@@ -34,7 +40,12 @@ def get_male_female_income_ratio():
         "name": "male female income ratio",
         "url": url,
         "desc": "male to female income ratio by country (as of 2017)",
-        "data": read_table(table, ckey=0)
+        "data": read_table(table, ckey=0),
+        "main": {
+            "GNI per capita (women)": "GNI per capita (female)",
+            "GNI per capita (men)": "GNI per capita (male)",
+            "Ratio male to female": "male to female income ratio"
+        }
     }
 
 
@@ -47,7 +58,8 @@ def get_government_budget_per_capita():
         "name": "government budget per capita",
         "url": url,
         "desc": "total government budget (in USD) divided by total population (as of 2018)",
-        "data": read_table(table, ckey=0)
+        "data": read_table(table, ckey=0),
+        "main": "Government budget per capita (US$, nominal)"
     }
 
 def get_oil_exports():
@@ -59,7 +71,8 @@ def get_oil_exports():
         "name": "oil exports",
         "url": url,
         "desc": "oil exports by country",
-        "data": read_table(table, ckey=1)
+        "data": read_table(table, ckey=1),
+        "main": "Oil - exports (bbl/day)"
     }
 
 def get_oil_imports():
@@ -71,7 +84,8 @@ def get_oil_imports():
         "name": "oil imports",
         "url": url,
         "desc": "oil imports by country",
-        "data": read_table(table, ckey=1)
+        "data": read_table(table, ckey=1),
+        "main": "Crude Oil - Imports(bbl/day - est.)"
     }
 
 def get_net_oil_exports():
@@ -83,7 +97,8 @@ def get_net_oil_exports():
         "name": "net oil exports",
         "url": url,
         "desc": "net oil exports (oil exports - oil imports) by country",
-        "data": read_table(table, ckey=1)
+        "data": read_table(table, ckey=1),
+        "main": "Net exports"
     }
 
 def get_oil_production():
@@ -91,14 +106,14 @@ def get_oil_production():
     soup = get_soup(url)
     table = soup.find("table", {"class": "wikitable"})
 
-    def edit_headers(headers):
-        headers[0] = "number"
+    headers = ["number", "country", "oil production", "oil production per capita"]
 
     return {
         "name": "oil production",
         "url": url,
         "desc": "oil production by country",
-        "data": read_table(table, edit_headers=edit_headers, ckey=1)
+        "data": read_table(table, ckey=1, custom_headers=headers),
+        "main": "oil production"
     }
 
 def get_foreign_exchange_reserves():
@@ -107,10 +122,11 @@ def get_foreign_exchange_reserves():
     table = soup.find("table", {"class": "wikitable"})
 
     return {
-        "name": "foreign exchange reserves",
+        "name": "foreign exchange reserves (million USD)",
         "url": url,
         "desc": "foreign exchange reserves by country - the foreign-currency deposits held by national central banks and monetary authorities (See List of countries by foreign-exchange reserves (excluding gold)). However, in popular usage and in the list below, it also includes gold reserves, special drawing rights (SDRs) and International Monetary Fund (IMF) reserve position because this total figure, which is usually more accurately termed as official reserves or international reserves or official international reserves",
-        "data": read_table(table, ckey=1)
+        "data": read_table(table, ckey=1),
+        "main": "Foreign exchangereserves(millions of US$)"
     }
 
 def get_tariff_rate():
@@ -137,7 +153,8 @@ def get_tariff_rate():
         "name": "tariff rate",
         "url": url,
         "desc": "tariff rate by country - import duty refers to taxes levied on imported goods, capital and services",
-        "data": data
+        "data": data,
+        "main": "tariff rate"
     }
 
 def get_unemployment_rate():
@@ -149,5 +166,6 @@ def get_unemployment_rate():
         "name": "unemployment rate",
         "url": url,
         "desc": "unempployment rate by country",
-        "data": read_table(table, ckey=0)
+        "data": read_table(table, ckey=0),
+        "main": "Unemployment rate (%)"
     }

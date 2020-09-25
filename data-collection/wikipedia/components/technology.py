@@ -9,7 +9,8 @@ def get_number_of_internet_hosts():
         "name": "number of internet hosts",
         "url": url,
         "desc": "number of internet hosts, based on 2012 figures by CIA Host Facebook",
-        "data": read_table(table, ckey=0)
+        "data": read_table(table, ckey=0),
+        "main": "Internet hosts"
     }
 
 def get_nummber_of_internet_users():
@@ -32,5 +33,6 @@ def get_nummber_of_internet_users():
         "name": "number of internet users",
         "url": url,
         "desc": "number of internet users (any person who has accessed the internet in the last 12 months using any device)",
-        "data": read_table(table, custom_headers=custom_headers)
+        "data": read_table(table, custom_headers=custom_headers),
+        "main": "internet users"
     }

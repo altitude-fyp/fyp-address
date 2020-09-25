@@ -15,7 +15,12 @@ def get_age_structure():
         "name": "age structure",
         "url": url,
         "desc": "age structure by country (as of 2017)",
-        "data": read_table(table, custom_headers=custom_headers)
+        "data": read_table(table, custom_headers=custom_headers),
+        "main": {
+            "age 0-14 years": "age structure (0-14 years)",
+            "age 15-64 years": "age structure (15-64 years)",
+            "age over 65 years": "age structure (over 65 years)"
+        }
     }
 
 def get_homeless_population():
@@ -23,11 +28,17 @@ def get_homeless_population():
     soup = get_soup(url)
     table = soup.find("table", {"class": "wikitable"})
 
+    custom_headers = ["country", "homeless population per night", "data year", "homeless per 10000", "notes"]
+
     return {
         "name": "homeless population",
         "url": url,
         "desc": "homeless population by country",
-        "data": read_table(table, ckey=0)
+        "data": read_table(table, ckey=0, custom_headers=custom_headers),
+        "main": {
+            "homeless population per night": "homeless population per night",
+            "homeless per 10000": "homeless population per 10000 people"
+        }
     }
 
 def get_number_of_births():
@@ -35,11 +46,14 @@ def get_number_of_births():
     soup = get_soup(url)
     table = soup.find("table", {"class": "wikitable"})
 
+    custom_headers = ["rank", "country", "number of births in thousands"]
+
     return {
-        "name": "number of births",
+        "name": "number of births (in thousands)",
         "url": url,
         "desc": "number of births by country (in thousands, as of year 2017)",
-        "data": read_table(table, ckey=1)
+        "data": read_table(table, ckey=1, custom_headers=custom_headers),
+        "main": "number of births in thousands"
     }
 
 def get_national_capitals_by_population():
@@ -51,7 +65,8 @@ def get_national_capitals_by_population():
         "name": "capital population",
         "url": url,
         "desc": "list of national capitals, ordered according to population",
-        "data": read_table(table, ckey=1)
+        "data": read_table(table, ckey=1),
+        "main": "Population"
     }
 
 def get_total_fertility_rate():
@@ -59,11 +74,14 @@ def get_total_fertility_rate():
     soup = get_soup(url)
     table = soup.find("table", {"class": "wikitable"})
 
+    headers = ["rank", "country", "fertility rate"]
+
     return {
         "name": "fertility rate",
         "url": url,
         "desc": "total fertility rate ranked by country",
-        "data": read_table(table, ckey=1)
+        "data": read_table(table, ckey=1, custom_headers=headers),
+        "main": "fertility rate"
     }
 
 def get_literacy_rate():
@@ -84,7 +102,12 @@ def get_literacy_rate():
         "name": "literacy rate",
         "url": url,
         "desc": "Literacy rate by country",
-        "data": read_table(table, custom_headers=custom_headers)
+        "data": read_table(table, custom_headers=custom_headers),
+        "main": {
+            "literacy rate (all)": "literacy rate",
+            "male literacy": "male literacy rate",
+            "female literacy": "female literacy rate"
+        },
     }
 
 def get_median_age():
@@ -96,7 +119,12 @@ def get_median_age():
         "name": "median age",
         "url": url,
         "desc": "median age by country",
-        "data": read_table(table, ckey=0)
+        "data": read_table(table, ckey=0),
+        "main": {
+            "Median(Years)": "median age",
+            "Male(Years)": "median male age",
+            "Female (Years)": "median female age"
+        }
     }
 
 def get_labour_force_composition():
@@ -108,7 +136,13 @@ def get_labour_force_composition():
         "name": "labour force composition",
         "url": url,
         "desc": "labour force compositions by country",
-        "data": read_table(table, ckey=1)
+        "data": read_table(table, ckey=1),
+        "main": {
+            "Labour force": "labour force",
+            "Agriculture": "labour force (agriculture)",
+            "Industry": "labour force (industry)",
+            "Service": "labour force (service)"
+        }
     }
 
 def get_sex_ratio():
@@ -116,11 +150,22 @@ def get_sex_ratio():
     soup = get_soup(url)
     table = soup.find("table", {"class": "wikitable"})
 
+    headers = ["country", "at birth", "0 to 14 years", "15 to 24 years", "25 to 54 years", "55 to 64 years", "over 65", "total"]
+
     return {
         "name": "sex ratio",
         "url": url,
         "desc": "sex ratio (male/female ratio) by country",
-        "data": read_table(table, ckey=0)
+        "data": read_table(table, ckey=0, custom_headers=headers),
+        "main": {
+            "at birth": "sex ratio (at birth)",
+            "0 to 14 years": "sex ratio (0-14 years)",
+            "15 to 24 years": "sex ratio (15-24 years)",
+            "25 to 54 years": "sex ratio (25-54 years)",
+            "55 to 64 years": "sex ratio (55-64 years)",
+            "over 65": "sex ratio (over 65 years)",
+            "total": "sex ratio (total)"
+        }
     }
 
 def get_tertiary_education_attainment():
@@ -141,7 +186,12 @@ def get_tertiary_education_attainment():
         "name": "tertiary education",
         "url": url,
         "desc": "tertiary education attainment by country",
-        "data": read_table(table, custom_headers=custom_headers)
+        "data": read_table(table, custom_headers=custom_headers),
+        "main": {
+            "equivalent to 2 year degree or higher (%)": "tertiary education equivalent to 2 year degree or higher (%)",
+            "equivalent to 4 year degree or higher (%)": "tertiary education equivalent to 4 year degree or higher (%)",
+            "equivalent to 6 year degree or higher (%)": "tertiary education equivalent to 6 year degree or higher (%)"
+        }
     }
 
 def get_traffic_related_death_rate():
@@ -163,5 +213,11 @@ def get_traffic_related_death_rate():
         "name": "traffic-related death rate",
         "url": url,
         "desc": "Traffic-related death rate by country - annual number of road fatalities per capita per year, per number of motor vehicles, and per vehicle-km",
-        "data": read_table(table, custom_headers=custom_headers)
+        "data": read_table(table, custom_headers=custom_headers),
+        "main": {
+            "road fatalities per 100,000 inhabitants per year": "traffic-related death rate (per 100,000 inhabitants per year)",
+            "road fatalities per 100,000 motor vehicles": "traffic-related death rate (per 100,000 motor vehicles)",
+            "road fatalities per 1 billion vehicle-km": "traffic-related death rate (per 1 billion vehicle-km)",
+            "total fatalities in latest year": "traffic-related death rate (total)"
+        }
     }
