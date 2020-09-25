@@ -1,6 +1,4 @@
 <template>
-  <v-container fluid style="width: 100%; height: 50%; padding:0px">
-    <c-s-v-search/>
     <GmapMap
       :options="{
          zoomControl: true,
@@ -13,10 +11,9 @@
        }"
       :center="center"
       :zoom="12"
-      style="width: 100%; height: 100%;"
+      style="min-width: 100%; min-height: 500px;"
       @click="addMarker"
     >
-
       <!--if you require markers, unpack this-->
       <GmapMarker
         :key="index"
@@ -27,11 +24,11 @@
         @click="removeMarker"
       />
 
+
       <!-- This is to remove info window on first click-->
       <gmap-info-window :opened="false"/>
 
     </GmapMap>
-  </v-container>
 
 </template>
 
@@ -52,10 +49,8 @@ export default {
       sheet: false
     };
   },
-
   mounted() {
   },
-
   methods: {
     addMarker(event) {
       const marker = {
@@ -81,3 +76,7 @@ export default {
   computed: {}
 };
 </script>
+<style scoped>
+
+
+</style>

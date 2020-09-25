@@ -16,6 +16,7 @@
             flat
             dark
             color="primary"
+            max-height="70px"
           >
             <v-btn
               icon
@@ -27,21 +28,72 @@
             <v-toolbar-title>Select {{ access }} for Comparison</v-toolbar-title>
             <v-spacer></v-spacer>
           </v-toolbar>
-          <v-card-text>
 
-            <v-list
-              three-line
-              subheader
+
+
+              <v-list
+                dense
+                v-if='access=="Region"'
+              >
+                <v-card
+                  class="mx-auto"
+                  max-width="800"
+                  outlined
+
+                >
+                  <v-card-subtitle>You have selected the following regions for comparison:</v-card-subtitle>
+                  <v-card-subtitle>{{regionSelect}}</v-card-subtitle>
+
+                  <div style="padding:10px;">
+                    <v-btn depressed  @click="regionSelect=[]">Reset All</v-btn>
+                  </div>
+                </v-card>
+
+                <v-list-item style="padding-top: 80px">
+                  <v-list-item-content v-if='access=="Region"' v-for='reg in region'>
+                    <h3>{{ reg.title }}</h3>
+                  <ul>
+                    <v-checkbox v-model="regionSelect" v-for='dist in reg.include' :label='dist.place'
+                                :value='dist.place'>
+                    </v-checkbox>
+        </ul>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list>
+
+
+          <v-list
+            dense
+          >
+            <v-card
+              class="mx-auto"
+              max-width="800"
+              outlined
+              v-if='access=="Countries"'
             >
-              <v-list-item>
-                <v-list-item-content>
-                  FOR LOOP FOR REGION AND COUNTRIES
-                </v-list-item-content>
-              </v-list-item>
-            </v-list>
-          </v-card-text>
+          <v-card-subtitle>You have selected the following countries for comparison:</v-card-subtitle>
+              <v-card-subtitle>{{countrySelect}}</v-card-subtitle>
+
+              <div style="padding:10px;">
+                <v-btn depressed  @click="countrySelect=[]">Reset All</v-btn>
+              </div>
+
+            </v-card>
+            <v-list-item style="padding-top: 80px">
+              <v-list-item-content v-if='access=="Countries"' v-for='reg in country'>
+                <h3>{{ reg.title }}</h3>
+                <ul>
+                  <v-checkbox v-model="countrySelect" v-for='dist in reg.include' :label='dist.place'
+                              :value='dist.place'>
+                  </v-checkbox>
+                </ul>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+
 
         </v-card>
+
       </v-dialog>
     </v-row>
   </div>
@@ -63,36 +115,145 @@ export default {
     return {
       countrySelect: [],
       countryRegion: '',
+      n: 0,
       regionSelect: [],
       country: [
-        {label: "Country1", value: "Country1"},
-        {label: "Country2", value: "Country2"},
-        {label: "Country3", value: "Country3"},
-        {label: "Country4", value: "Country4"},
-        {label: "Country5", value: "Country5"},
-        {label: "China", value: "China"},
-        {label: "Japan", value: "Japan"},
-        {label: "Korea", value: "Korea"},
-        {label: "Singapore", value: "Singapore"},
-        {label: "United States of America", value: "USA"},
-        {label: "Country10", value: "Country1"},
-        {label: "Country20", value: "Country2"},
-        {label: "Country30", value: "Country3"},
-        {label: "Country40", value: "Country4"},
-        {label: "Country50", value: "Country5"},
+        {
+          title: 'Africa', include: [
+            {place: 'Boat Quay'},
+            {place: 'Chinatown'},
+            {place: 'Havelock Road'},
+            {place: 'Marina Square'},
+            {place: 'Raffles Place'},
+            {place: 'Suntec City'}
+          ]
+        },
+        {
+          title: 'Asia',
+          include: [
+            {place: 'Alexandra Road'},
+            {place: 'Tiong Bahru'},
+            {place: 'Queenstown'},
+            {place: 'RCR1'},
+            {place: 'Boat Quay'},
+            {place: 'Chinatown'},
+            {place: 'Suntec City'},
+          ]
+        },
+        {
+          title: 'The Caribbean', include: [
+            {place: 'Boat Quay'},
+            {place: 'Chinatown'},
+            {place: 'Havelock Road'},
+            {place: 'Marina Square'},
+            {place: 'Raffles Place'},
+            {place: 'Suntec City'}
+          ]
+        },
+        {
+          title: 'Central America', include: [
+            {place: 'Boat Quay2'},
+            {place: 'Chinatown'},
+            {place: 'Havelock Road'},
+            {place: 'Marina Square'},
+            {place: 'Raffles Place'},
+            {place: 'Suntec City'}
+          ]
+        },
+        {
+          title: 'Europe', include: [
+            {place: 'Boat Quay'},
+            {place: 'Chinatown'},
+            {place: 'Havelock Road'},
+            {place: 'Marina Square'},
+            {place: 'Raffles Place'},
+            {place: 'Suntec City'}
+          ]
+        },
+        {
+          title: 'North America', include: [
+            {place: 'Boat Quay'},
+            {place: 'Chinatown'},
+            {place: 'Havelock Road'},
+            {place: 'Marina Square'},
+            {place: 'Raffles Place'},
+            {place: 'Suntec City'}
+          ]
+        },
+        {
+          title: 'Oceania', include: [
+            {place: 'Boat Quay'},
+            {place: 'Chinatown'},
+            {place: 'Havelock Road'},
+            {place: 'Marina Square'},
+            {place: 'Raffles Place'},
+            {place: 'Suntec City'}
+          ]
+        },
+        {
+          title: 'South America', include: [
+            {place: 'Boat Quay'},
+            {place: 'Chinatown'},
+            {place: 'Havelock Road'},
+            {place: 'Marina Square'},
+            {place: 'Raffles Place'},
+            {place: 'Suntec City'}
+          ]
+        },
       ],
       region: [
-        {label: "Ang Mo Kio", value: "Country1"},
-        {label: "Bishan", value: "Country2"},
-        {label: "Braddell", value: "Country3"},
-        {label: "Toa Payoh", value: "Country4"},
-        {label: "Yio Chu Kang", value: "Country5"},
-        {label: "Some Ulu", value: "China"},
-        {label: "Somewhere Ulu", value: "Japan"},
-        {label: "Kpop", value: "Korea"},
-        {label: "Region1", value: "Region1"},
-
-
+        {
+          title: 'Central Region', include: [
+            {place: 'Boat Quay'},
+            {place: 'Chinatown'},
+            {place: 'Havelock Road'},
+            {place: 'Marina Square'},
+            {place: 'Raffles Place'},
+            {place: 'Suntec City'}
+          ]
+        },
+        {
+          title: 'North Region',
+          include: [
+            {place: 'Alexandra Road'},
+            {place: 'Tiong Bahru'},
+            {place: 'Queenstown'},
+            {place: 'RCR1'},
+            {place: 'Boat Quay'},
+            {place: 'Chinatown'},
+            {place: 'Havelock Road'},
+          ]
+        },
+        {
+          title: 'North-East Region', include: [
+            {place: 'Boat Quay'},
+            {place: 'Chinatown'},
+            {place: 'Havelock Road'},
+            {place: 'Marina Square'},
+            {place: 'Raffles Place'},
+            {place: 'Suntec City'}
+          ]
+        },
+        {
+          title: 'East Region', include: [
+            {place: 'Boat Quay'},
+            {place: 'Chinatown'},
+            {place: 'Havelock Road'},
+            {place: 'Marina Square'},
+            {place: 'Raffles Place'},
+            {place: 'Suntec City'}
+          ]
+        },
+        {
+          title: 'West Region', include: [
+            {place: 'Boat Quay'},
+            {place: 'Chinatown'},
+            {place: 'Havelock Road'},
+            {place: 'Marina Square'},
+            {place: 'Raffles Place'},
+            {place: 'Suntec City'}
+          ]
+        },
       ],
     }
   },
