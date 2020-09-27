@@ -11,7 +11,16 @@
             <v-card>
               <line-chart
                 v-if="loaded"
-                :chartdata="childdata.plotdata"
+                :chartdata="chartdata[0]"
+              />
+            </v-card>
+          </v-col>
+
+          <v-col>
+            <v-card>
+              <line-chart
+                v-if="loaded"
+                :chartdata="chartdata[1]"
               />
             </v-card>
           </v-col>
@@ -20,17 +29,21 @@
         <!-- ############################ -->
 
          <v-row dense>
-          <v-col
-          >
+          <v-col>
             <v-card>
-              <line-chart/>
+              <line-chart
+                v-if="loaded"
+                :chartdata="chartdata[2]"
+              />
             </v-card>
           </v-col>
 
-          <v-col
-          >
+          <v-col>
             <v-card>
-              <line-chart/>
+              <line-chart
+                v-if="loaded"
+                :chartdata="chartdata[3]"
+              />
             </v-card>
           </v-col>
         </v-row>
@@ -55,62 +68,20 @@ export default {
   data: () => ({
     country: "Singapore",
     loaded: false,
-    chartdata: null,
-    childdata: []
+    chartdata: {}
   }),
-  mounted () {
+
+  async created() {
     this.loaded = false
     try {
-      axios.get('http://lzl.blue/api/charts/'  + this.country).then(response => {
-        this.chartdata = JSON.parse(JSON.stringify(response))
-
-        console.log(this.chartdata)
-        console.log(typeof this.chartdata)
-
-
-        this.loaded = true
-        this.chartdata.forEach(data => {
-          let obj = {
-            plotdata : {
-              labels: data.years,
-              datasets: [
-                {
-                  label: data.title,
-                  backgroundColor: '#79f8b6',
-                  data: data.value
-                }
-              ]
-            },
-            description: data.description
-          }
-          this.childdata.push(obj)
-        })
-      })
-
-      
+      const response = await axios.get('http://lzl.blue/api/charts/'  + this.country)
+      // this.chartdata = JSON.parse(JSON.stringify(response.data))
+      this.chartdata = response.data.data.items
+      console.log(this.chartdata)
+      console.log(this.loaded)
+      this.loaded = true
     } catch (e) {
       console.error(e)
-    }
-  },
-
-  methods: {
-    handleData(apiData) {
-     apiData.forEach(data => {
-        let obj = {
-          plotdata : {
-            labels: data.years,
-            datasets: [
-              {
-                label: data.title,
-                backgroundColor: '#79f8b6',
-                data: data.value
-              }
-            ]
-          },
-          description: data.description
-        }
-        this.childdata.push(obj)
-      })
     }
   }
 
