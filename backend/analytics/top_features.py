@@ -88,7 +88,7 @@ models = {
 
 report = {}
 
-NUM_ITER = 100
+NUM_ITER = 1000
 
 for i in range(NUM_ITER):
 
