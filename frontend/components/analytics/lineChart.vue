@@ -10,23 +10,21 @@ export default {
       default: null
     }
   },
-  // computed: {
-  //   plotdata: function () {
-  //     return {
-  //       labels: this.chartdata.years,
-  //       datasets: [
-  //         {
-  //           label: this.chartdata.title,
-  //           backgroundColor: '#79f8b6',
-  //           data: this.chartdata.value
-  //         }
-  //       ]
-  //     }
-  //   } 
-  // },
-  
-  mounted () { 
-    this.renderChart(this.chartdata)
+
+  mounted() { 
+    let obj = {
+        labels: JSON.parse(JSON.stringify(this.chartdata.years)),
+        datasets: [
+          {
+            label: JSON.parse(JSON.stringify(this.chartdata.title)),
+            backgroundColor: '#79f8b6',
+            data: JSON.parse(JSON.stringify(this.chartdata.value))
+          }
+        ]
+      }
+    console.log(obj)
+
+    this.renderChart(obj)
   }
 }
 
