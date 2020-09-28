@@ -1,10 +1,15 @@
 from app import app
 from mongodb_helper import *
 from .constants import *
+from pydantic import BaseModel
+from collections import defaultdict
+from typing import List
+
+class ItemList(BaseModel):
+    countries: List[str]
 
 @app.get("/api/countries")
 def get_countries_list():
-  
     db = get_database()
     constant_collection = db["constant"]
     data = constant_collection.find_one({"_id": "continents"})
@@ -22,20 +27,33 @@ def format_countries_filter(data_dict):
     return data_list
 
 
-@app.get("/api/countries/{country_name}")
-def get_countries_data(country_name: str):
-
+@app.post("/api/countries/")
+def get_countries_data(items: ItemList):
     db = get_database()
     aggregate_countries_collection = db["aggregate.embeddings"]
-
+    coordinates = get_coordinates()
+    flag = get_flag()
     out = {"status": "error", "data": {}}
-    data = aggregate_countries_collection.find_one({"_id": country_name})
-    
+
+    combined_raw_data_list = []
+    coordinates_list = []
+    flag_list= []
+    for country_name in items.countries:
+        data = aggregate_countries_collection.find_one({"_id": country_name})["data"]
+        combined_raw_data_list.append(data)
+        coordinates_list.append(coordinates[country_name])
+        flag_list.append(flag[country_name])
+
+    dd = defaultdict(list)
+    for d in combined_raw_data_list:
+        for key, value in d.items():
+            dd[key].append(value)
+
     if data:
-        result = format_countries_data(data["data"])
-        coordinates = get_coordinates(country_name)
+        result = format_countries_data(dd)
         out["status"] = "success"
-        out["data"]["coordinates"] = coordinates[country_name]
+        out["data"]["coordinates"] = coordinates_list
+        out["data"]["flag"] = flag_list
         out["data"]["filter"] = get_filter_list()
         out["data"]["top8"] = result[1]
         out["data"]["items"] = result[0]
@@ -57,8 +75,14 @@ def format_countries_data(data_dict):
             top8_list.append(obj)
     return [data_list, top8_list]
 
-def get_coordinates(country_name):
+def get_coordinates():
     db = get_database()
     constant_collection = db["constant"]
     data = constant_collection.find_one({"_id": "coordinates"})
+    return data["data"]
+
+def get_flag():
+    db = get_database()
+    constant_collection = db["constant"]
+    data = constant_collection.find_one({"_id": "flag"})
     return data["data"]
