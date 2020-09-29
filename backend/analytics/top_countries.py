@@ -70,8 +70,6 @@ def top_countries(countryname):
 
     country_list = countries_similarity.keys()
 
-    print(country_list)
-
     similar_features = {}
     for country in country_list:
         df5 = df[[countryname,country]].T
@@ -88,7 +86,13 @@ def top_countries(countryname):
             out[cname] = sorted(out[cname].items(), key=lambda x: x[1],reverse=True)[1:4]
         similar_features[country] = out['Financial, Financial Soundness Indicators, Core Set, Deposit Takers, Asset Quality, Non-performing Loans to Total Gross Loans, Percent']
     
-    return [countries_similarity, similar_features]
+    response_output = []
+
+    for country,similarity_score in countries_similarity.items():
+        response_output.append({"name": country, "score": similarity_score, "value": similar_features[country]})
+
+
+    return response_output
 
 
 
