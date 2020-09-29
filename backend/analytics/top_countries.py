@@ -75,16 +75,17 @@ def top_countries(countryname):
         df5 = df[[countryname,country]].T
         country_data = df5.to_dict()
         country_data = sorted(country_data.items(), key=lambda x: x[0])
-        country_data
-
-        out = {}
-
-        for cname,cvalue in country_data:
+        country_data.append(('Final', {countryname: 1, country: 1}))
+        country_data = dict(country_data)
+        for cname,cvalue in country_data.items():
             out[cname] = {}
-            for dname,dvalue in country_data:
-                out[cname][dname] = cosine_similarity(cvalue,dvalue)
-            out[cname] = sorted(out[cname].items(), key=lambda x: x[1],reverse=True)[1:4]
-        similar_features[country] = out['Financial, Financial Soundness Indicators, Core Set, Deposit Takers, Asset Quality, Non-performing Loans to Total Gross Loans, Percent']
+            for dname,dvalue in country_data.items():
+                if cname == dname:
+                    pass
+                else:
+                    out[cname][dname] = cosine_similarity(cvalue,dvalue)
+            out[cname] = sorted(out[cname].items(), key=lambda x: x[1],reverse=True)[1:10]
+        similar_features[country] = out['Final']
     
     response_output = []
 
