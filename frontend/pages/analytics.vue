@@ -67,6 +67,8 @@ export default {
 
   data: () => ({
     country: "Singapore",
+    country1: "Japan",
+    country2: "Australia",
     loaded: false,
     chartdata: {}
   }),
@@ -77,7 +79,7 @@ export default {
       // const response = await axios.get('http://lzl.blue/api/charts/'  + this.country)
       const req = {
         "countries": [
-          this.country
+          this.country, this.country1, this.country2
         ]
       }
       const response = await axios.post('http://localhost:8000/api/charts/', req)
@@ -85,13 +87,11 @@ export default {
       // this.chartdata = JSON.parse(JSON.stringify(response.data))
       this.chartdata = response.data.data.items
       console.log(this.chartdata)
-      console.log(this.loaded)
       this.loaded = true
     } catch (e) {
       console.error(e)
     }
   }
-
 };
 </script>
 
