@@ -1,10 +1,10 @@
 from helper.common import *
 
-def insert_into_db(data, collection_name, tag=""):
+def insert_into_db(data, collection_name):
     mongo_clear(collection_name)
 
     for country_name, country in data.items():
-        print(tag, f"inserting {country_name} into mongodb")
+        print(collection_name, f"inserting {country_name}", " "*50, end="\r")
 
         mongo_insert(
             data = {
@@ -13,4 +13,6 @@ def insert_into_db(data, collection_name, tag=""):
             },
             collection_name=collection_name
         )
+    
+    print()
     

@@ -20,7 +20,7 @@ for country in countries:
 
     out = scrape(url)
 
-    if len(out) >= 6:
+    if len(out) >= 4:
         data[country] = out
 
 print("\nfinished scraping\n")

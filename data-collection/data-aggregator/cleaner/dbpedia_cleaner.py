@@ -50,31 +50,7 @@ def clean_dbpedia(data):
 
         return convert(key).lower()
 
-    useful_fields = set([
-        'dbo:areaTotal',
-        'dbp:gdpNominal', 
-        'dbp:gdpNominalPerCapita', 
-        'dbp:gdpNominalYear', 
-        'dbp:gdpPpp', 
-        'dbp:gdpPppPerCapita', 
-        'dbp:gdpPppYear', 
-        'dbp:hdi', 
-        'dbp:hdiYear', 
-        'dbp:hdiChange', 
-        'dbo:populationDensity', 
-        'dbp:hdiRank', 
-        'dbp:areaRank', 
-        'dbp:gini', 
-        'dbp:giniYear', 
-        'dbp:populationDensityRank', 
-        'dbo:populationTotal', 
-        'dbp:gdpPppRank', 
-        'dbp:gdpNominalRank', 
-        'dbp:gdpPppPerCapitaRank', 
-        'dbp:gdpNominalPerCapitaRank',
-    ])
-
     for country_name, country in data.items():
-        data[country_name] = {clean_key(k): clean_number(v) for k,v in country.items() if k in useful_fields}
+        data[country_name] = {clean_key(k): clean_number(v) for k,v in country.items()}
 
     return data
