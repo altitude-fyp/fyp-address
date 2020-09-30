@@ -33,18 +33,19 @@ def get_chart_data(items: ItemList):
             dd[key].append(value)
 
     if data:
-        result = format_chart_output(dd)
+        result = format_chart_output(dd, items.countries)
         out["status"] = "success"
         out["data"]["items"] = result
     return out
 
-def format_chart_output(data_dict):
+def format_chart_output(data_dict, countries_list):
     result = []
     for key, value in data_dict.items():
         if key in GRAPH_SHOWN:
-            obj = {"title": "", "description": "", "years": [], "value": []}
+            obj = {"title": "", "description": "", "countries": [], "years": [], "value": []}
             obj["title"] = key
             obj["description"] = GRAPH_SHOWN[key]
+            obj["countries"] = countries_list
             for country in value:
                 country = extrapolate(country)
                 year_list = []
