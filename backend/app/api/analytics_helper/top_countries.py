@@ -1,4 +1,4 @@
-from common import *
+from .common import *
 from mongodb_helper import *
 
 import pandas as pd
@@ -85,12 +85,12 @@ def top_countries(countryname):
                 else:
                     out[cname][dname] = cosine_similarity(cvalue,dvalue)
             out[cname] = sorted(out[cname].items(), key=lambda x: x[1],reverse=True)[1:10]
-        similar_features[country] = out['Final']
+        similar_features[country] = dict(out['Final'])
     
     response_output = []
 
     for country,similarity_score in countries_similarity.items():
-        response_output.append({"name": country, "score": similarity_score, "value": similar_features[country]})
+        response_output.append({"name": country, "score": similarity_score, "value": list(similar_features[country].keys())})
 
 
     return response_output
