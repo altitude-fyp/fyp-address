@@ -1,9 +1,11 @@
 <template>
   <v-container>
     <v-row>
-      {{todo.status}}
+      <div>
+        {{ todo }}
+      </div>
     </v-row>
-    {{todo}}
+
   </v-container>
 
 </template>
@@ -12,14 +14,18 @@
 export default {
   name: "tester",
   asyncData({$axios}) {
-    return $axios.$get(`http://lzl.blue/api/filter/Singapore/`)
-      .then((todo) => {
-        return {
-          todo // Put inside an object
-        }
-      })
+    return $axios.$post('http://lzl.blue/api/countries/', {
+      "countries": [
+        "Singapore"
+      ]
+    }).then((todo) => {
+      return {
+        todo // Put inside an object
+      }
+    })
   },
 }
+
 
 </script>
 
