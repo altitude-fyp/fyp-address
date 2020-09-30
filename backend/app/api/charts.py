@@ -52,7 +52,8 @@ def format_chart_output(data_dict):
                 for k,v in country.items():
                     year_list.append(k)
                     value_list.append(v)
-                obj["years"].append(year_list)
+                # obj["years"].append(year_list)
+                obj["years"] = year_list
                 obj["value"].append(value_list)
             result.append(obj)
     return result
