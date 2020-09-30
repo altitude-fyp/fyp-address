@@ -94,7 +94,3 @@ def top_countries(countryname):
 
 
     return response_output
-
-
-
-print(top_countries('Singapore'))
