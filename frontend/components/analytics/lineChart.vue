@@ -11,7 +11,8 @@ export default {
     }
   },
 
-  mounted() { 
+  mounted() {  
+    let colour_code = ["#2d4059", "#ea5455", "#f07b3f", "#ffd460"]
     let obj = {
         labels: JSON.parse(JSON.stringify(this.chartdata.years)),
         datasets: [

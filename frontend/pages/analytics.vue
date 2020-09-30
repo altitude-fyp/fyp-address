@@ -74,7 +74,14 @@ export default {
   async created() {
     this.loaded = false
     try {
-      const response = await axios.get('http://lzl.blue/api/charts/'  + this.country)
+      // const response = await axios.get('http://lzl.blue/api/charts/'  + this.country)
+      const req = {
+        "countries": [
+          this.country
+        ]
+      }
+      const response = await axios.post('http://localhost:8000/api/charts/', req)
+
       // this.chartdata = JSON.parse(JSON.stringify(response.data))
       this.chartdata = response.data.data.items
       console.log(this.chartdata)
