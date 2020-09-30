@@ -2,56 +2,52 @@
   <v-app>
     <div style="padding-top: 50px">
 
-
-
+    {{ info }}
 
       <v-container>
+        
         <v-row dense>
-          <v-col
-          >
+          <v-col>
             <v-card>
-              INFO 1
+              <line-chart
+                v-if="loaded"
+                :chartdata="chartdata[0]"
+              />
             </v-card>
           </v-col>
 
-          <v-col
-          >
+          <v-col>
             <v-card>
-              INFO 2
+              <line-chart
+                v-if="loaded"
+                :chartdata="chartdata[1]"
+              />
             </v-card>
           </v-col>
-
-          <v-col
-          >
-            <v-card>
-              INFO 3
-            </v-card>
-          </v-col>
-          <v-col
-          >
-            <v-card>
-              INFO 4
-            </v-card>
-          </v-col>
-
         </v-row>
 
-        <v-row dense>
-          <v-col
-          >
+        <!-- ############################ -->
+
+         <v-row dense>
+          <v-col>
             <v-card>
-              <line-chart/>
+              <line-chart
+                v-if="loaded"
+                :chartdata="chartdata[2]"
+              />
             </v-card>
           </v-col>
 
-          <v-col
-          >
+          <v-col>
             <v-card>
-              <bar-chart/>
+              <line-chart
+                v-if="loaded"
+                :chartdata="chartdata[3]"
+              />
             </v-card>
           </v-col>
-
         </v-row>
+
       </v-container>
 
 
@@ -61,12 +57,41 @@
 </template>
 
 <script>
+import axios from 'axios';
 import lineChart from "@/components/analytics/lineChart";
 import BarChart from "@/components/analytics/barChart";
 
 export default {
   name: "analytics",
   components: {BarChart, lineChart},
+
+  data: () => ({
+    country: "Singapore",
+    country1: "Japan",
+    country2: "Australia",
+    loaded: false,
+    chartdata: {}
+  }),
+
+  async created() {
+    this.loaded = false
+    try {
+      // const response = await axios.get('http://lzl.blue/api/charts/'  + this.country)
+      const req = {
+        "countries": [
+          this.country, this.country1, this.country2
+        ]
+      }
+      const response = await axios.post('http://localhost:8000/api/charts/', req)
+
+      // this.chartdata = JSON.parse(JSON.stringify(response.data))
+      this.chartdata = response.data.data.items
+      console.log(this.chartdata)
+      this.loaded = true
+    } catch (e) {
+      console.error(e)
+    }
+  }
 };
 </script>
 

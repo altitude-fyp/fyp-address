@@ -13,7 +13,7 @@ from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
 
 @app.get("/api/email/{receiver_email}")
-def email(receiver_email: str):
+def send_email(receiver_email: str):
 
     status = "success"
 
