@@ -8,32 +8,39 @@ sys.path.append(here[:-len("dbpedia")])
 from mongodb_helper import *
 from helper import *
 
-countries_and_cities = get_countries_and_cities()
+countries = get_countries()
 
-# clear everyting in dbpedia.countries collection
-mongo_clear("dbpedia.countries")
+data = {}
 
-for country, cities in countries_and_cities:
+for country in countries:
+    
+    url = DBPEDIA_BASE + country.replace(" ", "_")
+    
+    print("scraping", country, "->", url, " "*50, end="\r")
 
-    try:
-        assert len(country) > 0
-        country = country.replace(" ", "_")
-        print("="*150)
-        print("parsing country:", country)
-        print("="*150)
+    out = scrape(url)
 
-        country_data = parse_dbpedia_page(DBPEDIA_BASE + country)
+    if len(out) >= 6:
+        data[country] = out
 
-        print(country, " --> data length:", len(country_data))
-        
-        mongo_upsert(
-            data = {"_id": country, "data": country_data},
-            collection_name="dbpedia.countries",
-            replacement_pattern={"_id": country}
-        )
+print("\nfinished scraping\n")
 
-    except Exception as err:
-        print(f"ERROR parsing country {country}:", str(err))
-            
+COLLECTION_NAME = "dbpedia.countries"
+
+mongo_clear(COLLECTION_NAME)
+
+for cname, cdata in data.items():
+    out = {
+        "_id": cname,
+        "data": cdata
+    }
+
+    print("inserting into mongodb:", cname, " "*50, end="\r")
+    mongo_insert(out, COLLECTION_NAME)
+
+print("\ndone")
+
+
+
 
 
