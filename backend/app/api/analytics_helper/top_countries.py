@@ -89,8 +89,16 @@ def top_countries(countryname):
     
     response_output = []
 
+    flag = get_flag()
+
     for country,similarity_score in countries_similarity.items():
-        response_output.append({"name": country, "score": similarity_score, "value": list(similar_features[country].keys())})
+        response_output.append({"name": country, "flag": flag[country], "score": similarity_score, "value": list(similar_features[country].keys())})
 
 
     return response_output
+
+def get_flag():
+    db = get_database()
+    constant_collection = db["constant"]
+    data = constant_collection.find_one({"_id": "flag"})
+    return data["data"]
