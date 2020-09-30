@@ -8,7 +8,7 @@ from typing import List
 class ItemList(BaseModel):
     countries: List[str]
 
-@app.get("/api/countries")
+@app.get("/api/countries/")
 def get_countries_list():
     db = get_database()
     constant_collection = db["constant"]
