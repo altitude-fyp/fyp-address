@@ -565,6 +565,33 @@
           You have selected the maximum number of features (16) to display
 
         </div> <!--Max features selected notification-->
+
+        <!-- Chart -->
+        <v-card class="mx-auto" style="margin-top:30px;">
+          <v-container>
+            <v-row> 
+              <v-col v-for="data in chartdata" cols="6">
+                <v-row>
+                  <v-col>
+                    <v-card>
+                      <line-chart
+                        v-if="isChartLoaded"
+                        :chartdata="data"
+                      />
+                    </v-card>
+                    <div class="h2-text">
+                        <h2>{{data.title}}</h2>
+                        <p>{{data.description}}</p>
+                    </div>
+                  </v-col>
+                </v-row>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-card>
+        <!-- Chart -->
+
+
         <v-card class="mx-auto" style="margin-top:30px;">
           <v-container v-if="getTopThree === true">
             <v-row>
@@ -623,6 +650,7 @@
 <script>
 import CountryRegion from "@/components/home/CountryRegion";
 import GoogleMap from "@/components/home/GoogleMap";
+import lineChart from "@/components/analytics/lineChart";
 
 export default {
   name: "GoogleBottomSheet",
@@ -636,6 +664,7 @@ export default {
       selectTags: [],
       Tags: null,
       isLoaded: false,
+      isChartLoaded: false,
       getTopThree: false,
       data: null,
       topThree: null,
@@ -670,6 +699,11 @@ export default {
             this.Tags = Tags
             this.$emit('load-coordinates', this.Tags.data.coordinates)
           })
+          this.$axios.$post('http://lzl.blue/api/charts/', {
+            "countries": acceptance[1]
+          }).then((response) => {
+            this.chartdata = response.data.items
+          })
         } else {
           //REGION DATA POST
         }
@@ -685,6 +719,15 @@ export default {
         this.Tags = Tags
         this.isLoaded = true
         this.$emit('load-coordinates', this.Tags.data.coordinates)
+      })
+      this.$axios.$post('http://lzl.blue/api/charts/', {
+        "countries": [
+          "Singapore"
+        ]
+      }).then((response) => {
+        console.log(response)
+        this.chartdata = response.data.items
+        this.isChartLoaded = true
       })
       this.$axios.$get('http://lzl.blue/api/analytics/top_countries/Singapore').then((topThree) => {
           this.topThree = topThree
