@@ -203,11 +203,11 @@ export default {
       activeBtn: 0,
       items: [
         {title: 'Home', icon: 'mdi-home', link: '/'},
-        {title: 'Analytics', icon: 'mdi-chart-areaspline',link: '/analytics'},
-        {title: 'Scheduled Job', icon: 'mdi-history',link: '/scheduledJob'},
-        {title: 'Notifications', icon: 'mdi-bell',link: '/notifications'},
-        {title: 'User Management', icon: 'mdi-account',link: '/userManagement'},
-        {title: 'Chatbot', icon: 'mdi-chat', link: '/chatbot'},
+        // {title: 'Analytics', icon: 'mdi-chart-areaspline',link: '/analytics'},
+        // {title: 'Scheduled Job', icon: 'mdi-history',link: '/scheduledJob'},
+        // {title: 'Notifications', icon: 'mdi-bell',link: '/notifications'},
+        // {title: 'User Management', icon: 'mdi-account',link: '/userManagement'},
+        // {title: 'Chatbot', icon: 'mdi-chat', link: '/chatbot'},
         {title: 'Settings', icon: 'mdi-cog', link: '/Settings'},
       ],
       notifications: [

@@ -108,6 +108,7 @@
           <v-container>
             <v-row>
 
+              <!-- CAN WE PUT TTHIS IN A FOR LOOP WTF -->
               <v-col cols="3">
                 <v-row>
                   <v-col v-if="selectTags.length < 1">
@@ -393,7 +394,11 @@
             </v-row>
 
           </v-container>
-        </v-card> <!--Top 8 features-->
+        </v-card> 
+        
+        
+        <!--Top 8 features-->
+        <!-- CAN WE ALSO REFACTOR THIS INTO A FOR LOOP PLS AFTER MIDTERMS -->
         <v-card style="margin-top: 45px" class="mx-auto" v-if="selectTags.length > 8">
           <v-container>
             <v-row>
