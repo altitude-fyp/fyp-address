@@ -208,7 +208,7 @@ export default {
         // {title: 'Notifications', icon: 'mdi-bell',link: '/notifications'},
         // {title: 'User Management', icon: 'mdi-account',link: '/userManagement'},
         // {title: 'Chatbot', icon: 'mdi-chat', link: '/chatbot'},
-        {title: 'Settings', icon: 'mdi-cog', link: '/Settings'},
+        // {title: 'Settings', icon: 'mdi-cog', link: '/Settings'},
       ],
       notifications: [
         {

@@ -85,10 +85,16 @@
             v-if='access==="Countries"'
           >
             <v-card-subtitle>You have selected the following countries for comparison:</v-card-subtitle>
-            <v-card-subtitle>{{ countrySelect }}</v-card-subtitle>
+            
+            <v-card-subtitle>
+
+              <div v-for="selected in countrySelect">{{selected}}</div>
+            </v-card-subtitle>
+
             <v-card-subtitle v-if="countrySelect.length === 4">You have selected the maximum number of countries for
               comparison
             </v-card-subtitle>
+
 
             <div style="padding:10px;">
               <v-btn depressed @click="countrySelect=[]">Reset All</v-btn>
