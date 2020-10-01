@@ -45,13 +45,13 @@
           <v-divider></v-divider>
 
           <v-col style=" padding-top:20px;">
-            <div v-if="countries.length === 1">
+            <!-- <div v-if="countries.length === 1">
               <v-row style="padding-bottom: 8px;" justify="center">
                 <v-btn small outlined color="primary" @click="dialog = true, access= 'Region'">Select Regions in
                   {{ countries[0] }}
                 </v-btn>
               </v-row>
-            </div>
+            </div> -->
 
             <v-row style="padding-bottom: 20px;" justify="center">
               <v-btn small outlined color="primary" @click="dialog = true, access= 'Countries'">Select Countries to
