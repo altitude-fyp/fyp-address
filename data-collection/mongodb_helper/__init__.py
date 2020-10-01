@@ -13,21 +13,6 @@ def get_database():
         returns pymongo database object
     """
     return pymongo.MongoClient(os.getenv("MONGODB_CONNECTION_URL"))["main"]
-
-def mongo_upsert(data, collection_name, replacement_pattern):
-    """
-    upserts data into mongodb collection with collection_name
-        - if data doesnt exist (based on repalcement_pattern), inserts
-        - else if data exists, replaces
-    """
-    db = get_database()
-    collection = db[collection_name]
-
-    return collection.replace_one(
-        replacement_pattern,
-        data,
-        upsert=True
-    )
     
 def mongo_find_one(collection_name, find_options):
     """

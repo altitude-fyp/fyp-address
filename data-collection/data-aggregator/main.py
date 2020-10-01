@@ -13,7 +13,7 @@ from helper.common import *
 from cleaner.dbpedia_cleaner import clean_dbpedia
 from cleaner.wikipedia_cleaner import clean_wikipedia
 from cleaner.imf_cleaner import clean_imf
-from combiner import *
+from helper.combiner import *
 
 dbpedia = pickle.load(open("pickled/dbpedia_countries.sav", "rb"))
 wikipedia = pickle.load(open("pickled/wikipedia.sav", "rb"))
@@ -28,7 +28,7 @@ countries, charts, embeddings = combine(dbpedia, wikipedia, imf)
 
 from helper.db_insert import *
 
-insert_into_db(data=countries, collection_name="aggregate.countries", tag="aggregate.countries")
-insert_into_db(data=charts, collection_name="aggregate.charts", tag="aggregate.charts")
-insert_into_db(data=embeddings, collection_name="aggregate.embeddings", tag="aggregate.embeddings")
+insert_into_db(data=countries, collection_name="test.aggregate.countries")
+insert_into_db(data=charts, collection_name="test.aggregate.charts")
+insert_into_db(data=embeddings, collection_name="test.aggregate.embeddings")
 
