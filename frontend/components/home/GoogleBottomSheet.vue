@@ -657,6 +657,9 @@ export default {
       })
     },
     onClose(acceptance) {
+
+      this.getTopThree = false;
+
       this.dialog = false;
       if (acceptance[0] !== 'close') {
         if (acceptance[0] === 'country') {
