@@ -12,6 +12,9 @@ class ItemList(BaseModel):
 
 @app.get("/api/countries/")
 def get_countries_():
+    """
+    returns a list of all countries (in mongodb) sorted in aphabetical order
+    """
     return sorted(list(constants.COUNTRIES.keys()))
 
 def format_countries_filter(data_dict):
