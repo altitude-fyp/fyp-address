@@ -69,6 +69,6 @@ def compute_top_countries_matrix():
     for cname, scores in out.items():
         scores.sort(key=lambda x:-x[-1])
 
-    pickle.dump(out, open("analytics_scripts/pickled/top_countries_cossim_matrix.sav", "wb"))
+    pickle.dump(out, open("scripts/pickled/top_countries_cossim_matrix.sav", "wb"))
 
     print("finished computing top countries cosine similarity matrix")
