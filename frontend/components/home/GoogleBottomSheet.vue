@@ -711,12 +711,17 @@ export default {
       colors: ['black--text', 'blue--text', 'teal--text', 'blue-grey--text'],
     }
   },
+
   mounted() {
     this.getUserData();
   },
+
   methods: {
+    
+    
     topThreeOnClose(data) {
-      this.$axios.$post('http://lzl.blue/api/countries/', {
+
+      this.$axios.$post( process.env.BACKEND + '/api/countries/', {
         "countries": [data]
       }).then((Tags) => {
         this.Tags = Tags
@@ -724,6 +729,8 @@ export default {
         this.$emit('load-coordinates', this.Tags.data.coordinates)
       })
     },
+
+
     onClose(acceptance) {
 
       this.getTopThree = false;
@@ -732,13 +739,13 @@ export default {
       if (acceptance[0] !== 'close') {
         if (acceptance[0] === 'country') {
           this.countries = acceptance[1];
-          this.$axios.$post('http://lzl.blue/api/countries/', {
+          this.$axios.$post( process.env.BACKEND + '/api/countries/', {
             "countries": acceptance[1]
           }).then((Tags) => {
             this.Tags = Tags
             this.$emit('load-coordinates', this.Tags.data.coordinates)
           })
-          this.$axios.$post('http://lzl.blue/api/charts/', {
+          this.$axios.$post( process.env.BACKEND + '/api/charts/', {
             "countries": acceptance[1]
           }).then((response) => {
             this.chartdata = response.data.items
@@ -750,29 +757,34 @@ export default {
     },
 
     getUserData() {
-      this.$axios.$post('http://lzl.blue/api/countries/', {
+
+      this.$axios.$post(process.env.BACKEND + '/api/countries/', {
         "countries": [
           "Singapore"
         ]
       }).then((Tags) => {
+
         this.Tags = Tags
         this.isLoaded = true
         this.$emit('load-coordinates', this.Tags.data.coordinates)
       })
-      this.$axios.$post('http://lzl.blue/api/charts/', {
+      this.$axios.$post( process.env.BACKEND + '/api/charts/', {
         "countries": [
           "Singapore"
         ]
       }).then((response) => {
-        console.log(response)
+
         this.chartdata = response.data.items
         this.isChartLoaded = true
       })
-      this.$axios.$get('http://lzl.blue/api/analytics/top_countries/Singapore').then((topThree) => {
+
+      this.$axios.$get( process.env.BACKEND + '/api/analytics/top_countries/Singapore').then((topThree) => {
+
           this.topThree = topThree
           this.getTopThree = true
         }
       )
+
     },
   }
 }

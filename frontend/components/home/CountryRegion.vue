@@ -155,11 +155,11 @@ export default {
     }
   },
   mounted() {
-    this.$axios.$get(`http://lzl.blue/api/countries`)
+    this.$axios.$get( process.env.BACKEND + `/api/countries`)
       .then((country) => {
         this.country = country // Put inside an object
       })
-    this.$axios.$get(`http://lzl.blue/api/regions`)
+    this.$axios.$get(process.env.BACKEND + `/api/regions`)
       .then((region) => {
         this.region = region // Put inside an object
       })

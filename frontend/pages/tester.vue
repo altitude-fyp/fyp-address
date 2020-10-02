@@ -14,7 +14,7 @@
 export default {
   name: "tester",
   asyncData({$axios}) {
-    return $axios.$post('http://lzl.blue/api/countries/', {
+    return $axios.$post(process.env.BACKEND  + '/api/countries/', {
       "countries": [
         "Singapore"
       ]
