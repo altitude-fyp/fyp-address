@@ -10,25 +10,44 @@ export default {
       default: null
     }
   },
- 
-  mounted() {  
-    let colour_code = ["#2d4059", "#ea5455", "#f07b3f", "#ffd460"]
-    let datasets_arr = []
-    let size_arr = JSON.parse(JSON.stringify(this.chartdata.countries)).length
-    for (let i=0; i < size_arr; i++) {
-      datasets_arr.push({
-          label: JSON.parse(JSON.stringify(this.chartdata.countries))[i],
-          backgroundColor: colour_code[i],
-          data: JSON.parse(JSON.stringify(this.chartdata.value))[i]
-      })
+  // First time load chart
+  mounted() {
+    this.renderLineChart();
+  },
+  // Compute to convert props to  child component data
+  computed: {
+    chartData: function() {
+      return this.chartdata;
     }
-    console.log(datasets_arr)
-    let obj = {
-        labels: JSON.parse(JSON.stringify(this.chartdata.years)),
-        datasets: datasets_arr
+  },
+  methods: {
+    renderLineChart: function() {
+      let colour_code = ["#2d4059", "#ea5455", "#f07b3f", "#ffd460"]
+      let datasets_arr = []
+      let size_arr = JSON.parse(JSON.stringify(this.chartData.countries)).length
+      for (let i=0; i < size_arr; i++) {
+        datasets_arr.push({
+            fill: false,
+            label: JSON.parse(JSON.stringify(this.chartData.countries))[i],
+            backgroundColor: colour_code[i],
+            borderColor: colour_code[i],
+            borderWidth: 1,
+            data: JSON.parse(JSON.stringify(this.chartData.value))[i]
+        })
       }
-    console.log(JSON.parse(JSON.stringify(obj)))
-    this.renderChart(obj)
+      console.log(datasets_arr)
+      let obj = {
+          labels: JSON.parse(JSON.stringify(this.chartData.years)),
+          datasets: datasets_arr
+        }
+      this.renderChart(obj)
+    }
+  },
+  // Watch prop change to re-render chart
+  watch: {
+    chartdata: function() {
+      this.renderLineChart();
+    }
   }
 }
 

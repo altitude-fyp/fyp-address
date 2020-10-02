@@ -121,7 +121,7 @@
 
       </v-col>
       <v-col cols="9">
-        <h2 class="sectionTitle">Section Title 1</h2>
+        <h2 class="sectionTitle">Country Statistics</h2>
         <v-card class="mx-auto">
           <v-container>
             <v-row>
@@ -586,7 +586,7 @@
         <br/><br/>
 
         <!-- Chart -->
-        <h2 class="sectionTitle">Section Title 2</h2>
+        <h2 class="sectionTitle">Key Financial Indicators</h2>
         <v-card class="mx-auto">
           <v-container>
             <v-row> 
@@ -613,7 +613,7 @@
         <!-- Chart -->
         <br/><br/>
 
-        <h2 class="sectionTitle">Section Title 3</h2>
+        <h2 class="sectionTitle">Top 3 Similar Countries</h2>
         <v-card class="mx-auto">
           <v-container v-if="getTopThree === true">
             <v-row>
