@@ -1,6 +1,5 @@
 from app import app
 from mongodb_helper import *
-from .constants import *
 from pydantic import BaseModel
 from collections import defaultdict
 from typing import List
@@ -16,6 +15,7 @@ def get_countries_():
     returns a list of all countries (in mongodb) sorted in aphabetical order
     """
     return sorted(list(constants.COUNTRIES.keys()))
+
 
 def format_countries_filter(data_dict):
     data_list = []
