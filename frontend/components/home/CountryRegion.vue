@@ -17,7 +17,7 @@
           <v-toolbar
             flat
             dark
-            color="primary"
+            color="#004D8E"
             max-height="70px"
           >
             <v-btn
@@ -37,19 +37,19 @@
             style="margin-top: 30px;"
             v-if='access==="Region"'
           >
-            <v-card-subtitle>You have selected the following regions for comparison:</v-card-subtitle>
+            <v-card-subtitle selected the following regions for comparison:</v-card-subtitle>
             <v-card-subtitle>{{ regionSelect }}</v-card-subtitle>
 
             <div style="padding:10px;">
-              <v-btn depressed @click="regionSelect=[]">Reset All</v-btn>
-              <div style="float:right">
+              <v-btn class="button" depressed @click="regionSelect=[]">Reset All</v-btn>
+              
                 <div v-if="regionSelect.length === 0">
-                  <v-btn depressed color="primary" @click="$emit('close',['close'])">Submit</v-btn>
+                  <v-btn class="white--text" depressed color="#004D8E" @click="$emit('close',['close'])">Submit</v-btn>
                 </div>
                 <div v-else>
-                  <v-btn depressed color="primary" @click="$emit('close',['region', regionSelect])">Submit</v-btn>
+                  <v-btn class="white--text" depressed color="#004D8E" @click="$emit('close',['region', regionSelect])">Submit</v-btn>
                 </div>
-              </div>
+
 
             </div> <!--Region Select Button-->
 
@@ -59,7 +59,7 @@
               <v-list
                 dense
               >
-                <v-list-item style="padding-top: 80px">
+                <v-list-item style="padding-top: 20px">
                   <v-list-item-content>
 
                     <h1>{{ reg }}</h1>
@@ -76,48 +76,15 @@
             </v-col>
           </v-row> <!--WAIT FOR UPDATED REGION-->
 
-
-          <v-card
-            class="mx-auto"
-            max-width="900"
-            outlined
-            style="margin-top: 30px;"
-            v-if='access==="Countries"'
-          >
-            <v-card-subtitle>You have selected the following countries for comparison:</v-card-subtitle>
-            
-            <v-card-subtitle>
-
-              <div v-for="selected in countrySelect">{{selected}}</div>
-            </v-card-subtitle>
-
-            <v-card-subtitle v-if="countrySelect.length === 4">You have selected the maximum number of countries for
-              comparison
-            </v-card-subtitle>
-
-
-            <div style="padding:10px;">
-              <v-btn depressed @click="countrySelect=[]">Reset All</v-btn>
-              <div style="float:right">
-                <div v-if="countrySelect.length === 0">
-                  <v-btn depressed color="primary" @click="$emit('close',['close'])">Submit</v-btn>
-                </div>
-                <div v-else>
-                  <v-btn depressed color="primary" @click="$emit('close',['country', countrySelect])">Submit</v-btn>
-                </div>
-              </div>
-            </div> <!--Button for country-->
-
-          </v-card><!--Country Data-->
           <v-row v-if="country && access==='Countries' ">
             <v-col v-for="reg in country.data.items">
               <v-list
                 dense
               >
-                <v-list-item style="padding-top: 80px">
+                <v-list-item style="padding-top: 20px">
                   <v-list-item-content>
 
-                    <h1>{{ reg.header }}</h1>
+                    <h2 class="continentTitle">{{ reg.header }}</h2>
 
                     <ul>
                       <v-checkbox v-model="countrySelect" v-for='dist in reg.countries' :label='dist'
@@ -131,14 +98,39 @@
             </v-col>
           </v-row> <!--Listing the countries based on DB-->
 
+        <div class="bottomBar">
+          <v-card
+            class="mx-auto elevation-0"
+            max-width="900"
+            v-if='access==="Countries"'
+          >
+            <br/>
+            <v-card-subtitle>You have selected the following countries for comparison:</v-card-subtitle>
+            
+              <span class="selectedCountry" v-for="selected in countrySelect">{{selected}}</span>
 
+            <v-card-subtitle class="errorMessage" v-if="countrySelect.length === 4">You have selected the maximum number of countries for
+              comparison
+            </v-card-subtitle>
+
+            <div class="resetSubmitButtons">
+              <v-btn class="button" depressed @click="countrySelect=[]">Reset All</v-btn>
+                <div v-if="countrySelect.length === 0">
+                  <v-btn class="button white--text" depressed color="#004D8E" @click="$emit('close',['close'])">Submit</v-btn>
+                </div>
+                <div v-else>
+                  <v-btn class="button white--text" depressed color="#004D8E" @click="$emit('close',['country', countrySelect])">Submit</v-btn>
+                </div>
+            </div> <!--Button for country-->
+
+          </v-card><!--Country Data-->
+        </div>
         </v-card>
 
       </v-dialog>
     </v-row>
   </div>
 </template>
-
 
 <script>
 export default {
@@ -181,8 +173,45 @@ export default {
 }
 </script>
 <style scoped>
-.scroll {
-  overflow-y: scroll
-}
-</style>
+  .scroll {
+    overflow-y: scroll
+  }
+  
+  .continentTitle {
+    text-align:center;
+  }
 
+  .bottomBar {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: white;
+    text-align: center;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  }
+
+  .v-btn.button {
+    margin:25px 10px 0 10px;
+  }
+
+  .resetSubmitButtons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    margin-bottom:50px;
+  }
+
+  .errorMessage {
+    color:#d33232 !important;
+  }
+
+  .selectedCountry {
+    color:#215085 !important;
+    margin:0 20px 0 20px;
+    font-size:20px;
+    font-weight:700;
+
+  }
+</style>

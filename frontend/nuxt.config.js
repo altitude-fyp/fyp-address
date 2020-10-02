@@ -86,5 +86,10 @@ export default {
   ** Build configuration
   ** See https://nuxtjs.org/api/configuration-build/
   */
-  build: {}
+  build: {},
+  loading: {
+    color: '#d29a42',
+    continuous:true,
+    height:'5px'
+  }
 }
