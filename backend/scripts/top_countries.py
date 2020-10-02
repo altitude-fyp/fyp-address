@@ -51,6 +51,9 @@ def cosine_similarity(a,b):
     return dotab / maga / magb if 0 not in [maga, magb] else 0
 
 def compute_top_countries_matrix():
+
+    print("computing top countries cosine similarity matrix", end=" ")
+
     db = get_database()
     embeddings_collection = db["test.aggregate.embeddings"]
 
@@ -69,6 +72,6 @@ def compute_top_countries_matrix():
     for cname, scores in out.items():
         scores.sort(key=lambda x:-x[-1])
 
-    pickle.dump(out, open("scripts/pickled/top_countries_cossim_matrix.sav", "wb"))
+    pickle.dump(out, open("pickled/top_countries_cossim_matrix.sav", "wb"))
 
-    print("finished computing top countries cosine similarity matrix")
+    print("- finished")

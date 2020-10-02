@@ -5,20 +5,14 @@ from pydantic import BaseModel
 from collections import defaultdict
 from typing import List
 
+from app import constants
+
 class ItemList(BaseModel):
     countries: List[str]
 
 @app.get("/api/countries/")
-def get_countries_list():
-    db = get_database()
-    constant_collection = db["constant"]
-    data = constant_collection.find_one({"_id": "continents"})
-
-    out = {"status": "error", "data": {}}
-    if data:
-        out["status"] = "success"
-        out["data"]["items"] = data["data"]
-    return out
+def get_countries_():
+    return sorted(list(constants.COUNTRIES.keys()))
 
 def format_countries_filter(data_dict):
     data_list = []

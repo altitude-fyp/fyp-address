@@ -14,6 +14,8 @@ source env/bin/activate
 (Install python dependencies needed by the app)
 pip3 install -r requirements.txt
 
+python scripts/run.py (IMPORTANT)
+
 ```
 
 ## Running fastapi app 
