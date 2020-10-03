@@ -18,6 +18,10 @@ pip3 install -r requirements.txt
 ```
 python3 scripts/run.py
 ```
+6. run automated test
+```
+pytest tests/run.py
+```
 
 ## Running fastapi app 
 ```
