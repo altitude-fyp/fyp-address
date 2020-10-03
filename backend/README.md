@@ -1,22 +1,7 @@
 # Backend application for FYP address
 
-## Environment set-up
-```
-cd backend
-
-(Create a python virtual environment)
-python3 -m venv env (for MacOS)
-python -m venv env (for windows)
-
-(Activate your python virtual environment)
-source env/bin/activate
-
-(Install python dependencies needed by the app)
-pip3 install -r requirements.txt
-
-python scripts/run.py (IMPORTANT)
-
-```
+## Environment Set-up
+1. 
 
 ## Running fastapi app 
 ```
