@@ -77,3 +77,11 @@ def get_countries__(items:ItemList):
         "time taken": float(endtime-starttime),
         "data": data
     }    
+
+@app.post("/api/csv/")
+def get_csv_data(items:ItemList):
+    countries = items.countries
+    countries_data = [get_country(cname) for cname in countries]
+    for i in range(len(countries)):
+        countries_data[i]["country"] = countries[i]
+    return countries_data
