@@ -21,12 +21,14 @@ GRAPH_SHOWN = {
 def get_chart_data(items: ItemList):
 
     if len(items.countries) == 1 and items.countries[0] == "Singapore":
-        starttime = time()
-        out = pickle.load(open("pickled/default_post_api_charts.sav", "rb"))
-        endtime = time()
+        try:
+            starttime = time()
+            out = pickle.load(open("pickled/default_post_api_charts.sav", "rb"))
+            endtime = time()
 
-        out["time taken"] = float(endtime-starttime)
-        return out
+            out["time taken"] = float(endtime-starttime)
+            return out
+        except: pass
 
     starttime = time()
 

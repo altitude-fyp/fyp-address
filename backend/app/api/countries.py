@@ -38,12 +38,14 @@ def get_countries__(items:ItemList):
 
     # if input countries == ["Singpaore"] (the default), returns pickled object
     if len(countries) == 1 and countries[0] == "Singapore":
-        starttime = time()
-        out = pickle.load(open("pickled/default_post_api_countries.sav", "rb"))
-        endtime = time()
+        try:
+            starttime = time()
+            out = pickle.load(open("pickled/default_post_api_countries.sav", "rb"))
+            endtime = time()
 
-        out["time taken"] = float(endtime-starttime)
-        return out
+            out["time taken"] = float(endtime-starttime)
+            return out
+        except: pass
 
     starttime = time()
 
