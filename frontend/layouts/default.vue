@@ -9,7 +9,10 @@
         >
           <v-app-bar-nav-icon  @click="drawer = true"></v-app-bar-nav-icon>
         
-          <v-toolbar-title>{{ username }}</v-toolbar-title>
+          <v-toolbar-title>
+            <img src="https://i.imgur.com/22y1Cn7.png" height="40"/>
+            <span class="logoTitle">Address Analytics Tool</span>
+          </v-toolbar-title>
 
           <v-spacer></v-spacer>
 
@@ -236,3 +239,10 @@ export default {
   },
 }
 </script>
+<style scoped>
+  .logoTitle {
+    color:#215085;
+    font-weight:700;
+    margin-left:10px;
+  }
+</style>
