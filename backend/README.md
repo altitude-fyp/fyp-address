@@ -24,9 +24,17 @@ pytest tests/run.py
 ```
 
 ## Running fastapi app 
+
+Running for production
+```
+uvicorn app:app --workers 4
+```
+
+Running for development purposes
 ```
 uvicorn app:app --reload
-```
+``` 
+- the "--reload" argument reruns the entire app if there are any changes in code base
 
 visit localhost:8000 to visit app
 visit localhost:8000/docs to see swagger UI (auto-generated)
