@@ -60,13 +60,15 @@
             </v-row>
 
             <v-row justify="center">
-              <v-btn
-                outlined
-                color="#004D8E"
-                class="mb-2 sidebar"
-                depressed
-              ><v-icon style="margin-right:5px">mdi-download</v-icon>Download CSV
-              </v-btn>
+              <vue-json-to-csv :json-data="csvdata" :csv-title="'countries_data'">
+                <v-btn
+                  outlined
+                  color="#004D8E"
+                  class="mb-2 sidebar"
+                  depressed
+                ><v-icon style="margin-right:5px">mdi-download</v-icon>Download CSV
+                </v-btn>
+              </vue-json-to-csv>
             </v-row>
           </v-col><!-- Region/Country btn-->
           <v-divider></v-divider>
@@ -690,10 +692,11 @@
 import CountryRegion from "@/components/home/CountryRegion";
 import GoogleMap from "@/components/home/GoogleMap";
 import lineChart from "@/components/analytics/lineChart";
+import VueJsonToCsv from 'vue-json-to-csv'
 
 export default {
   name: "GoogleBottomSheet",
-  components: {CountryRegion, GoogleMap},
+  components: {CountryRegion, GoogleMap, VueJsonToCsv},
   props: {
     dialog: Boolean,
     access: String
@@ -703,9 +706,11 @@ export default {
       selectTags: [],
       Tags: null,
       chartdata: [],
+      csvdata: [],
       isLoaded: false,
       isChartLoaded: false,
       getTopThree: false,
+      getCsvData: false,
       data: null,
       topThree: null,
       countries: ['Singapore'],
@@ -783,6 +788,16 @@ export default {
 
           this.topThree = topThree
           this.getTopThree = true
+        }
+      )
+
+      this.$axios.$post( process.env.BACKEND + '/api/csv/', {
+        "countries": [
+          "Singapore"
+        ]
+      }).then((data) => {
+          this.csvdata = data
+          this.getCsvData = true
         }
       )
 
