@@ -5,6 +5,6 @@ env
 .env
 .pytest_cache
 .ipynb_checkpoints
-pickled
+*.sav
 .idea
 node_modules
