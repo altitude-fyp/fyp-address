@@ -53,8 +53,9 @@
 
             </div> <!--Region Select Button-->
 
-          </v-card> <!--Region Data-->
-          <v-row v-if="region && access==='Region' ">
+          </v-card>
+           <!--Region Data-->
+          <!-- <v-row v-if="region && access==='Region' ">
             <v-col v-for="reg in region.data">
               <v-list
                 dense
@@ -64,30 +65,32 @@
 
                     <h1>{{ reg }}</h1>
 
-                    <!--                    <ul>
-                                          <v-checkbox v-model="countrySelect" v-for='dist in reg.countries' :label='dist'
-                                                      :value='dist'>
-                                          </v-checkbox>
-                                        </ul>-->
+                  <ul>
+                    <v-checkbox v-model="countrySelect" v-for='dist in reg.countries' :label='dist'
+                                :value='dist'>
+                    </v-checkbox>
+                  </ul>
 
                   </v-list-item-content>
                 </v-list-item>
               </v-list>
             </v-col>
-          </v-row> <!--WAIT FOR UPDATED REGION-->
+          </v-row>  -->
+          <!--WAIT FOR UPDATED REGION-->
 
+          <!-- XAVIER you start from here -->
           <v-row v-if="country && access==='Countries' ">
-            <v-col v-for="reg in country.data.items">
+            <!-- <v-col v-for="item in country.data.items"> -->
               <v-list
                 dense
               >
                 <v-list-item style="padding-top: 20px">
                   <v-list-item-content>
 
-                    <h2 class="continentTitle">{{ reg.header }}</h2>
+                    <!-- <h2 class="continentTitle">{{ reg.header }}</h2> -->
 
                     <ul>
-                      <v-checkbox v-model="countrySelect" v-for='dist in reg.countries' :label='dist'
+                      <v-checkbox v-model="countrySelect" v-for='dist in country.data.items' :label='dist'
                                   :value='dist' :disabled="countrySelect.length >= 4">
                       </v-checkbox>
                     </ul>
@@ -95,7 +98,7 @@
                   </v-list-item-content>
                 </v-list-item>
               </v-list>
-            </v-col>
+            <!-- </v-col> -->
           </v-row> <!--Listing the countries based on DB-->
 
         <div class="bottomBar">

@@ -702,6 +702,7 @@ export default {
     return {
       selectTags: [],
       Tags: null,
+      chartdata: [],
       isLoaded: false,
       isChartLoaded: false,
       getTopThree: false,
