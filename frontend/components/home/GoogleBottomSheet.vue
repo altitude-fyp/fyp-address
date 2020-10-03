@@ -627,12 +627,12 @@
                 <v-row class="mx-auto">
                   <div class="top3ScoreTitle">Score: {{ topThree.data.items[0].score.toFixed(4) }}</div>
                 </v-row>
-                <div class="top3Indicators">Indicators:</div>
+              <!-- <div class="top3Indicators">Indicators:</div>
                 <v-row class="mx-auto" v-for="listType in topThree.data.items[0].value">
                   <ul>
                     <li class="top3Feature">{{ listType }}</li>
                   </ul>
-                </v-row>
+                </v-row> -->
               </div>
               </v-col>
               <v-divider vertical></v-divider>
@@ -646,12 +646,12 @@
                  <v-row class="mx-auto">
                    <div class="top3ScoreTitle">Score: {{ topThree.data.items[1].score.toFixed(4) }}</div>
                  </v-row>
-                 <div class="top3Indicators">Indicators:</div>
+                 <!-- <div class="top3Indicators">Indicators:</div>
                  <v-row class="mx-auto" v-for="listType in topThree.data.items[1].value">
                    <ul>
                     <li class="top3Feature">{{ listType }}</li>
                   </ul>
-                 </v-row>
+                 </v-row> -->
               </div>
                </v-col>
                <v-divider vertical></v-divider>
@@ -665,12 +665,12 @@
                  <v-row class="mx-auto">
                    <div class="top3ScoreTitle">Score: {{ topThree.data.items[2].score.toFixed(4) }}</div>
                  </v-row>
-                 <div class="top3Indicators">Indicators:</div>
+                 <!-- <div class="top3Indicators">Indicators:</div>
                  <v-row class="mx-auto" v-for="listType in topThree.data.items[2].value">
                   <ul>
                     <li class="top3Feature">{{ listType }}</li>
                   </ul>
-                 </v-row>
+                 </v-row> -->
               </div>
                </v-col>
                <br/>
