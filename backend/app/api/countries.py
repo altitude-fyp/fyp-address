@@ -25,21 +25,15 @@ def get_country(cname):
     db = get_database()
     out = db["test.aggregate.embeddings"].find_one({"_id": cname})["data"]
     
-    # out["lat"] = constants.COUNTRIES[cname]["lat"]
-    # out["lon"] = constants.COUNTRIES[cname]["lon"]
-    # out["code"] = constants.COUNTRIES[cname]["code"]
-    # out["flag"] = constants.COUNTRIES[cname]["flag"]
-
     return out
 
 @app.post("/api/countries/")
 def get_countries__(items:ItemList):
     """
     Return country data for frontend application 
-    """
+    """    
+    countries = items
 
-    countries = ["Singapore", "Malaysia"]
-    
     data = {}
 
     coordinates = [{"lat":constants.COUNTRIES[country]["lat"], "long": constants.COUNTRIES[country]["lon"]} for country in countries]
