@@ -12,9 +12,14 @@ class ItemList(BaseModel):
 @app.get("/api/countries/")
 def get_countries_():
     """
-    returns a list of all countries (in mongodb) sorted in aphabetical order
+    Return a list of all countries sorted in aphabetical order
     """
-    return sorted(list(constants.COUNTRIES.keys()))
+    return {
+        "status": "success",
+        "data": {
+            "items": sorted(list(constants.COUNTRIES.keys()))
+        }
+    }    
 
 def get_country(cname):
     db = get_database()
@@ -29,11 +34,15 @@ def get_country(cname):
 
 @app.post("/api/countries/")
 def get_countries__(items:ItemList):
-    countries = ["Singapore", "Malaysia"]
+    """
+    Return country data for frontend application 
+    """
 
+    countries = ["Singapore", "Malaysia"]
+    
     data = {}
 
-    coordinates = [{"lat":constants.COUNTRIES[country]["lat"], "lon": constants.COUNTRIES[country]["lon"]} for country in countries]
+    coordinates = [{"lat":constants.COUNTRIES[country]["lat"], "long": constants.COUNTRIES[country]["lon"]} for country in countries]
     flags = [constants.COUNTRIES[country]["flag"] for country in countries]
     
     countries = {cname:get_country(cname) for cname in countries}
@@ -52,5 +61,7 @@ def get_countries__(items:ItemList):
     data["top8"] = top8
     data["item"] = items
 
-    return data
-    
+    return {
+        "status": "success",
+        "data": data
+    }    
