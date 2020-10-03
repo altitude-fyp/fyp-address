@@ -1,8 +1,10 @@
+from time import time
 from app import app
 from mongodb_helper import *
 from pydantic import BaseModel
 from collections import defaultdict
 from typing import List
+import pickle
 
 from app import constants
 
@@ -31,8 +33,19 @@ def get_country(cname):
 def get_countries__(items:ItemList):
     """
     Return country data for frontend application 
-    """    
+    """
     countries = items.countries
+
+    # if input countries == ["Singpaore"] (the default), returns pickled object
+    if len(countries) == 1 and countries[0] == "Singapore":
+        starttime = time()
+        out = pickle.load(open("pickled/default_post_api_countries.sav", "rb"))
+        endtime = time()
+
+        out["time taken"] = float(endtime-starttime)
+        return out
+
+    starttime = time()
 
     data = {}
 
@@ -44,10 +57,10 @@ def get_countries__(items:ItemList):
     top8cat = [
         "Gdp nominal", "Hdi", "Financial Development Index", "Consumer Price Index, All items",
         "Population total", "Gini", "Unemployment rate", "Life expectancy (overall)"
-        ]
+    ]
 
     top8 = [{"name":cat, "value":[cdata.get(cat, None) for cname, cdata in countries.items()]} for cat in top8cat]
-    items = [{"name":fname, "value":[countries[cname][fname] for cname in countries]} for fname, fdata in countries["Singapore"].items()]
+    items = [{"name":fname, "value":[countries[cname][fname] for cname in countries]} for fname, fdata in list(countries.values())[0].items()]
 
     data["coordinates"] = coordinates
     data["flag"] = flags
@@ -55,7 +68,10 @@ def get_countries__(items:ItemList):
     data["top8"] = top8
     data["item"] = items
 
+    endtime = time()
+
     return {
         "status": "success",
+        "time taken": float(endtime-starttime),
         "data": data
     }    
