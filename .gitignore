@@ -3,6 +3,7 @@ __pycache__
 *.pyc
 env
 backend/.env
+data-collection/.env
 .pytest_cache
 .ipynb_checkpoints
 *.sav
