@@ -32,7 +32,7 @@ def get_countries__(items:ItemList):
     """
     Return country data for frontend application 
     """    
-    countries = items
+    countries = items.countries
 
     data = {}
 
