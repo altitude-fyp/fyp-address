@@ -699,6 +699,7 @@
         </v-card>
       </v-col>
 
+
       <country-region :dialog="dialog" :access="access" @close="onClose"/>
     </v-row>
 
@@ -736,7 +737,7 @@ export default {
   },
 
   mounted() {
-    this.getUserData();
+    this.getEverything(["Singapore"]);
   },
 
   methods: {
@@ -752,75 +753,95 @@ export default {
       : +(Math.round(num + "e+4")  + "e-4");
     },
 
-    topThreeOnClose(data) {
+    topThreeOnClose(country_name) {
 
-      this.$axios.$post( process.env.BACKEND + '/api/countries/', {
-        "countries": [data]
-      }).then((Tags) => {
-        this.Tags = Tags
-        this.countries = [data]
-        this.$emit('load-coordinates', this.Tags.data.coordinates)
-      })
+      // this function is called when the user clicks any of the flags in the top 3 countries section
+
+      this.getEverything([country_name])
+
+      // this.$axios.$post( process.env.BACKEND + '/api/countries/', {
+      //   "countries": [data]
+      // }).then((Tags) => {
+      //   this.Tags = Tags
+      //   this.countries = [data]
+      //   this.$emit('load-coordinates', this.Tags.data.coordinates)
+      // })
     },
 
     onClose(acceptance) {
 
-      this.getTopThree = false;
+      // this function is called when the user selects the countries that he wants to analyze
 
-      this.dialog = false;
-      if (acceptance[0] !== 'close') {
-        if (acceptance[0] === 'country') {
-          this.countries = acceptance[1];
-          this.$axios.$post( process.env.BACKEND + '/api/countries/', {
-            "countries": acceptance[1]
-          }).then((Tags) => {
-            this.Tags = Tags
-            this.$emit('load-coordinates', this.Tags.data.coordinates)
-          })
-          this.$axios.$post( process.env.BACKEND + '/api/charts/', {
-            "countries": acceptance[1]
-          }).then((response) => {
-            this.chartdata = response.data.items
-          })
-        } else {
-          //REGION DATA POST
-        }
-      }
+      this.countries = acceptance[1]
+
+      this.chartdata = null
+
+      this.getEverything(this.countries)
+
+      // this.getTopThree = false;
+
+      // this.dialog = false;
+      // if (acceptance[0] !== 'close') {
+      //   if (acceptance[0] === 'country') {
+      //     this.countries = acceptance[1];
+      //     this.$axios.$post( process.env.BACKEND + '/api/countries/', {
+      //       "countries": acceptance[1]
+      //     }).then((Tags) => {
+      //       this.Tags = Tags
+      //       this.$emit('load-coordinates', this.Tags.data.coordinates)
+      //     })
+      //     this.$axios.$post( process.env.BACKEND + '/api/charts/', {
+      //       "countries": acceptance[1]
+      //     }).then((response) => {
+      //       this.chartdata = response.data.items
+      //     })
+      //   } else {
+      //     //REGION DATA POST
+      //   }
+      // }
     },
 
-    getUserData() {
+    getEverything(countries) {
 
+      this.countries = countries
+
+      // GETTING COUNTRY DATA
       this.$axios.$post(process.env.BACKEND + '/api/countries/', {
-        "countries": [
-          "Singapore"
-        ]
-      }).then((Tags) => {
-
+          "countries": countries
+        }
+      ).then((Tags) => {
         this.Tags = Tags
         this.isLoaded = true
         this.$emit('load-coordinates', this.Tags.data.coordinates)
       })
+
+      // GETTING CHARTS DATA FOR COUNTRY
       this.$axios.$post( process.env.BACKEND + '/api/charts/', {
-        "countries": [
-          "Singapore"
-        ]
+        "countries": countries
+
       }).then((response) => {
+
+        console.log("HUEHUEHUEHEUHE", response.data.items)
 
         this.chartdata = response.data.items
         this.isChartLoaded = true
       })
 
-      this.$axios.$get( process.env.BACKEND + '/api/analytics/top_countries/Singapore').then((topThree) => {
+      // GETTING TOP3 COUNTRIES ONLY IF LEN(COUNTRIES) == 1
+      if (countries.length == 1) {
+        this.$axios.$get( process.env.BACKEND + '/api/analytics/top_countries/' + countries[0]).then((topThree) => {
 
-          this.topThree = topThree
-          this.getTopThree = true
-        }
-      )
+            this.topThree = topThree
+            this.getTopThree = true
+          }
+        ) 
+      } else {
+        this.getTopThree = false
+      }
 
       this.$axios.$post( process.env.BACKEND + '/api/csv/', {
-        "countries": [
-          "Singapore"
-        ]
+        "countries": countries
+
       }).then((data) => {
           this.csvdata = data
           this.getCsvData = true
