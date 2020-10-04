@@ -171,15 +171,13 @@
           </v-container>
         </v-card> 
         
-        <!-- <div style="text-align: center; margin-top:40px"></div>  -->
-
         <v-alert
           dense
           outlined
           type="error"
           v-if="selectTags.length > 16"
         >
-          You have selected the maximum number of features (16) to display
+          You have reached the maximum number of features (16) to display
         </v-alert>
         
         <!--Max features selected notification-->
@@ -218,52 +216,22 @@
         <v-card class="mx-auto">
           <v-container v-if="getTopThree === true">
             <v-row>
-              <v-col cols="3.5">
-              <div class="top3Section">
-                <v-row class="mx-auto">
-                  <img :src="topThree.data.items[0].flag" aspect-ratio="1.7" contain @click="() => topThreeOnClose(topThree.data.items[0].name)"/>
-                  <v-card-subtitle class="top3CountryName">{{ topThree.data.items[0].name }}</v-card-subtitle>
+              <v-col v-for="n in 3" cols="3.5">
+                <v-row>
+                  <v-col>
+                  <div class="top3Section">
+                    <v-row class="mx-auto">
+                      <img style="cursor: pointer" :src="topThree.data.items[n-1].flag" aspect-ratio="1.7" contain @click="() => topThreeOnClose(topThree.data.items[n-1].name)" contain/>
+                      <v-card-subtitle class="top3CountryName">{{ topThree.data.items[n-1].name }}</v-card-subtitle>
+                    </v-row>
+                    <v-row class="mx-auto">
+                      <div class="top3ScoreTitle">Score: {{ topThree.data.items[n-1].score.toFixed(4) }}</div>
+                    </v-row>
+                  </div>
+                  </v-col>
+                 <v-divider vertical></v-divider>
                 </v-row>
-              
-                <v-row class="mx-auto">
-                  <div class="top3ScoreTitle">Score: {{ topThree.data.items[0].score.toFixed(4) }}</div>
-                </v-row>
-              </div>
               </v-col>
-              <v-divider vertical></v-divider>
-
-               <v-col cols="3.5">
-               <div class="top3Section">
-                 <v-row class="mx-auto">
-                   <img :src="topThree.data.items[1].flag" aspect-ratio="1.7" @click="() => topThreeOnClose(topThree.data.items[1].name)" contain/>
-                   <v-card-subtitle class="top3CountryName">{{ topThree.data.items[1].name }}</v-card-subtitle>
-                 </v-row>
-                 <v-row class="mx-auto">
-                   <div class="top3ScoreTitle">Score: {{ topThree.data.items[1].score.toFixed(4) }}</div>
-                 </v-row>
-              </div>
-               </v-col>
-               <v-divider vertical></v-divider>
-
-               <v-col cols="3.5">
-               <div class="top3Section">
-                 <v-row class="mx-auto">
-                   <img :src="topThree.data.items[2].flag" aspect-ratio="1.7" @click="() => topThreeOnClose(topThree.data.items[2].name)" contain/>
-                   <v-card-subtitle class="top3CountryName">{{ topThree.data.items[2].name }}</v-card-subtitle>
-                 </v-row>
-                 <v-row class="mx-auto">
-                   <div class="top3ScoreTitle">Score: {{ topThree.data.items[2].score.toFixed(4) }}</div>
-                 </v-row>
-                 <!-- <div class="top3Indicators">Indicators:</div>
-                 <v-row class="mx-auto" v-for="listType in topThree.data.items[2].value">
-                  <ul>
-                    <li class="top3Feature">{{ listType }}</li>
-                  </ul>
-                 </v-row> -->
-              </div>
-               </v-col>
-               <br/>
-
             </v-row>
           </v-container>
         </v-card>
@@ -328,14 +296,6 @@ export default {
       // this function is called when the user clicks any of the flags in the top 3 countries section
 
       this.getEverything([country_name])
-
-      // this.$axios.$post( process.env.BACKEND + '/api/countries/', {
-      //   "countries": [data]
-      // }).then((Tags) => {
-      //   this.Tags = Tags
-      //   this.countries = [data]
-      //   this.$emit('load-coordinates', this.Tags.data.coordinates)
-      // })
     },
 
     onClose(acceptance) {
@@ -345,28 +305,6 @@ export default {
       this.countries = acceptance[1]
       this.chartdata = null
       this.getEverything(this.countries)
-
-      // this.getTopThree = false;
-
-      // this.dialog = false;
-      // if (acceptance[0] !== 'close') {
-      //   if (acceptance[0] === 'country') {
-      //     this.countries = acceptance[1];
-      //     this.$axios.$post( process.env.BACKEND + '/api/countries/', {
-      //       "countries": acceptance[1]
-      //     }).then((Tags) => {
-      //       this.Tags = Tags
-      //       this.$emit('load-coordinates', this.Tags.data.coordinates)
-      //     })
-      //     this.$axios.$post( process.env.BACKEND + '/api/charts/', {
-      //       "countries": acceptance[1]
-      //     }).then((response) => {
-      //       this.chartdata = response.data.items
-      //     })
-      //   } else {
-      //     //REGION DATA POST
-      //   }
-      // }
     },
 
     getEverything(countries) {
@@ -379,6 +317,7 @@ export default {
         }
       ).then((Tags) => {
         this.Tags = Tags
+        console.log(this.Tags)
         this.isLoaded = true
         this.$emit('load-coordinates', this.Tags.data.coordinates)
       })
