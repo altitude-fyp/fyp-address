@@ -52,32 +52,22 @@ def get_top_countries(countryname):
     # top3 = cossim_matrix[countryname][:3]
     # return [{"name":name, "score":score, "flag":constants.COUNTRIES[name]["flag"]} for name,score in top3]
 
-    try:
-        db = get_database()
-        embeddings = {}
+    db = get_database()
+    embeddings = {}
 
-        for i in db["test.aggregate.embeddings"].find():
-            embeddings[i["_id"]] = i["data"]
+    for i in db["test.aggregate.embeddings"].find():
+        embeddings[i["_id"]] = i["data"]
 
-        countrydata = embeddings[countryname]
-        countrydata = {k:v for k,v in countrydata.items() if k[:5] == "Finan"}
+    countrydata = embeddings[countryname]
+    countrydata = {k:v for k,v in countrydata.items() if k[:5] == "Finan"}
 
-        out = []
-        for cname, cdata in embeddings.items():
-            cdata = {k:v for k,v in cdata.items() if k[:5] == "Finan"}
-            out.append((cname, cosine_similarity(countrydata, cdata)))
+    out = []
+    for cname, cdata in embeddings.items():
+        cdata = {k:v for k,v in cdata.items() if k[:5] == "Finan"}
+        out.append((cname, cosine_similarity(countrydata, cdata)))
 
-        out.sort(key=lambda x:-x[-1])
+    out.sort(key=lambda x:-x[-1])
 
-        out = [{"name":name, "score":score, "flag": constants.COUNTRIES[name]["flag"]} for name, score in out[1:4]]
+    out = [{"name":name, "score":score, "flag": constants.COUNTRIES[name]["flag"]} for name, score in out[1:4]]
 
-        return {
-            "status": "success",
-            "data": out
-        }
-    
-    except Exception as err:
-        return {
-            "status": "failed",
-            "error": str(err)
-        }
+    return out
