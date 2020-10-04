@@ -731,7 +731,7 @@ export default {
   },
 
   mounted() {
-    this.getEverything(["Malaysia"]);
+    this.getEverything(["Singapore"]);
   },
 
   methods: {
