@@ -632,7 +632,7 @@
         <!-- Chart -->
         <br/><br/>
 
-        <h2 class="sectionTitle">Top 3 Similar Countries</h2>
+        <h2 class="sectionTitle" v-if="countries.length == 1">Top 3 Similar Countries</h2>
         <v-card class="mx-auto">
           <v-container v-if="getTopThree === true">
             <v-row>
