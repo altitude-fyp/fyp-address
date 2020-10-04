@@ -3,7 +3,7 @@ from mongodb_helper import *
 import pandas as pd
 
 raw = {}
-for i in get_database()["aggregate.embeddings"].find():
+for i in get_database()["test.aggregate.embeddings"].find():
     raw[i["_id"]] = i["data"]
 
 # converting raw dictionary into pd dataframe object

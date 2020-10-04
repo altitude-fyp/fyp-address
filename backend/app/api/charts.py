@@ -33,7 +33,7 @@ def get_chart_data(items: ItemList):
     starttime = time()
 
     db = get_database()
-    chart_collection = db["aggregate.charts"]
+    chart_collection = db["test.aggregate.charts"]
     out = {"status": "error", "data": {}}
 
     combined_raw_data_list = []
