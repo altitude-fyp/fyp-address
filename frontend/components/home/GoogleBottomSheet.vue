@@ -596,11 +596,18 @@
             </v-row>
           </v-container>
         </v-card> <!--Next 8 features-->
-        <div v-if="selectTags.length === 16" style="text-align: center; margin-top:40px">
+        <!-- <div style="text-align: center; margin-top:40px"></div>  -->
 
+        <v-alert
+          dense
+          outlined
+          type="error"
+          v-if="selectTags.length > 16"
+        >
           You have selected the maximum number of features (16) to display
-
-        </div> <!--Max features selected notification-->
+        </v-alert>
+        
+        <!--Max features selected notification-->
 
         <br/><br/>
 
