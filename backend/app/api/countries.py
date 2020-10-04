@@ -82,6 +82,14 @@ def get_countries__(items:ItemList):
 def get_csv_data(items:ItemList):
     countries = items.countries
     countries_data = [get_country(cname) for cname in countries]
+    
     for i in range(len(countries)):
-        countries_data[i]["country"] = countries[i]
+
+        temp = countries_data[i]
+        out = {"country": countries[i]}
+        for k,v in temp.items():
+            out[k] = v
+        
+        countries_data[i] = out
+
     return countries_data

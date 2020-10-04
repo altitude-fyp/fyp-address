@@ -36,5 +36,5 @@ def get_top_countries_(country_name: str):
         return {
             "status": "failure",
             "error": str(err),
-            "message": "make sure you have run analytics_scripts/run.py and check your analytics_scripts/pickled folder"
         }
+    
