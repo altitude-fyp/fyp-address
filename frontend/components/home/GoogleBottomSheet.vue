@@ -29,6 +29,7 @@
               </v-row>
               <v-row>
                 <v-img :src="flagAccess" aspect-ratio="2" contain/>
+                                
               </v-row>
             </div>
           </div>
@@ -132,19 +133,28 @@
                 <v-row>
                   <v-col v-if="selectTags.length < 1">
                     <v-card-subtitle class="featuresTitle"> {{ Tags.data.top8[0].name }}</v-card-subtitle>
+
                     <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.top8[0].value[0]) }}</v-card-text>
+                    <v-img :src="Tags.data.flag[0]" aspect-ratio="2" contain/>                  
+                    
                     <v-card-text v-if="Tags.data.flag.length > 1" :class="colors[1]" style="font-size: 16px;">{{
                         Tags.data.top8[0].value[1]
                       }}
                     </v-card-text>
+                    <v-img :src="Tags.data.flag[1]" aspect-ratio="2" contain/>
+
                     <v-card-text v-if="Tags.data.flag.length > 2" :class="colors[2]" style="font-size: 16px;">{{
                         Tags.data.top8[0].value[2]
                       }}
                     </v-card-text>
+                    <v-img :src="Tags.data.flag[2]" aspect-ratio="2" contain/>
+
                     <v-card-text v-if="Tags.data.flag.length > 3" :class="colors[3]" style="font-size: 16px;">{{
                         Tags.data.top8[0].value[3]
                       }}
                     </v-card-text>
+                    <v-img :src="Tags.data.flag[3]" aspect-ratio="2" contain/>
+
                   </v-col>
                   <v-col v-else>
                     <v-card-subtitle class="featuresTitle">{{ Tags.data.items[selectTags[0]].name }}</v-card-subtitle>
