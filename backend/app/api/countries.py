@@ -70,6 +70,11 @@ def get_countries__(items:ItemList):
     data["top8"] = top8
     data["items"] = items
 
+    features = [i for o in data["filter"] for i in o["value"]]
+    features = {f:i for i,f in enumerate(features)}
+
+    data["items"].sort(key=lambda x:features[x["name"]])
+
     endtime = time()
 
     return {
