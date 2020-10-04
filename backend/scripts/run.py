@@ -1,10 +1,14 @@
 import os
 from top_countries import *
 from generate_constants import *
-from generate_default_api import *
 
+
+os.system("rm -rf pickled")
 os.system("mkdir pickled")
 
-compute_top_countries_matrix()
+
 generate_constants()
+compute_top_countries_matrix()
+
+from generate_default_api import *
 generate_default_api()
