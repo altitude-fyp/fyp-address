@@ -126,305 +126,44 @@
         <h2 class="sectionTitle">Country Statistics</h2>
         <v-card class="mx-auto">
           <v-container>
-            <v-row>
-              <!-- CAN WE PUT TTHIS IN A FOR LOOP WTF -->
-              <v-col cols="3">
+
+            <!--Top 8 features-->
+            <v-row v-for="x in 2">
+              <v-col v-for="n in 4" cols="3">
                 <v-row>
-                  <v-col v-if="selectTags.length < 1">
-                    <v-card-subtitle class="featuresTitle"> {{ Tags.data.top8[0].name }}</v-card-subtitle>
-
-                    <div class="countryFlagIndicators">
-                      <img align="left" class="countryFlag" :src="Tags.data.flag[0]" aspect-ratio="2" contain/>
-                      <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.top8[0].value[0]) }}</v-card-text>   
-                    </div>  
-
-                    <div class="countryFlagIndicators">
-                      <img v-if="Tags.data.flag.length > 1" align="left" class="countryFlag"  :src="Tags.data.flag[1]" aspect-ratio="2" contain/>
-                      <v-card-text v-if="Tags.data.flag.length > 1" :class="colors[1]" style="font-size: 16px;">{{
-                        formatValue(Tags.data.top8[0].value[1])
-                      }}
-                    </v-card-text>
-                    </div>
-
-                    <div class="countryFlagIndicators">
-                      <img align="left" class="countryFlag" v-if="Tags.data.flag.length > 2" :src="Tags.data.flag[2]" aspect-ratio="2" contain/>
-                      <v-card-text v-if="Tags.data.flag.length > 2" :class="colors[2]" style="font-size: 16px;">{{
-                        formatValue(Tags.data.top8[0].value[2])
-                      }}
-                    </v-card-text>
-                    </div>
-
-                    <div class="countryFlagIndicators">
-                      <img align="left" class="countryFlag" v-if="Tags.data.flag.length > 3" :src="Tags.data.flag[3]" aspect-ratio="2" contain/>
-                      <v-card-text v-if="Tags.data.flag.length > 3" :class="colors[3]" style="font-size: 16px;">{{
-                        formatValue(Tags.data.top8[0].value[3])
-                      }}
-                    </v-card-text>
-                    </div>
-
+                  <v-col v-if="selectTags.length < 4*(x-1)+n">
+                    <v-card-subtitle class="featuresTitle"> {{ Tags.data.top8[(4*(x-1)+n)-1].name }}</v-card-subtitle>
+                      <!-- Loop to show the flag  -->
+                      <div v-for="(flag, i) in Tags.data.flag" class="countryFlagIndicators">
+                        <img align="left" class="countryFlag" :src="Tags.data.flag[i]" aspect-ratio="2" contain/>
+                        <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.top8[(4*(x-1)+n)-1].value[i]) }}</v-card-text>   
+                      </div>
                   </v-col>
                   <v-col v-else>
-                    <v-card-subtitle class="featuresTitle">{{ Tags.data.items[selectTags[0]].name }}</v-card-subtitle>
-                    <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.items[selectTags[0]].value[0]) }}</v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 1" :class="colors[1]" style="font-size: 16px;">
-                      {{ Tags.data.items[selectTags[0]].value[1] }}
-                    </v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 2" :class="colors[2]" style="font-size: 16px;">
-                      {{ Tags.data.items[selectTags[0]].value[2] }}
-                    </v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 3" :class="colors[3]" style="font-size: 16px;">
-                      {{ Tags.data.items[selectTags[0]].value[3] }}
-                    </v-card-text>
-                  </v-col>
-
-                  <v-divider vertical></v-divider>
-                </v-row>
-              </v-col>
-
-              <v-col cols="3">
-                <v-row>
-                  <v-col v-if="selectTags.length < 2">
-                    <v-card-subtitle class="featuresTitle"> {{ Tags.data.top8[1].name }}</v-card-subtitle>
-                    <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.top8[1].value[0]) }}</v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 1" :class="colors[1]" style="font-size: 16px;">{{
-                        Tags.data.top8[1].value[1]
-                      }}
-                    </v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 2" :class="colors[2]" style="font-size: 16px;">{{
-                        Tags.data.top8[1].value[2]
-                      }}
-                    </v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 3" :class="colors[3]" style="font-size: 16px;">{{
-                        Tags.data.top8[1].value[3]
-                      }}
-                    </v-card-text>
-                  </v-col>
-                  <v-col v-else>
-                    <v-card-subtitle class="featuresTitle">{{ Tags.data.items[selectTags[1]].name }}</v-card-subtitle>
-                    <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.items[selectTags[1]].value[0]) }}</v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 1" :class="colors[1]" style="font-size: 16px;">
-                      {{ Tags.data.items[selectTags[1]].value[1] }}
-                    </v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 2" :class="colors[2]" style="font-size: 16px;">
-                      {{ Tags.data.items[selectTags[1]].value[2] }}
-                    </v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 3" :class="colors[3]" style="font-size: 16px;">
-                      {{ Tags.data.items[selectTags[1]].value[3] }}
-                    </v-card-text>
-                  </v-col>
-
-                  <v-divider vertical></v-divider>
-                </v-row>
-              </v-col>
-
-              <v-col cols="3">
-                <v-row>
-                  <v-col v-if="selectTags.length < 3">
-                    <v-card-subtitle class="featuresTitle"> {{ Tags.data.top8[2].name }}</v-card-subtitle>
-                    <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.top8[2].value[0]) }}</v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 1" :class="colors[1]" style="font-size: 16px;">{{
-                        Tags.data.top8[2].value[1]
-                      }}
-                    </v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 2" :class="colors[2]" style="font-size: 16px;">{{
-                        Tags.data.top8[2].value[2]
-                      }}
-                    </v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 3" :class="colors[3]" style="font-size: 16px;">{{
-                        Tags.data.top8[2].value[3]
-                      }}
-                    </v-card-text>
-                  </v-col>
-                  <v-col v-else>
-                    <v-card-subtitle class="featuresTitle">{{ Tags.data.items[selectTags[2]].name }}</v-card-subtitle>
-                    <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.items[selectTags[2]].value[0]) }}</v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 1" :class="colors[1]" style="font-size: 16px;">
-                      {{ Tags.data.items[selectTags[2]].value[1] }}
-                    </v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 2" :class="colors[2]" style="font-size: 16px;">
-                      {{ Tags.data.items[selectTags[2]].value[2] }}
-                    </v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 3" :class="colors[3]" style="font-size: 16px;">
-                      {{ Tags.data.items[selectTags[2]].value[3] }}
-                    </v-card-text>
+                    <v-card-subtitle class="featuresTitle">{{ Tags.data.items[selectTags[(4*(x-1)+n)-1]].name }}</v-card-subtitle>
+                     <!-- Loop to show the flag  -->
+                      <div v-for="(flag, i) in Tags.data.flag" class="countryFlagIndicators">
+                        <img align="left" class="countryFlag" :src="Tags.data.flag[i]" aspect-ratio="2" contain/>
+                        <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.items[selectTags[(4*(x-1)+n)-1]].value[i]) }}</v-card-text>   
+                      </div>  
                   </v-col>
                   <v-divider vertical></v-divider>
                 </v-row>
               </v-col>
-
-              <v-col cols="3">
-                <v-row>
-                  <v-col v-if="selectTags.length < 4">
-                    <v-card-subtitle class="featuresTitle"> {{ Tags.data.top8[3].name }}</v-card-subtitle>
-                    <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.top8[3].value[0]) }}</v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 1" :class="colors[1]" style="font-size: 16px;">{{
-                        Tags.data.top8[3].value[1]
-                      }}
-                    </v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 2" :class="colors[2]" style="font-size: 16px;">{{
-                        Tags.data.top8[3].value[2]
-                      }}
-                    </v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 3" :class="colors[3]" style="font-size: 16px;">{{
-                        Tags.data.top8[3].value[3]
-                      }}
-                    </v-card-text>
-                  </v-col>
-                  <v-col v-else>
-                    <v-card-subtitle class="featuresTitle">{{ Tags.data.items[selectTags[3]].name }}</v-card-subtitle>
-                    <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.items[selectTags[3]].value[0]) }}</v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 1" :class="colors[1]" style="font-size: 16px;">
-                      {{ Tags.data.items[selectTags[3]].value[1] }}
-                    </v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 2" :class="colors[2]" style="font-size: 16px;">
-                      {{ Tags.data.items[selectTags[3]].value[2] }}
-                    </v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 3" :class="colors[3]" style="font-size: 16px;">
-                      {{ Tags.data.items[selectTags[3]].value[3] }}
-                    </v-card-text>
-                  </v-col>
-                </v-row>
-              </v-col>
-
             </v-row>
-            <v-row>
-              <v-col cols="3">
+
+            <!--Next 8 features-->
+            <v-row v-if="selectTags.length > 8" v-for="x in 2">
+              <v-col v-for="n in 4" cols="3">
                 <v-row>
-                  <v-col v-if="selectTags.length < 5">
-                    <v-card-subtitle class="featuresTitle"> {{ Tags.data.top8[4].name }}</v-card-subtitle>
-                    <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.top8[4].value[0]) }}</v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 1" :class="colors[1]" style="font-size: 16px;">{{
-                        Tags.data.top8[4].value[1]
-                      }}
-                    </v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 2" :class="colors[2]" style="font-size: 16px;">{{
-                        Tags.data.top8[4].value[2]
-                      }}
-                    </v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 3" :class="colors[3]" style="font-size: 16px;">{{
-                        Tags.data.top8[4].value[3]
-                      }}
-                    </v-card-text>
-                  </v-col>
-                  <v-col v-else>
-                    <v-card-subtitle class="featuresTitle">{{ Tags.data.items[selectTags[4]].name }}</v-card-subtitle>
-                    <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.items[selectTags[4]].value[0]) }}</v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 1" :class="colors[1]" style="font-size: 16px;">
-                      {{ Tags.data.items[selectTags[4]].value[1] }}
-                    </v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 2" :class="colors[2]" style="font-size: 16px;">
-                      {{ Tags.data.items[selectTags[4]].value[2] }}
-                    </v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 3" :class="colors[3]" style="font-size: 16px;">
-                      {{ Tags.data.items[selectTags[4]].value[3] }}
-                    </v-card-text>
+                  <v-col v-if="selectTags.length > 4*(x+1)+n-1">
+                    <v-card-subtitle class="featuresTitle">{{ Tags.data.items[selectTags[4*(x+1)+n-1]].name }}</v-card-subtitle>
+                    <div v-for="(flag, i) in Tags.data.flag" class="countryFlagIndicators">
+                      <img align="left" class="countryFlag" :src="Tags.data.flag[i]" aspect-ratio="2" contain/>
+                      <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.items[selectTags[(4*(x-1)+n)-1]].value[i]) }}</v-card-text>   
+                    </div>  
                   </v-col>
                   <v-divider vertical></v-divider>
-                </v-row>
-              </v-col>
-              <v-col cols="3">
-                <v-row>
-                  <v-col v-if="selectTags.length < 6">
-                    <v-card-subtitle class="featuresTitle"> {{ Tags.data.top8[5].name }}</v-card-subtitle>
-                    <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.top8[5].value[0]) }}</v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 1" :class="colors[1]" style="font-size: 16px;">{{
-                        Tags.data.top8[5].value[1]
-                      }}
-                    </v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 2" :class="colors[2]" style="font-size: 16px;">{{
-                        Tags.data.top8[5].value[2]
-                      }}
-                    </v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 3" :class="colors[3]" style="font-size: 16px;">{{
-                        Tags.data.top8[5].value[3]
-                      }}
-                    </v-card-text>
-
-                  </v-col>
-                  <v-col v-else>
-                    <v-card-subtitle class="featuresTitle">{{ Tags.data.items[selectTags[5]].name }}</v-card-subtitle>
-                    <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.items[selectTags[5]].value[0]) }}</v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 1" :class="colors[1]" style="font-size: 16px;">
-                      {{ Tags.data.items[selectTags[5]].value[1] }}
-                    </v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 2" :class="colors[2]" style="font-size: 16px;">
-                      {{ Tags.data.items[selectTags[5]].value[2] }}
-                    </v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 3" :class="colors[3]" style="font-size: 16px;">
-                      {{ Tags.data.items[selectTags[5]].value[3] }}
-                    </v-card-text>
-                  </v-col>
-                  <v-divider vertical></v-divider>
-                </v-row>
-              </v-col>
-              <v-col cols="3">
-                <v-row>
-                  <v-col v-if="selectTags.length < 7">
-                    <v-card-subtitle class="featuresTitle"> {{ Tags.data.top8[6].name }}</v-card-subtitle>
-                    <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.top8[6].value[0]) }}</v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 1" :class="colors[1]" style="font-size: 16px;">{{
-                        Tags.data.top8[6].value[1]
-                      }}
-                    </v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 2" :class="colors[2]" style="font-size: 16px;">{{
-                        Tags.data.top8[6].value[2]
-                      }}
-                    </v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 3" :class="colors[3]" style="font-size: 16px;">{{
-                        Tags.data.top8[6].value[3]
-                      }}
-                    </v-card-text>
-                  </v-col>
-                  <v-col v-else>
-                    <v-card-subtitle class="featuresTitle">{{ Tags.data.items[selectTags[6]].name }}</v-card-subtitle>
-                    <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.items[selectTags[6]].value[0]) }}</v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 1" :class="colors[1]" style="font-size: 16px;">
-                      {{ Tags.data.items[selectTags[6]].value[1] }}
-                    </v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 2" :class="colors[2]" style="font-size: 16px;">
-                      {{ Tags.data.items[selectTags[6]].value[2] }}
-                    </v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 3" :class="colors[3] " style="font-size: 16px;">
-                      {{ Tags.data.items[selectTags[6]].value[3] }}
-                    </v-card-text>
-
-                  </v-col>
-                  <v-divider vertical></v-divider>
-                </v-row>
-              </v-col>
-              <v-col cols="3">
-                <v-row>
-                  <v-col v-if="selectTags.length < 8">
-                    <v-card-subtitle class="featuresTitle"> {{ Tags.data.top8[7].name }}</v-card-subtitle>
-                    <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.top8[7].value[0]) }}</v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 1" :class="colors[1]" style="font-size: 16px;">{{
-                        Tags.data.top8[7].value[1]
-                      }}
-                    </v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 2" :class="colors[2]" style="font-size: 16px;">{{
-                        Tags.data.top8[7].value[2]
-                      }}
-                    </v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 3" :class="colors[3]" style="font-size: 16px;">{{
-                        Tags.data.top8[7].value[3]
-                      }}
-                    </v-card-text>
-
-                  </v-col>
-                  <v-col v-else>
-                    <v-card-subtitle class="featuresTitle">{{ Tags.data.items[selectTags[7]].name }}</v-card-subtitle>
-                    <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.items[selectTags[7]].value[0]) }}</v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 1" :class="colors[1]" style="font-size: 16px;">
-                      {{ Tags.data.items[selectTags[7]].value[1] }}
-                    </v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 2" :class="colors[2]" style="font-size: 16px;">
-                      {{ Tags.data.items[selectTags[7]].value[2] }}
-                    </v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 3" :class="colors[3]" style="font-size: 16px;">
-                      {{ Tags.data.items[selectTags[7]].value[3] }}
-                    </v-card-text>
-
-                  </v-col>
                 </v-row>
               </v-col>
             </v-row>
@@ -432,170 +171,6 @@
           </v-container>
         </v-card> 
         
-        
-        <!--Top 8 features-->
-        <!-- CAN WE ALSO REFACTOR THIS INTO A FOR LOOP PLS AFTER MIDTERMS -->
-        <v-card style="margin-top: 45px" class="mx-auto" v-if="selectTags.length > 8">
-          <v-container>
-            <v-row>
-              <v-col cols="3">
-                <v-row>
-                  <v-col v-if="selectTags.length > 8">
-                    <v-card-subtitle class="featuresTitle">{{ Tags.data.items[selectTags[8]].name }}</v-card-subtitle>
-                    <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.items[selectTags[8]].value[0]) }}</v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 1" :class="colors[1]" style="font-size: 16px;">
-                      {{ Tags.data.items[selectTags[8]].value[1] }}
-                    </v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 2" :class="colors[2]" style="font-size: 16px;">
-                      {{ Tags.data.items[selectTags[8]].value[2] }}
-                    </v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 3" :class="colors[3]" style="font-size: 16px;">
-                      {{ Tags.data.items[selectTags[8]].value[3] }}
-                    </v-card-text>
-
-                  </v-col>
-                  <v-divider vertical></v-divider>
-                </v-row>
-              </v-col>
-              <v-col cols="3">
-                <v-row>
-                  <v-col v-if="selectTags.length > 9">
-                    <v-card-subtitle class="featuresTitle">{{ Tags.data.items[selectTags[9]].name }}</v-card-subtitle>
-                    <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.items[selectTags[9]].value[0]) }}</v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 1" :class="colors[1]" style="font-size: 16px;">
-                      {{ Tags.data.items[selectTags[9]].value[1] }}
-                    </v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 2" :class="colors[2]" style="font-size: 16px;">
-                      {{ Tags.data.items[selectTags[9]].value[2] }}
-                    </v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 3" :class="colors[3]" style="font-size: 16px;">
-                      {{ Tags.data.items[selectTags[9]].value[3] }}
-                    </v-card-text>
-                  </v-col>
-                  <v-divider vertical></v-divider>
-                </v-row>
-              </v-col>
-              <v-col cols="3">
-                <v-row>
-                  <v-col v-if="selectTags.length > 10">
-                    <v-card-subtitle class="featuresTitle">{{ Tags.data.items[selectTags[10]].name }}</v-card-subtitle>
-                    <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.items[selectTags[10]].value[0]) }}</v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 1" :class="colors[1]" tyle="font-size: 16px;">
-                      {{ Tags.data.items[selectTags[10]].value[1] }}
-                    </v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 2" :class="colors[2]" style="font-size: 16px;">
-                      {{ Tags.data.items[selectTags[10]].value[2] }}
-                    </v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 3" :class="colors[3]" style="font-size: 16px;">
-                      {{ Tags.data.items[selectTags[10]].value[3] }}
-                    </v-card-text>
-
-                  </v-col>
-                  <v-divider vertical></v-divider>
-                </v-row>
-              </v-col>
-              <v-col cols="3">
-                <v-row>
-                  <v-col v-if="selectTags.length > 11">
-                    <v-card-subtitle class="featuresTitle">{{ Tags.data.items[selectTags[11]].name }}</v-card-subtitle>
-                    <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.items[selectTags[11]].value[0]) }}</v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 1" :class="colors[1]" style="font-size: 16px;">
-                      {{ Tags.data.items[selectTags[11]].value[1] }}
-                    </v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 2" :class="colors[2]" style="font-size: 16px;">
-                      {{ Tags.data.items[selectTags[11]].value[2] }}
-                    </v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 3" :class="colors[3]" style="font-size: 16px;">
-                      {{ Tags.data.items[selectTags[11]].value[3] }}
-                    </v-card-text>
-
-                  </v-col>
-                  <v-divider vertical></v-divider>
-                </v-row>
-              </v-col>
-            </v-row>
-
-            <v-row>
-              <v-col cols="3">
-                <v-row>
-                  <v-col v-if="selectTags.length > 12">
-                    <v-card-subtitle class="featuresTitle">{{ Tags.data.items[selectTags[12]].name }}</v-card-subtitle>
-                    <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.items[selectTags[12]].value[0]) }}</v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 1" :class="colors[1]" style="font-size: 16px;">
-                      {{ Tags.data.items[selectTags[12]].value[1] }}
-                    </v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 2" :class="colors[2]" style="font-size: 16px;">
-                      {{ Tags.data.items[selectTags[12]].value[2] }}
-                    </v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 3" :class="colors[3]" style="font-size: 16px;">
-                      {{ Tags.data.items[selectTags[12]].value[3] }}
-                    </v-card-text>
-
-                  </v-col>
-                  <v-divider vertical></v-divider>
-                </v-row>
-              </v-col>
-              <v-col cols="3">
-                <v-row>
-                  <v-col v-if="selectTags.length > 13">
-                    <v-card-subtitle class="featuresTitle">{{ Tags.data.items[selectTags[13]].name }}</v-card-subtitle>
-                    <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.items[selectTags[13]].value[0]) }}</v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 1" :class="colors[1]" style="font-size: 16px;">
-                      {{ Tags.data.items[selectTags[13]].value[1] }}
-                    </v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 2" :class="colors[2]" style="font-size: 16px;">
-                      {{ Tags.data.items[selectTags[13]].value[2] }}
-                    </v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 3" :class="colors[3]" style="font-size: 16px;">
-                      {{ Tags.data.items[selectTags[13]].value[3] }}
-                    </v-card-text>
-
-                  </v-col>
-
-                  <v-divider vertical></v-divider>
-                </v-row>
-              </v-col>
-              <v-col cols="3">
-                <v-row>
-                  <v-col v-if="selectTags.length > 14">
-                    <v-card-subtitle class="featuresTitle">{{ Tags.data.items[selectTags[14]].name }}</v-card-subtitle>
-                    <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.items[selectTags[14]].value[0]) }}</v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 1" :class="colors[1]" style="font-size: 16px;">
-                      {{ Tags.data.items[selectTags[14]].value[1] }}
-                    </v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 2" :class="colors[2]" style="font-size: 16px;">
-                      {{ Tags.data.items[selectTags[14]].value[2] }}
-                    </v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 3" :class="colors[3]" style="font-size: 16px;">
-                      {{ Tags.data.items[selectTags[14]].value[3] }}
-                    </v-card-text>
-
-                  </v-col>
-                  <v-divider vertical></v-divider>
-                </v-row>
-              </v-col>
-              <v-col cols="3">
-                <v-row>
-                  <v-col v-if="selectTags.length > 15">
-                    <v-card-subtitle class="featuresTitle">{{ Tags.data.items[selectTags[15]].name }}</v-card-subtitle>
-                    <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.items[selectTags[15]].value[0]) }}</v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 1" :class="colors[1]" style="font-size: 16px;">
-                      {{ Tags.data.items[selectTags[15]].value[1] }}
-                    </v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 2" :class="colors[2]" style="font-size: 16px;">
-                      {{ Tags.data.items[selectTags[15]].value[2] }}
-                    </v-card-text>
-                    <v-card-text v-if="Tags.data.flag.length > 3" :class="colors[3]" style="font-size: 16px;">
-                      {{ Tags.data.items[selectTags[15]].value[3] }}
-                    </v-card-text>
-                  </v-col>
-                  <v-divider vertical></v-divider>
-                </v-row>
-              </v-col>
-
-            </v-row>
-          </v-container>
-        </v-card> <!--Next 8 features-->
         <!-- <div style="text-align: center; margin-top:40px"></div>  -->
 
         <v-alert
