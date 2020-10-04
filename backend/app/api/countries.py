@@ -68,7 +68,7 @@ def get_countries__(items:ItemList):
     data["flag"] = flags
     data["filter"] = constants.COUNTRY_FEATURE_CATEGORIES
     data["top8"] = top8
-    data["item"] = items
+    data["items"] = items
 
     endtime = time()
 
