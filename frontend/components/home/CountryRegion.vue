@@ -80,27 +80,56 @@
 
           <!-- XAVIER you start from here -->
           <v-row v-if="country && access==='Countries' ">
-            <!-- <v-col v-for="item in country.data.items"> -->
+          <div class="countrySearch">
+            <div class="countrySearchTitle">Select at least one country</div>
+            <v-autocomplete
+              v-model="countrySelect"
+              :items="country.data.items"
+              :item-disabled="countrySelect.length >= 4"
+              chips
+              multiple
+              rounded
+              filled
+              clearable
+              deletable-chips
+            ></v-autocomplete>
+
+            <v-card-subtitle class="errorMessage" v-if="countrySelect.length === 4">You have selected the maximum number of countries for
+              comparison
+            </v-card-subtitle>
+
+            <div class="resetSubmitButtons">
+              <v-btn class="button" depressed @click="countrySelect=[]">Reset All</v-btn>
+                <div v-if="countrySelect.length === 0">
+                  <v-btn class="button white--text" depressed color="#004D8E" @click="$emit('close',['close'])">Submit</v-btn>
+                </div>
+                <div v-else>
+                  <v-btn class="button white--text" depressed color="#004D8E" @click="$emit('close',['country', countrySelect])">Submit</v-btn>
+                </div>
+            </div>
+          </div>
+            <!-- <v-col v-for="item in country.data.items">
               <v-list
                 dense
               >
                 <v-list-item style="padding-top: 20px">
                   <v-list-item-content>
 
-                    <!-- <h2 class="continentTitle">{{ reg.header }}</h2> -->
+                    <h2 class="continentTitle">{{ reg.header }}</h2>
 
                     <ul>
                       <v-checkbox v-model="countrySelect" v-for='dist in country.data.items' :label='dist'
                                   :value='dist' :disabled="countrySelect.length >= 4">
                       </v-checkbox>
                     </ul>
-
+                    
                   </v-list-item-content>
                 </v-list-item>
               </v-list>
-            <!-- </v-col> -->
-          </v-row> <!--Listing the countries based on DB-->
+          </v-col>-->
+          </v-row>
 
+        <!--
         <div class="bottomBar">
           <v-card
             class="mx-auto elevation-0"
@@ -124,10 +153,10 @@
                 <div v-else>
                   <v-btn class="button white--text" depressed color="#004D8E" @click="$emit('close',['country', countrySelect])">Submit</v-btn>
                 </div>
-            </div> <!--Button for country-->
+            </div>
 
-          </v-card><!--Country Data-->
-        </div>
+          </v-card>
+        </div>-->
         </v-card>
 
       </v-dialog>
@@ -202,12 +231,11 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100%;
-    margin-bottom:50px;
   }
 
   .errorMessage {
     color:#d33232 !important;
+    text-align:center;
   }
 
   .selectedCountry {
@@ -215,6 +243,19 @@ export default {
     margin:0 20px 0 20px;
     font-size:20px;
     font-weight:700;
+  }
 
+  .countrySearch {
+    width:700px;
+    margin: 0 auto;
+  }
+
+  .countrySearchTitle {
+    color:#333333;
+    font-weight:700;
+    font-size:20px;
+    text-align:center;
+    margin-top:150px;
+    margin-bottom:15px;
   }
 </style>

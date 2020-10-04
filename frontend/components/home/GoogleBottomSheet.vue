@@ -132,7 +132,7 @@
                 <v-row>
                   <v-col v-if="selectTags.length < 1">
                     <v-card-subtitle class="featuresTitle"> {{ Tags.data.top8[0].name }}</v-card-subtitle>
-                    <v-card-text style="font-size: 16px;">{{ Tags.data.top8[0].value[0] }}</v-card-text>
+                    <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.top8[0].value[0]) }}</v-card-text>
                     <v-card-text v-if="Tags.data.flag.length > 1" :class="colors[1]" style="font-size: 16px;">{{
                         Tags.data.top8[0].value[1]
                       }}
@@ -148,7 +148,7 @@
                   </v-col>
                   <v-col v-else>
                     <v-card-subtitle class="featuresTitle">{{ Tags.data.items[selectTags[0]].name }}</v-card-subtitle>
-                    <v-card-text style="font-size: 16px;">{{ Tags.data.items[selectTags[0]].value[0] }}</v-card-text>
+                    <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.items[selectTags[0]].value[0]) }}</v-card-text>
                     <v-card-text v-if="Tags.data.flag.length > 1" :class="colors[1]" style="font-size: 16px;">
                       {{ Tags.data.items[selectTags[0]].value[1] }}
                     </v-card-text>
@@ -168,7 +168,7 @@
                 <v-row>
                   <v-col v-if="selectTags.length < 2">
                     <v-card-subtitle class="featuresTitle"> {{ Tags.data.top8[1].name }}</v-card-subtitle>
-                    <v-card-text style="font-size: 16px;">{{ Tags.data.top8[1].value[0] }}</v-card-text>
+                    <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.top8[1].value[0]) }}</v-card-text>
                     <v-card-text v-if="Tags.data.flag.length > 1" :class="colors[1]" style="font-size: 16px;">{{
                         Tags.data.top8[1].value[1]
                       }}
@@ -184,7 +184,7 @@
                   </v-col>
                   <v-col v-else>
                     <v-card-subtitle class="featuresTitle">{{ Tags.data.items[selectTags[1]].name }}</v-card-subtitle>
-                    <v-card-text style="font-size: 16px;">{{ Tags.data.items[selectTags[1]].value[0] }}</v-card-text>
+                    <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.items[selectTags[1]].value[0]) }}</v-card-text>
                     <v-card-text v-if="Tags.data.flag.length > 1" :class="colors[1]" style="font-size: 16px;">
                       {{ Tags.data.items[selectTags[1]].value[1] }}
                     </v-card-text>
@@ -204,7 +204,7 @@
                 <v-row>
                   <v-col v-if="selectTags.length < 3">
                     <v-card-subtitle class="featuresTitle"> {{ Tags.data.top8[2].name }}</v-card-subtitle>
-                    <v-card-text style="font-size: 16px;">{{ Tags.data.top8[2].value[0] }}</v-card-text>
+                    <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.top8[2].value[0]) }}</v-card-text>
                     <v-card-text v-if="Tags.data.flag.length > 1" :class="colors[1]" style="font-size: 16px;">{{
                         Tags.data.top8[2].value[1]
                       }}
@@ -220,7 +220,7 @@
                   </v-col>
                   <v-col v-else>
                     <v-card-subtitle class="featuresTitle">{{ Tags.data.items[selectTags[2]].name }}</v-card-subtitle>
-                    <v-card-text style="font-size: 16px;">{{ Tags.data.items[selectTags[2]].value[0] }}</v-card-text>
+                    <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.items[selectTags[2]].value[0]) }}</v-card-text>
                     <v-card-text v-if="Tags.data.flag.length > 1" :class="colors[1]" style="font-size: 16px;">
                       {{ Tags.data.items[selectTags[2]].value[1] }}
                     </v-card-text>
@@ -239,7 +239,7 @@
                 <v-row>
                   <v-col v-if="selectTags.length < 4">
                     <v-card-subtitle class="featuresTitle"> {{ Tags.data.top8[3].name }}</v-card-subtitle>
-                    <v-card-text style="font-size: 16px;">{{ Tags.data.top8[3].value[0] }}</v-card-text>
+                    <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.top8[3].value[0]) }}</v-card-text>
                     <v-card-text v-if="Tags.data.flag.length > 1" :class="colors[1]" style="font-size: 16px;">{{
                         Tags.data.top8[3].value[1]
                       }}
@@ -255,7 +255,7 @@
                   </v-col>
                   <v-col v-else>
                     <v-card-subtitle class="featuresTitle">{{ Tags.data.items[selectTags[3]].name }}</v-card-subtitle>
-                    <v-card-text style="font-size: 16px;">{{ Tags.data.items[selectTags[3]].value[0] }}</v-card-text>
+                    <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.items[selectTags[3]].value[0]) }}</v-card-text>
                     <v-card-text v-if="Tags.data.flag.length > 1" :class="colors[1]" style="font-size: 16px;">
                       {{ Tags.data.items[selectTags[3]].value[1] }}
                     </v-card-text>
@@ -275,7 +275,7 @@
                 <v-row>
                   <v-col v-if="selectTags.length < 5">
                     <v-card-subtitle class="featuresTitle"> {{ Tags.data.top8[4].name }}</v-card-subtitle>
-                    <v-card-text style="font-size: 16px;">{{ Tags.data.top8[4].value[0] }}</v-card-text>
+                    <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.top8[4].value[0]) }}</v-card-text>
                     <v-card-text v-if="Tags.data.flag.length > 1" :class="colors[1]" style="font-size: 16px;">{{
                         Tags.data.top8[4].value[1]
                       }}
@@ -291,7 +291,7 @@
                   </v-col>
                   <v-col v-else>
                     <v-card-subtitle class="featuresTitle">{{ Tags.data.items[selectTags[4]].name }}</v-card-subtitle>
-                    <v-card-text style="font-size: 16px;">{{ Tags.data.items[selectTags[4]].value[0] }}</v-card-text>
+                    <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.items[selectTags[4]].value[0]) }}</v-card-text>
                     <v-card-text v-if="Tags.data.flag.length > 1" :class="colors[1]" style="font-size: 16px;">
                       {{ Tags.data.items[selectTags[4]].value[1] }}
                     </v-card-text>
@@ -309,7 +309,7 @@
                 <v-row>
                   <v-col v-if="selectTags.length < 6">
                     <v-card-subtitle class="featuresTitle"> {{ Tags.data.top8[5].name }}</v-card-subtitle>
-                    <v-card-text style="font-size: 16px;">{{ Tags.data.top8[5].value[0] }}</v-card-text>
+                    <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.top8[5].value[0]) }}</v-card-text>
                     <v-card-text v-if="Tags.data.flag.length > 1" :class="colors[1]" style="font-size: 16px;">{{
                         Tags.data.top8[5].value[1]
                       }}
@@ -326,7 +326,7 @@
                   </v-col>
                   <v-col v-else>
                     <v-card-subtitle class="featuresTitle">{{ Tags.data.items[selectTags[5]].name }}</v-card-subtitle>
-                    <v-card-text style="font-size: 16px;">{{ Tags.data.items[selectTags[5]].value[0] }}</v-card-text>
+                    <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.items[selectTags[5]].value[0]) }}</v-card-text>
                     <v-card-text v-if="Tags.data.flag.length > 1" :class="colors[1]" style="font-size: 16px;">
                       {{ Tags.data.items[selectTags[5]].value[1] }}
                     </v-card-text>
@@ -344,7 +344,7 @@
                 <v-row>
                   <v-col v-if="selectTags.length < 7">
                     <v-card-subtitle class="featuresTitle"> {{ Tags.data.top8[6].name }}</v-card-subtitle>
-                    <v-card-text style="font-size: 16px;">{{ Tags.data.top8[6].value[0] }}</v-card-text>
+                    <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.top8[6].value[0]) }}</v-card-text>
                     <v-card-text v-if="Tags.data.flag.length > 1" :class="colors[1]" style="font-size: 16px;">{{
                         Tags.data.top8[6].value[1]
                       }}
@@ -360,7 +360,7 @@
                   </v-col>
                   <v-col v-else>
                     <v-card-subtitle class="featuresTitle">{{ Tags.data.items[selectTags[6]].name }}</v-card-subtitle>
-                    <v-card-text style="font-size: 16px;">{{ Tags.data.items[selectTags[6]].value[0] }}</v-card-text>
+                    <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.items[selectTags[6]].value[0]) }}</v-card-text>
                     <v-card-text v-if="Tags.data.flag.length > 1" :class="colors[1]" style="font-size: 16px;">
                       {{ Tags.data.items[selectTags[6]].value[1] }}
                     </v-card-text>
@@ -379,7 +379,7 @@
                 <v-row>
                   <v-col v-if="selectTags.length < 8">
                     <v-card-subtitle class="featuresTitle"> {{ Tags.data.top8[7].name }}</v-card-subtitle>
-                    <v-card-text style="font-size: 16px;">{{ Tags.data.top8[7].value[0] }}</v-card-text>
+                    <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.top8[7].value[0]) }}</v-card-text>
                     <v-card-text v-if="Tags.data.flag.length > 1" :class="colors[1]" style="font-size: 16px;">{{
                         Tags.data.top8[7].value[1]
                       }}
@@ -396,7 +396,7 @@
                   </v-col>
                   <v-col v-else>
                     <v-card-subtitle class="featuresTitle">{{ Tags.data.items[selectTags[7]].name }}</v-card-subtitle>
-                    <v-card-text style="font-size: 16px;">{{ Tags.data.items[selectTags[7]].value[0] }}</v-card-text>
+                    <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.items[selectTags[7]].value[0]) }}</v-card-text>
                     <v-card-text v-if="Tags.data.flag.length > 1" :class="colors[1]" style="font-size: 16px;">
                       {{ Tags.data.items[selectTags[7]].value[1] }}
                     </v-card-text>
@@ -425,7 +425,7 @@
                 <v-row>
                   <v-col v-if="selectTags.length > 8">
                     <v-card-subtitle class="featuresTitle">{{ Tags.data.items[selectTags[8]].name }}</v-card-subtitle>
-                    <v-card-text style="font-size: 16px;">{{ Tags.data.items[selectTags[8]].value[0] }}</v-card-text>
+                    <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.items[selectTags[8]].value[0]) }}</v-card-text>
                     <v-card-text v-if="Tags.data.flag.length > 1" :class="colors[1]" style="font-size: 16px;">
                       {{ Tags.data.items[selectTags[8]].value[1] }}
                     </v-card-text>
@@ -444,7 +444,7 @@
                 <v-row>
                   <v-col v-if="selectTags.length > 9">
                     <v-card-subtitle class="featuresTitle">{{ Tags.data.items[selectTags[9]].name }}</v-card-subtitle>
-                    <v-card-text style="font-size: 16px;">{{ Tags.data.items[selectTags[9]].value[0] }}</v-card-text>
+                    <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.items[selectTags[9]].value[0]) }}</v-card-text>
                     <v-card-text v-if="Tags.data.flag.length > 1" :class="colors[1]" style="font-size: 16px;">
                       {{ Tags.data.items[selectTags[9]].value[1] }}
                     </v-card-text>
@@ -462,7 +462,7 @@
                 <v-row>
                   <v-col v-if="selectTags.length > 10">
                     <v-card-subtitle class="featuresTitle">{{ Tags.data.items[selectTags[10]].name }}</v-card-subtitle>
-                    <v-card-text style="font-size: 16px;">{{ Tags.data.items[selectTags[10]].value[0] }}</v-card-text>
+                    <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.items[selectTags[10]].value[0]) }}</v-card-text>
                     <v-card-text v-if="Tags.data.flag.length > 1" :class="colors[1]" tyle="font-size: 16px;">
                       {{ Tags.data.items[selectTags[10]].value[1] }}
                     </v-card-text>
@@ -481,7 +481,7 @@
                 <v-row>
                   <v-col v-if="selectTags.length > 11">
                     <v-card-subtitle class="featuresTitle">{{ Tags.data.items[selectTags[11]].name }}</v-card-subtitle>
-                    <v-card-text style="font-size: 16px;">{{ Tags.data.items[selectTags[11]].value[0] }}</v-card-text>
+                    <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.items[selectTags[11]].value[0]) }}</v-card-text>
                     <v-card-text v-if="Tags.data.flag.length > 1" :class="colors[1]" style="font-size: 16px;">
                       {{ Tags.data.items[selectTags[11]].value[1] }}
                     </v-card-text>
@@ -503,7 +503,7 @@
                 <v-row>
                   <v-col v-if="selectTags.length > 12">
                     <v-card-subtitle class="featuresTitle">{{ Tags.data.items[selectTags[12]].name }}</v-card-subtitle>
-                    <v-card-text style="font-size: 16px;">{{ Tags.data.items[selectTags[12]].value[0] }}</v-card-text>
+                    <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.items[selectTags[12]].value[0]) }}</v-card-text>
                     <v-card-text v-if="Tags.data.flag.length > 1" :class="colors[1]" style="font-size: 16px;">
                       {{ Tags.data.items[selectTags[12]].value[1] }}
                     </v-card-text>
@@ -522,7 +522,7 @@
                 <v-row>
                   <v-col v-if="selectTags.length > 13">
                     <v-card-subtitle class="featuresTitle">{{ Tags.data.items[selectTags[13]].name }}</v-card-subtitle>
-                    <v-card-text style="font-size: 16px;">{{ Tags.data.items[selectTags[13]].value[0] }}</v-card-text>
+                    <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.items[selectTags[13]].value[0]) }}</v-card-text>
                     <v-card-text v-if="Tags.data.flag.length > 1" :class="colors[1]" style="font-size: 16px;">
                       {{ Tags.data.items[selectTags[13]].value[1] }}
                     </v-card-text>
@@ -542,7 +542,7 @@
                 <v-row>
                   <v-col v-if="selectTags.length > 14">
                     <v-card-subtitle class="featuresTitle">{{ Tags.data.items[selectTags[14]].name }}</v-card-subtitle>
-                    <v-card-text style="font-size: 16px;">{{ Tags.data.items[selectTags[14]].value[0] }}</v-card-text>
+                    <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.items[selectTags[14]].value[0]) }}</v-card-text>
                     <v-card-text v-if="Tags.data.flag.length > 1" :class="colors[1]" style="font-size: 16px;">
                       {{ Tags.data.items[selectTags[14]].value[1] }}
                     </v-card-text>
@@ -561,7 +561,7 @@
                 <v-row>
                   <v-col v-if="selectTags.length > 15">
                     <v-card-subtitle class="featuresTitle">{{ Tags.data.items[selectTags[15]].name }}</v-card-subtitle>
-                    <v-card-text style="font-size: 16px;">{{ Tags.data.items[selectTags[15]].value[0] }}</v-card-text>
+                    <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.items[selectTags[15]].value[0]) }}</v-card-text>
                     <v-card-text v-if="Tags.data.flag.length > 1" :class="colors[1]" style="font-size: 16px;">
                       {{ Tags.data.items[selectTags[15]].value[1] }}
                     </v-card-text>
@@ -723,8 +723,18 @@ export default {
   },
 
   methods: {
-    
-    
+    formatValue(num) {
+      return Math.abs(Number(num)) >= 1.0e+9
+
+      ? Math.abs(Number(num)) / 1.0e+9 + " billion"
+
+      : Math.abs(Number(num)) >= 1.0e+6
+
+      ? Math.abs(Number(num)) / 1.0e+6 + " million"
+
+      : +(Math.round(num + "e+4")  + "e-4");
+    },
+
     topThreeOnClose(data) {
 
       this.$axios.$post( process.env.BACKEND + '/api/countries/', {
@@ -735,7 +745,6 @@ export default {
         this.$emit('load-coordinates', this.Tags.data.coordinates)
       })
     },
-
 
     onClose(acceptance) {
 
