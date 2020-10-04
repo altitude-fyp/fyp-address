@@ -692,7 +692,6 @@
         </v-card>
       </v-col>
 
-      <h1>{{countries}}</h1>
 
       <country-region :dialog="dialog" :access="access" @close="onClose"/>
     </v-row>
@@ -747,15 +746,19 @@ export default {
       : +(Math.round(num + "e+4")  + "e-4");
     },
 
-    topThreeOnClose(data) {
+    topThreeOnClose(country_name) {
 
-      this.$axios.$post( process.env.BACKEND + '/api/countries/', {
-        "countries": [data]
-      }).then((Tags) => {
-        this.Tags = Tags
-        this.countries = [data]
-        this.$emit('load-coordinates', this.Tags.data.coordinates)
-      })
+      // this function is called when the user clicks any of the flags in the top 3 countries section
+
+      this.getEverything([country_name])
+
+      // this.$axios.$post( process.env.BACKEND + '/api/countries/', {
+      //   "countries": [data]
+      // }).then((Tags) => {
+      //   this.Tags = Tags
+      //   this.countries = [data]
+      //   this.$emit('load-coordinates', this.Tags.data.coordinates)
+      // })
     },
 
     onClose(acceptance) {
