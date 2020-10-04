@@ -134,7 +134,7 @@
             <v-list-item link>
               <v-list-item-content>
                 <v-list-item-title class="title">{{ username }}</v-list-item-title>
-                <v-list-item-subtitle>john@vuetifyjs.com</v-list-item-subtitle>
+                <v-list-item-subtitle>profalan@citibank.com</v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
 
@@ -202,7 +202,7 @@ export default {
     return {
       selectNav: 1,
       drawer: false,
-      username: 'Xavier Lur',
+      username: 'Alan Megargel',
       activeBtn: 0,
       items: [
         {title: 'Home', icon: 'mdi-home', link: '/'},
