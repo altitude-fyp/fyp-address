@@ -14,7 +14,9 @@
               </v-col>
             </v-row>
             <v-row>
-              <v-img :src="Tags.data.flag[0]" aspect-ratio="2" contain/>
+              <div class="countryFlagSidebarSection">
+                <img class="countryFlagSidebar" :src="Tags.data.flag[0]" aspect-ratio="2" contain/>
+              </div>
             </v-row>
 
           </div>
@@ -22,13 +24,15 @@
             <div v-for="flagAccess in Tags.data.flag">
               <v-row class="mx-auto">
                 <v-col class="mx-auto">
-                  <div :class="'overline' && colors[Tags.data.flag.indexOf(flagAccess)]">
+                  <div class="sidebarCountryName">
                     {{ countries[Tags.data.flag.indexOf(flagAccess)] }}
                   </div>
                 </v-col>
               </v-row>
               <v-row>
-                <v-img :src="flagAccess" aspect-ratio="2" contain/>
+                <div class="countryFlagSidebarSection">
+                  <img class="countryFlagSidebar" :src="flagAccess" aspect-ratio="2" contain/>
+                </div>
               </v-row>
             </div>
           </div>
@@ -464,6 +468,18 @@ export default {
 
   .countryFlagIndicators {
     display: flex;
+  }
+
+  .countryFlagSidebar {
+    height:48px;
+    margin-bottom:10px;
+  }
+
+  .countryFlagSidebarSection {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin:0 auto;
   }
 
 </style>
