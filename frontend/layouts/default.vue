@@ -10,7 +10,7 @@
           <v-app-bar-nav-icon  @click="drawer = true"></v-app-bar-nav-icon>
         
           <v-toolbar-title>
-            <img src="https://i.imgur.com/22y1Cn7.png" height="40"/>
+            <img :src="require('../images/citi_logo.png')" height="40"/>
             <span class="logoTitle">Address Analytics Tool</span>
           </v-toolbar-title>
 
@@ -127,7 +127,7 @@
           >
             <v-list-item>
               <v-list-item-avatar>
-                <v-img src="https://cdn.vuetifyjs.com/images/john.png"></v-img>
+                <v-img :src="require('../images/alanmegargel.png')" />
               </v-list-item-avatar>
             </v-list-item>
 
