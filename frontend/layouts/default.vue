@@ -186,7 +186,7 @@
   .v-list-item__title {
     white-space: normal !important;
     margin-top: 10px !important;
-    margin-bottom: 10px !important;
+    padding-bottom: 10px !important;
   }
   .v-btn {
     text-transform: none !important;
