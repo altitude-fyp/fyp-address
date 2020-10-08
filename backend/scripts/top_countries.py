@@ -1,6 +1,11 @@
-from mongodb_helper import *
+"""
+this script computes the cosine similarity matrix of every country
+vs every other country
 
-from app import constants
+"""
+
+from helpers.common import *
+from mongodb_helper import *
 from copy import deepcopy
 
 def cosine_similarity(a,b):
@@ -43,31 +48,30 @@ def cosine_similarity(a,b):
     dotab = dot(a,b)
     maga, magb = magnitude(a), magnitude(b)
     
-    out = dotab / maga / magb if 0 not in [maga, magb] else 0
+    return dotab / maga / magb if 0 not in [maga, magb] else 0
 
-    return out**8
+def compute_top_countries_matrix():
 
-def get_top_countries(countryname):
-    # cossim_matrix = pickle.load(open("pickled/top_countries_cossim_matrix.sav", "rb"))
-    # top3 = cossim_matrix[countryname][:3]
-    # return [{"name":name, "score":score, "flag":constants.COUNTRIES[name]["flag"]} for name,score in top3]
+    print("computing top countries cosine similarity matrix", end=" ")
 
     db = get_database()
-    embeddings = {}
+    embeddings_collection = db["test.aggregate.embeddings"]
 
-    for i in db["test.aggregate.embeddings"].find():
+    embeddings = {}
+    for i in embeddings_collection.find():
         embeddings[i["_id"]] = i["data"]
 
-    countrydata = embeddings[countryname]
-    countrydata = {k:v for k,v in countrydata.items() if k[:5] == "Finan"}
-
-    out = []
+    out = {cname:[] for cname in embeddings}
+    
     for cname, cdata in embeddings.items():
-        cdata = {k:v for k,v in cdata.items() if k[:5] == "Finan"}
-        out.append((cname, cosine_similarity(countrydata, cdata)))
+        for cname2, cdata2 in embeddings.items():
+            score = cosine_similarity(cdata, cdata2)
+            if cname != cname2:
+                out[cname].append((cname2, score))
 
-    out.sort(key=lambda x:-x[-1])
+    for cname, scores in out.items():
+        scores.sort(key=lambda x:-x[-1])
 
-    out = [{"name":name, "score":score, "flag": constants.COUNTRIES[name]["flag"]} for name, score in out[1:4]]
+    pickle.dump(out, open("pickled/top_countries_cossim_matrix.sav", "wb"))
 
-    return out
+    print("- finished")

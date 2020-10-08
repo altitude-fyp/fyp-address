@@ -1,10 +1,11 @@
 from app import app
 from mongodb_helper import *
-from .constants import *
 from typing import List
 from pydantic import BaseModel
 from collections import defaultdict
 from statsmodels.tsa.ar_model import AutoReg
+from time import time
+import pickle
 
 class ItemList(BaseModel):
     countries: List[str]
@@ -18,8 +19,21 @@ GRAPH_SHOWN = {
 
 @app.post("/api/charts/")
 def get_chart_data(items: ItemList):
+
+    if len(items.countries) == 1 and items.countries[0] == "Singapore":
+        try:
+            starttime = time()
+            out = pickle.load(open("pickled/default_post_api_charts.sav", "rb"))
+            endtime = time()
+
+            out["time taken"] = float(endtime-starttime)
+            return out
+        except: pass
+
+    starttime = time()
+
     db = get_database()
-    chart_collection = db["aggregate.charts"]
+    chart_collection = db["test.aggregate.charts"]
     out = {"status": "error", "data": {}}
 
     combined_raw_data_list = []
@@ -36,6 +50,11 @@ def get_chart_data(items: ItemList):
         result = format_chart_output(dd, items.countries)
         out["status"] = "success"
         out["data"]["items"] = result
+
+    endtime = time()
+
+    out["time taken"] = float(endtime-starttime)
+    
     return out
 
 def format_chart_output(data_dict, countries_list):

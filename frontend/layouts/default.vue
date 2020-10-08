@@ -8,8 +8,11 @@
 
         >
           <v-app-bar-nav-icon  @click="drawer = true"></v-app-bar-nav-icon>
-
-          <v-toolbar-title>{{ username }}</v-toolbar-title>
+        
+          <v-toolbar-title>
+            <img :src="require('../images/citi_logo.png')" height="40"/>
+            <span class="logoTitle">Address Analytics Tool</span>
+          </v-toolbar-title>
 
           <v-spacer></v-spacer>
 
@@ -124,14 +127,14 @@
           >
             <v-list-item>
               <v-list-item-avatar>
-                <v-img src="https://cdn.vuetifyjs.com/images/john.png"></v-img>
+                <v-img :src="require('../images/alanmegargel.png')" />
               </v-list-item-avatar>
             </v-list-item>
 
             <v-list-item link>
               <v-list-item-content>
                 <v-list-item-title class="title">{{ username }}</v-list-item-title>
-                <v-list-item-subtitle>john@vuetifyjs.com</v-list-item-subtitle>
+                <v-list-item-subtitle>profalan@citibank.com</v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
 
@@ -183,7 +186,7 @@
   .v-list-item__title {
     white-space: normal !important;
     margin-top: 10px !important;
-    margin-bottom: 10px !important;
+    padding-bottom: 10px !important;
   }
   .v-btn {
     text-transform: none !important;
@@ -199,15 +202,16 @@ export default {
     return {
       selectNav: 1,
       drawer: false,
-      username: 'Xavier Lur',
+      username: 'Alan Megargel',
       activeBtn: 0,
       items: [
         {title: 'Home', icon: 'mdi-home', link: '/'},
         {title: 'Analytics', icon: 'mdi-chart-areaspline',link: '/analytics'},
-        {title: 'Scheduled Job', icon: 'mdi-history',link: '/scheduledJob'},
+        {title: 'Non-performing Loans', icon: 'mdi-history',link: '/scheduledJob'},
+        // {title: 'Scheduled Job', icon: 'mdi-history',link: '/scheduledJob'},
         {title: 'Notifications', icon: 'mdi-bell',link: '/notifications'},
-        {title: 'User Management', icon: 'mdi-account',link: '/userManagement'},
-        {title: 'Chatbot', icon: 'mdi-chat', link: '/chatbot'},
+        // {title: 'User Management', icon: 'mdi-account',link: '/userManagement'},
+        // {title: 'Chatbot', icon: 'mdi-chat', link: '/chatbot'},
         {title: 'Settings', icon: 'mdi-cog', link: '/Settings'},
       ],
       notifications: [
@@ -236,3 +240,10 @@ export default {
   },
 }
 </script>
+<style scoped>
+  .logoTitle {
+    color:#215085;
+    font-weight:700;
+    margin-left:10px;
+  }
+</style>

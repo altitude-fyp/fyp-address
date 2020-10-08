@@ -1,53 +1,52 @@
 # Backend application for FYP address
 
-## Environment set-up
+## Environment Set-up
+1. create .env file
+2. Create virtual python environment
 ```
-cd backend
-
-(Create a python virtual environment)
-python3 -m venv env (for MacOS)
-python -m venv env (for windows)
-
-(Activate your python virtual environment)
+python3 -m venv env
+```
+3. Activate venv
+```
 source env/bin/activate
-
-(Install python dependencies needed by the app)
+``` 
+4. install dependencies on venv
+```
 pip3 install -r requirements.txt
-
+```
+5. run scripts/run.py
+```
+python3 scripts/run.py
+```
+6. run automated test
+```
+pytest tests/run.py
 ```
 
 ## Running fastapi app 
+
+Running for production
+```
+uvicorn app:app --workers 4
+```
+
+Running for development purposes
 ```
 uvicorn app:app --reload
-```
+``` 
+- the "--reload" argument reruns the entire app if there are any changes in code base
 
 visit localhost:8000 to visit app
 visit localhost:8000/docs to see swagger UI (auto-generated)
 
-## API
+## Ubuntu help
 
-1. Get all countries
+1. finding pid of app running on port number
 ```
-/api/countries
+sudo lsof -t -i:<port number>
 ```
-Returns country-level data for all countries 
+2. killing pid / killing app running on port
+```
+sudo kill <pid from step 1>
+```
 
-2. Get country
-```
-/api/countries/{country_name}
-```
-Returns country-level data for 1 country
-
-3. Get all regions in country
-```
-/api/regions/{country_name}
-```
-Returns region-level data for all regions in 1 country
-
-4. Get Region
-```
-/api/regions/{country_name}/{region_name}
-```
-Returns region-level data for 1 region in 1 country
-
-5. TBC

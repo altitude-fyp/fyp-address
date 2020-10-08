@@ -1,4 +1,4 @@
 env
 .env
-analytics/models
 *.sav
+analytics_scripts/pickled

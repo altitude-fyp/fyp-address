@@ -11,7 +11,7 @@
          disableDefaultUi: false
        }"
       :center="center"
-      :zoom="12"
+      :zoom="2"
       style="min-width: 100%; min-height: 500px;"
     >
       <!--if you require markers, unpack this-->

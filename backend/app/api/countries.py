@@ -1,88 +1,100 @@
+from time import time
 from app import app
 from mongodb_helper import *
-from .constants import *
 from pydantic import BaseModel
 from collections import defaultdict
 from typing import List
+import pickle
+
+from app import constants
 
 class ItemList(BaseModel):
     countries: List[str]
 
 @app.get("/api/countries/")
-def get_countries_list():
+def get_countries_():
+    """
+    Return a list of all countries sorted in aphabetical order
+    """
+    return {
+        "status": "success",
+        "data": {
+            "items": sorted(list(constants.COUNTRIES.keys()))
+        }
+    }    
+
+def get_country(cname):
     db = get_database()
-    constant_collection = db["constant"]
-    data = constant_collection.find_one({"_id": "continents"})
-
-    out = {"status": "error", "data": {}}
-    if data:
-        out["status"] = "success"
-        out["data"]["items"] = data["data"]
+    out = db["test.aggregate.embeddings"].find_one({"_id": cname})["data"]
+    
     return out
-
-def format_countries_filter(data_dict):
-    data_list = []
-    for key, value in data_dict.items():
-        data_list.append(key)
-    return data_list
-
 
 @app.post("/api/countries/")
-def get_countries_data(items: ItemList):
-    db = get_database()
-    aggregate_countries_collection = db["aggregate.embeddings"]
-    coordinates = get_coordinates()
-    flag = get_flag()
-    out = {"status": "error", "data": {}}
+def get_countries__(items:ItemList):
+    """
+    Return country data for frontend application 
+    """
+    countries = items.countries
 
-    combined_raw_data_list = []
-    coordinates_list = []
-    flag_list= []
-    for country_name in items.countries:
-        data = aggregate_countries_collection.find_one({"_id": country_name})["data"]
-        combined_raw_data_list.append(data)
-        coordinates_list.append(coordinates[country_name])
-        flag_list.append(flag[country_name])
+    # if input countries == ["Singpaore"] (the default), returns pickled object
+    if len(countries) == 1 and countries[0] == "Singapore":
+        try:
+            starttime = time()
+            out = pickle.load(open("pickled/default_post_api_countries.sav", "rb"))
+            endtime = time()
 
-    dd = defaultdict(list)
-    for d in combined_raw_data_list:
-        for key, value in d.items():
-            dd[key].append(value)
+            out["time taken"] = float(endtime-starttime)
+            return out
+        except: pass
 
-    if data:
-        result = format_countries_data(dd)
-        out["status"] = "success"
-        out["data"]["coordinates"] = coordinates_list
-        out["data"]["flag"] = flag_list
-        out["data"]["filter"] = get_filter_list()
-        out["data"]["top8"] = result[1]
-        out["data"]["items"] = result[0]
-    return out
+    starttime = time()
 
-def format_countries_data(data_dict):
-    data_list = []
-    top8_list = []
-    top8_filter = ["Gdp nominal", "Hdi", "Financial Development Index", "Consumer Price Index, All items",
-                   "Population total", "Area total", "Unemployment rate", "Life expectancy (overall)"]
-    master_list = get_master_filter_list()
-    for item in master_list:
-        obj = {}
-        obj["name"] = item
-        obj["value"] = data_dict[item]
-        data_list.append(obj)
+    data = {}
 
-        if item in top8_filter:
-            top8_list.append(obj)
-    return [data_list, top8_list]
+    coordinates = [{"lat":constants.COUNTRIES[country]["lat"], "long": constants.COUNTRIES[country]["lon"]} for country in countries]
+    flags = [constants.COUNTRIES[country]["flag"] for country in countries]
+    
+    countries = {cname:get_country(cname) for cname in countries}
 
-def get_coordinates():
-    db = get_database()
-    constant_collection = db["constant"]
-    data = constant_collection.find_one({"_id": "coordinates"})
-    return data["data"]
+    top8cat = [
+        "Gdp nominal", "Hdi", "Financial Development Index", "Consumer Price Index, All items",
+        "Population total", "Gini", "Unemployment rate", "Life expectancy (overall)"
+    ]
 
-def get_flag():
-    db = get_database()
-    constant_collection = db["constant"]
-    data = constant_collection.find_one({"_id": "flag"})
-    return data["data"]
+    top8 = [{"name":cat, "value":[cdata.get(cat, None) for cname, cdata in countries.items()]} for cat in top8cat]
+    items = [{"name":fname, "value":[countries[cname][fname] for cname in countries]} for fname, fdata in list(countries.values())[0].items()]
+
+    data["coordinates"] = coordinates
+    data["flag"] = flags
+    data["filter"] = constants.COUNTRY_FEATURE_CATEGORIES
+    data["top8"] = top8
+    data["items"] = items
+
+    features = [i for o in data["filter"] for i in o["value"]]
+    features = {f:i for i,f in enumerate(features)}
+
+    data["items"].sort(key=lambda x:features[x["name"]])
+
+    endtime = time()
+
+    return {
+        "status": "success",
+        "time taken": float(endtime-starttime),
+        "data": data
+    }    
+
+@app.post("/api/csv/")
+def get_csv_data(items:ItemList):
+    countries = items.countries
+    countries_data = [get_country(cname) for cname in countries]
+    
+    for i in range(len(countries)):
+
+        temp = countries_data[i]
+        out = {"country": countries[i]}
+        for k,v in temp.items():
+            out[k] = v
+        
+        countries_data[i] = out
+
+    return countries_data

@@ -2,6 +2,7 @@ import pickle
 from app import app
 from .analytics_helper.top_countries import *
 
+# UNUSED FOR NOW
 @app.get("/api/analytics/top_features/{n}")
 def get_top_features(n: int):
     """
@@ -19,10 +20,21 @@ def get_top_features(n: int):
     }
 
 @app.get("/api/analytics/top_countries/{country_name}")
-def get_top_countries(country_name: str):
-    out = {"status": "error", "data": {}}
-    data = top_countries(country_name)
-    if data:
-        out["status"] = "success"
-        out["data"]["items"] = data
-    return out
+def get_top_countries_(country_name: str):
+    """
+    Get top 3 similar countries
+    """
+    try:
+        return {
+            "status": "success",
+            "data": {
+                "items": get_top_countries(country_name)
+            }
+        }
+    
+    except Exception as err:
+        return {
+            "status": "failure",
+            "error": str(err),
+        }
+    

@@ -12,3 +12,24 @@ def test_dotenv():
     checks if .env file is present in backend directory
     """
     assert ".env" in os.listdir(home)
+
+def test_env():
+    """
+    checks if env folder is present in backend directory
+    """
+    assert "env" in os.listdir(home)
+
+def test_pickled_folder_exist():
+    """
+    checks if pickled folder is present in backend directory
+    """
+    assert "pickled" in os.listdir(home)
+
+    pickled = home  + "/pickled"
+    pdir = os.listdir(pickled)
+
+    assert "all_countries.sav" in pdir
+    assert "default_post_api_charts.sav" in pdir
+    assert "default_post_api_countries.sav" in pdir
+
+    

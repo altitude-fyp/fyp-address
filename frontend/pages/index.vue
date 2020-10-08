@@ -2,7 +2,7 @@
   <!--This is the main page where it is just '/'-->
   <v-app>
     <google-map :coordinates="coordinates"/>
-    <c-s-v-search/>
+    <!-- <c-s-v-search/> -->
     <GoogleBottomSheet @load-coordinates="showMarkers"/>
   </v-app>
 </template>
