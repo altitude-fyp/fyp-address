@@ -7,12 +7,12 @@ Downloads raw imf data and stores in mongodb
 adding to sys.path to import data-collection/mongodb_helper.py
 """
 import sys
-from helpers.download_raw_helper import *
-from mongodb_helper import *
 
 here = sys.path[0]
 sys.path.append(here[:len(here)-len("/imf")])
 
+from helpers.download_raw_helper import *
+from mongodb_helper import *
 
 if __name__ == "__main__":
 

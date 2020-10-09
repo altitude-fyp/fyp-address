@@ -7,12 +7,12 @@ Downloads raw worldbank data and stores in mongodb
 adding to sys.path to import data-collection/mongodb_helper.py
 """
 import sys
-from helpers.download_raw_helper import *
-from mongodb_helper import *
 
 here = sys.path[0]
 sys.path.append(here[:len(here)-len("/worldbank")])
 
+from helpers.download_raw_helper import *
+from mongodb_helper import *
 
 if __name__ == "__main__":
 
@@ -23,8 +23,6 @@ if __name__ == "__main__":
     print(countries_to_add)
 
     for country in countries_to_add:
-        data = converted[country]
+        data = all_data[country]
 
         data = {"_id": country, "data": data}
-
-        mongo_upsert(data=data, collection_name="worldbank", replacement_pattern={"_id": country})
