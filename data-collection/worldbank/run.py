@@ -6,6 +6,7 @@ Downloads raw worldbank data and stores in mongodb
 """
 adding to sys.path to import data-collection/mongodb_helper.py
 """
+
 import sys
 
 here = sys.path[0]
@@ -15,14 +16,18 @@ from helpers.download_raw_helper import *
 from mongodb_helper import *
 
 if __name__ == "__main__":
-
+    
+    COLLECTION_NAME = "worldbank"
+    mongo_clear(COLLECTION_NAME)
     all_data = get_worldbank_data()
 
-    countries_to_add = all_data.keys()
+    for cname, cdata in all_data.items():
+        out = {
+        "_id": cname,
+        "data": cdata
+        }
 
-    print(countries_to_add)
+        print("inserting into mongodb:", cname, " "*50, end="\r")
+        mongo_insert(out, COLLECTION_NAME)
 
-    for country in countries_to_add:
-        data = all_data[country]
-
-        data = {"_id": country, "data": data}
+        print("\ndone")

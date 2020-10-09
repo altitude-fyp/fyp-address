@@ -75,5 +75,6 @@ def get_worldbank_data():
                    for hdr in data.columns]
 
     data.drop('index', axis='columns', inplace=True)
+    data = data.dropna()
 
     return create_dict(data['SeriesName'], data['Country'], data['Year'],data['Value'])
