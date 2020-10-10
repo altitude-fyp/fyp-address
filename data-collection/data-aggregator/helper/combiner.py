@@ -2,9 +2,9 @@ from copy import deepcopy
 from helper.nlp import *
 from helper.preprocessor import preprocess, check_preprocess
 
-def combine(dbpedia, wikipedia, imf):
+def combine(dbpedia, wikipedia, imf, worldbank):
     """
-    input: dbpedia, wikipedia and imf datasets
+    input: dbpedia, wikipedia, imf and worldbank datasets
     output: aggregate.embeddings, aggregate.charts and aggregate.countries
 
         1. aggregate.countries
@@ -53,10 +53,46 @@ def combine(dbpedia, wikipedia, imf):
 
         return out, unmapped
 
+    def get_worldbank_dbpedia_mappings(dbpedia, worldbank, threshold=0.85):
+        """
+        output: dictionary where
+                    key = imf country
+                    value corresponding dbpedia country
+
+            - country names are inconsistent, so this matches country naems 
+                from different datasets
+            - pick only countries where imf target variables are present 
+        """
+
+        t1 = "Financial, Financial Soundness Indicators, Core Set, Deposit Takers, Asset Quality, Non-performing Loans to Total Gross Loans, Percent"
+        t2 = "Financial, Financial Soundness Indicators, Core Set, Deposit Takers, Capital Adequacy, Non-performing Loans Net of Provisions to Capital, Percent"
+
+        out = {}
+        unmapped = []
+
+        for worldbank_cname, worldbank_cdata in worldbank.items():
+            
+            if t1 not in worldbank_cdata or t2 not in worldbank_cname:
+                continue
+
+            best_dbpedia_cname, score = match(worldbank_cname, dbpedia)
+
+            if score > threshold:
+                out[imf_cname] = best_dbpedia_cname
+
+            else:
+                unmapped.append((worldbank_cname, best_dbpedia_cname, score))
+
+        return out, unmapped
+
     imf_dbpedia_mappings, unmapped_imf_countries = get_imf_dbpedia_mappings(dbpedia, imf)
 
     print("no. unmapped countries in IMF dataset:", len(unmapped_imf_countries))
 
+    worldbank_dbpedia_mappings, unmapped_imf_countries = get_worldbank_dbpedia_mappings(dbpedia, worldbank)
+
+    print("no. unmapped countries in Worldbank dataset:", len(unmapped_imf_countries))
+    
     embeddings = {k:dbpedia[k] for k in imf_dbpedia_mappings.values()}
     charts = {k:{} for k in imf_dbpedia_mappings.values()}
 
@@ -100,6 +136,17 @@ def combine(dbpedia, wikipedia, imf):
 
             latest = sorted([(k,v) for k,v in imfv.items()], key=lambda x:x[0])[-1][-1]
             embeddings[dbpedia_cname][imfk] = latest
+
+    for worldbank_cname, dbpedia_cname in worldbank_dbpedia_mappings.items():
+    
+        for worldbankk, worldbankv in worldbank[worldbank_cname].items():
+
+            worldbankv = {k:float(v) for k,v in worldbankv.items()}
+
+            charts[dbpedia_cname][worldbankk] = worldbankv
+
+            latest = sorted([(k,v) for k,v in worldbankv.items()], key=lambda x:x[0])[-1][-1]
+            embeddings[dbpedia_cname][worldbankk] = latest
 
     assert len(embeddings) == len(charts) and len(embeddings) == len(countries)
 

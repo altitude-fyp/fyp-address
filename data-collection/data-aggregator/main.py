@@ -13,18 +13,21 @@ from helper.common import *
 from cleaner.dbpedia_cleaner import clean_dbpedia
 from cleaner.wikipedia_cleaner import clean_wikipedia
 from cleaner.imf_cleaner import clean_imf
+from cleaner.worldbank_cleaner import clean_worldbank
 from helper.combiner import *
 
 dbpedia = pickle.load(open("pickled/dbpedia_countries.sav", "rb"))
 wikipedia = pickle.load(open("pickled/wikipedia.sav", "rb"))
 imf = pickle.load(open("pickled/imf.sav", "rb"))
+worldbank = pickle.load(open("pickled/worldbank.sav", "rb"))
 
 # cleaning all raw data sources
 dbpedia = clean_dbpedia(dbpedia)
 wikipedia = clean_wikipedia(wikipedia)
 imf = clean_imf(imf)
+worldbank = clean_worldbank(worldbank)
 
-countries, charts, embeddings = combine(dbpedia, wikipedia, imf)
+countries, charts, embeddings = combine(dbpedia, wikipedia, imf,worldbank)
 
 from helper.db_insert import *
 
