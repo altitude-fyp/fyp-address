@@ -27,7 +27,7 @@ wikipedia = clean_wikipedia(wikipedia)
 imf = clean_imf(imf)
 worldbank = clean_worldbank(worldbank)
 
-countries, charts, embeddings = combine(dbpedia, wikipedia, imf,worldbank)
+countries, charts, embeddings = combine(dbpedia, wikipedia, imf, worldbank)
 
 from helper.db_insert import *
 
@@ -35,3 +35,4 @@ insert_into_db(data=countries, collection_name="test.aggregate.countries")
 insert_into_db(data=charts, collection_name="test.aggregate.charts")
 insert_into_db(data=embeddings, collection_name="test.aggregate.embeddings")
 
+print("\ndone\n")
