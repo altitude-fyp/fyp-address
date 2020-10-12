@@ -31,8 +31,8 @@ countries, charts, embeddings = combine(dbpedia, wikipedia, imf, worldbank)
 
 from helper.db_insert import *
 
-insert_into_db(data=countries, collection_name="test.aggregate.countries")
-insert_into_db(data=charts, collection_name="test.aggregate.charts")
-insert_into_db(data=embeddings, collection_name="test.aggregate.embeddings")
+insert_into_db(data=countries, collection_name="aggregate.countries")
+insert_into_db(data=charts, collection_name="aggregate.charts")
+insert_into_db(data=embeddings, collection_name="aggregate.embeddings")
 
 print("\ndone\n")
