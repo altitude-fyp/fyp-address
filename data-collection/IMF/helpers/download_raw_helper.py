@@ -84,7 +84,6 @@ def get_npl_countries():
                     if obs_value == 0 or obs_value == None:
                         empty = True
                 if empty == False:
-                    print(cleaned_data)
                     fsi_countries[country_indicators['@value']][must_indicators[indicator]] = cleaned_data
             except:
                 pass
@@ -92,23 +91,17 @@ def get_npl_countries():
     finalised_countries = []
     
     for country in fsi_countries:
-        if (len(fsi_countries[country])) >= 2:
+        if (len(fsi_countries[country])) >= 0:
             finalised_countries.append(country)
 
     return finalised_countries
-
-chosen_indicators = {'APDREO':['LUR','PCPI_PCH','PCPIE_PCH','NGDP_R_PPP_PC_PCH'],
-                     'CPI':['PCPI_IX'], 
-     'FAS':['FCIODD_NUM','FCIOFI_NUM','FCIODU_NUM','FCIODMF_NUM','FCNODC_NUM','FCRODC_PE_NUM' ,'FCRODU_PE_NUM',
-            'FCSODCG_GDP_PT' ,'FCBODC_NUM'], 
-     'FDI':['FD_FD_IX', 'FD_FIA_IX', 'FD_FID_IX', 'FD_FIE_IX', 'FD_FI_IX','FD_FMA_IX' ,'FD_FMD_IX','FD_FME_IX', 
-            'FD_FM_IX'], 'FSI': ['FSANL_PT', 'FSKNL_PT', 'FSBPNL_PT']}
 
 def get_data(chosen_indicators, period, npl_countries):
     all_country = {}
     for country_code in npl_countries:
         all_country[country_code] = {}
         for dataflow_id, indicators in chosen_indicators.items():
+            print(dataflow_id)
             for indicator in indicators:
                 url = 'http://dataservices.imf.org/REST/SDMX_JSON.svc/CompactData/'
                 key = dataflow_id +'/' + period + '.' + country_code +'.' + indicator
@@ -121,14 +114,11 @@ def get_data(chosen_indicators, period, npl_countries):
                         time_period_value = entry['@TIME_PERIOD']
                         obs_value = entry["@OBS_VALUE"]
                         if int(time_period_value) >= 2000:
-                            print(time_period_value, obs_value)
                             cleaned_data[time_period_value] = obs_value
                         if obs_value == 0 or obs_value == None:
                             empty = True
                     if empty == False:
-                        print(cleaned_data)
                         all_country[country_code][indicator] = cleaned_data
-                        print(country_code, indicator, cleaned_data.keys())
                 except:
                     pass
                 
