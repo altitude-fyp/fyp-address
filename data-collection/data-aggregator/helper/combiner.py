@@ -2,119 +2,89 @@ from copy import deepcopy
 from helper.nlp import *
 from helper.preprocessor import preprocess, check_preprocess
 
-def combine(dbpedia, wikipedia, imf):
+def combine(dbpedia, wikipedia, imf, worldbank):
     """
-    input: dbpedia, wikipedia and imf datasets
+    input: dbpedia, wikipedia, imf and worldbank datasets
     output: aggregate.embeddings, aggregate.charts and aggregate.countries
 
-        1. aggregate.countries
-            - dbpedia and wikipedia data
-            - for frontend's use
-
-        2. aggregate.charts
-            - imf data
-            - for frontend's use to plot charts
-
-        3. aggregate.embeddings
-            - dbpedia, wikipedia and imf data
-            - every value is a float
-            - for developer use
+        1. aggregate.countries (frontend use) - dbpedia + wikipedia
+        2. aggregate.charts (frontend use) - imf + worldbank
+        3. aggregate.embeddings (analytics use) - dbpedia + wikipedia + imf + worldbank
     """
 
-    def get_imf_dbpedia_mappings(dbpedia, imf, threshold=0.85):
+    def get_valid_countries(dbpedia, imf, worldbank, threshold=0.85):
         """
-        output: dictionary where
-                    key = imf country
-                    value corresponding dbpedia country
-
-            - country names are inconsistent, so this matches country naems 
-                from different datasets
-            - pick only countries where imf target variables are present 
+        returns list of tuples, each of length 3
+            - (dbpedia_country_name, imf_country_name, worldbank_country_name)
+            - country is valid only if present in all 3 data sources
         """
 
-        t1 = "Financial, Financial Soundness Indicators, Core Set, Deposit Takers, Asset Quality, Non-performing Loans to Total Gross Loans, Percent"
-        t2 = "Financial, Financial Soundness Indicators, Core Set, Deposit Takers, Capital Adequacy, Non-performing Loans Net of Provisions to Capital, Percent"
+        out = []
 
+        for dbpedia_cname in dbpedia:
+            
+            best_imf_cname, best_imf_score = match(dbpedia_cname, imf)
+            best_worldbank_cname, best_worldbank_score = match(dbpedia_cname, worldbank)
+
+            if best_imf_score > threshold and best_worldbank_score > threshold:
+                out.append((dbpedia_cname, best_imf_cname, best_worldbank_cname))
+
+        return out
+
+    def combine_dictionaries(*dictionaries):
         out = {}
-        unmapped = []
+        for d in dictionaries:
+            for k,v in d.items():
+                out[k] = v
+        return out
 
-        for imf_cname, imf_cdata in imf.items():
+    valid_countries = get_valid_countries(dbpedia, imf, worldbank)
+    countries = {dbpedia_cname: deepcopy(dbpedia[dbpedia_cname]) for dbpedia_cname, _, __ in valid_countries}
+    
+    print()
+
+    # combining dbpedia with wikipedia data
+    for table in wikipedia:
+        print("Combining with wikipedia:", table["name"], " "*60, end="\r")
+    
+        tdata = table["data"]
+
+        for row in tdata:
             
-            if t1 not in imf_cdata or t2 not in imf_cdata:
-                continue
+            best, score = match(row["country"], countries)
 
-            best_dbpedia_cname, score = match(imf_cname, dbpedia)
+            if score < 0.85: continue
 
-            if score > threshold:
-                out[imf_cname] = best_dbpedia_cname
+            if type(table["main"]) == str:
+                countries[best][table["name"]] = row[table["main"]]
 
-            else:
-                unmapped.append((imf_cname, best_dbpedia_cname, score))
+            elif type(table["main"]) == dict:
+                for key, display_name in table["main"].items():
+                    
+                    if key in row:
+                        countries[best][display_name] = row[key]
+                    
+                    else:
+                        countries[best][display_name] = None
+        
+    embeddings = deepcopy(countries)
+    charts = {}
 
-        return out, unmapped
+    print("\nCombining with imf and worldbank data\n")
 
-    imf_dbpedia_mappings, unmapped_imf_countries = get_imf_dbpedia_mappings(dbpedia, imf)
+    for dbpedia_cname, imf_cname, worldbank_cname in valid_countries:
 
-    print("no. unmapped countries in IMF dataset:", len(unmapped_imf_countries))
+        dbpedia_cdata = dbpedia[dbpedia_cname]
+        imf_cdata = imf[imf_cname]
+        worldbank_cdata = worldbank[worldbank_cname]
 
-    embeddings = {k:dbpedia[k] for k in imf_dbpedia_mappings.values()}
-    charts = {k:{} for k in imf_dbpedia_mappings.values()}
+        charts[dbpedia_cname] = combine_dictionaries(imf_cdata, worldbank_cdata)
 
-    # combining embeddings with wikipedia data
-    for feature in wikipedia:
+        for imfk, imfv in imf_cdata.items():
+            embeddings[dbpedia_cname][imfk] = sorted(imfv.items(), key=lambda x:x[0])[-1][-1]
 
-        print("Combining with wikipedia tables:", feature["name"], " "*60, end="\r")
-        data = feature["data"]
+        for wbk, wbv in worldbank_cdata.items():
+            embeddings[dbpedia_cname][wbk] = sorted(wbv.items(), key=lambda x:x[0])[-1][-1]
 
-        for row in data:
-            
-            wiki_country = row["country"]
-            best_match, score = match(wiki_country, imf_dbpedia_mappings.values())
-            
-            if score > 0.85:
-                
-                # inserting wiki data into embeddings
-                main = feature["main"]
-                if type(main) == str:
-                    embeddings[best_match][feature["name"]] = row[main]
-
-                elif type(main) == dict:
-                    for key, display_name in main.items():
-                        if key in row:
-                            embeddings[best_match][display_name] = row[key]
-                        else:
-                            embeddings[best_match][display_name] = None
-
-    embeddings = {cname: {k[0].upper() + k[1:]: v for k,v in cdata.items()} for cname,cdata in embeddings.items()}
-    countries = deepcopy(embeddings)
-
-    print("\ndone combining with wikipedia data\n")
-
-    for imf_cname, dbpedia_cname in imf_dbpedia_mappings.items():
-
-        for imfk, imfv in imf[imf_cname].items():
-
-            imfv = {k:float(v) for k,v in imfv.items()}
-
-            charts[dbpedia_cname][imfk] = imfv
-
-            latest = sorted([(k,v) for k,v in imfv.items()], key=lambda x:x[0])[-1][-1]
-            embeddings[dbpedia_cname][imfk] = latest
-
-    assert len(embeddings) == len(charts) and len(embeddings) == len(countries)
-
-    countries = preprocess(countries)
-    embeddings = preprocess(embeddings)
-
-    check_preprocess(countries)
-    check_preprocess(embeddings)
 
     return countries, charts, embeddings
-
-
-
-
-
-
-
-    

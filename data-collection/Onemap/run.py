@@ -5,67 +5,33 @@ import sys
 here = sys.path[0]
 sys.path.append(here[:len(here)-len("/onemap")])
 
-from helpers.download_raw_helper import *
-from constants import *
 from mongodb_helper import *
 
-def get_area_polygons():
+from helpers.population import *
+from helpers.polygons import *
+
+def insert_population_function(area, data):
     """
-    gets polygons (list of all latlon coordinates) of all planning areas in singapore
+    function to be inserted into get_population_data function 
+    so as to insert into db after every area is done pulling
     """
-    endpoint = "https://developers.onemap.sg/privateapi/popapi/getAllPlanningarea?token=" + os.getenv("ONEMAP_TOKEN")
+    print(f"inserting into onemap: {area}" + " "*40, end="\r")
+    mongo_insert({"_id":area, "data":data}, "onemap")
 
-    print("Getting polygon data")
-
-    raw = requests.get(endpoint).json()
-    out = {}
-
-    for item in raw:
-        k = item["pln_area_n"].lower()
-        v = item["geojson"]
-        out[k] = v
-    
-    return out
-
-def get_population_data():
-    """
-    gets economic data about singaporeans, segregated by area eg. orchard, seragoon, aljunied etc
-    """
-
-    print("Getting population data")
-
-    area_list = get_area_list()
-
-    data = {}
-
-    print(area_list)
-
-    for area in area_list:
-        area = area.lower()
-
-        data_object = {}
-        # Loop through API list
-        for key, value in URL_LIST_POP_AREA.items():
-            data_value = get_data(value, area)
-            data_object[key] = data_value
-        
-        data[area] = data_object
-        print("Finish pulling " + str(area) + " data")
-    
-    return data
 
 if __name__ == "__main__":
+
+    polygon_data = get_area_polygons()
+
+    mongo_clear("onemap.polygons")
+    for area, data in polygon_data.items():
+        print(f"inserting into onemap.polygons: {area}" + " "*40, end="\r")
+        mongo_insert({"_id":area, "data":data}, "onemap.polygons")
+
+    print("\n")
+
+    mongo_clear("onemap")
+    population_data = get_population_data(insert_population_function)
+
+    print("\ndone\n")
     
-    data = {
-        "_id": "Singapore",
-
-        "data": {
-            # "polygons": get_area_polygons(),
-            "population": get_population_data()
-        }
-
-    }
-
-    mongo_upsert(data=data, collection_name="onemap", replacement_pattern={"_id": "Singapore"})
-
-    print("\nFinish writing to MongoDB\n")

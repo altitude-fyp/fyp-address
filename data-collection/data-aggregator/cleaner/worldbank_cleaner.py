@@ -1,4 +1,4 @@
-def clean_imf(data):
+def clean_worldbank(data):
     """
     converts values in time series data to floats
     """
