@@ -9,7 +9,7 @@ import pickle
 
 from cosine_similarity import cosine_similarity
 
-def compute_top_countries_matrix():
+def generate_country_similarity_matrix():
 
     db = get_database()
     embeddings_collection = db["aggregate.embeddings"]
@@ -43,6 +43,6 @@ if __name__ == "__main__":
 
     print("Generating country cosine similarity matrix\n")
     
-    compute_top_countries_matrix()
+    generate_country_similarity_matrix()
     
     print("\n\ndone\n")
