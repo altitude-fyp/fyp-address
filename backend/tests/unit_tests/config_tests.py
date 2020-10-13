@@ -28,8 +28,7 @@ def test_pickled_folder_exist():
     pickled = home  + "/pickled"
     pdir = os.listdir(pickled)
 
-    assert "all_countries.sav" in pdir
-    assert "default_post_api_charts.sav" in pdir
-    assert "default_post_api_countries.sav" in pdir
+    assert "constants.sav" in pdir
+    assert "country_similarity_matrix.sav" in pdir
 
     

@@ -1,11 +1,3 @@
-"""
-this script computes the cosine similarity matrix of every country
-vs every other country
-
-"""
-
-from helpers.common import *
-from mongodb_helper import *
 from copy import deepcopy
 
 def cosine_similarity(a,b):
@@ -49,29 +41,3 @@ def cosine_similarity(a,b):
     maga, magb = magnitude(a), magnitude(b)
     
     return dotab / maga / magb if 0 not in [maga, magb] else 0
-
-def compute_top_countries_matrix():
-
-    print("computing top countries cosine similarity matrix", end=" ")
-
-    db = get_database()
-    embeddings_collection = db["test.aggregate.embeddings"]
-
-    embeddings = {}
-    for i in embeddings_collection.find():
-        embeddings[i["_id"]] = i["data"]
-
-    out = {cname:[] for cname in embeddings}
-    
-    for cname, cdata in embeddings.items():
-        for cname2, cdata2 in embeddings.items():
-            score = cosine_similarity(cdata, cdata2)
-            if cname != cname2:
-                out[cname].append((cname2, score))
-
-    for cname, scores in out.items():
-        scores.sort(key=lambda x:-x[-1])
-
-    pickle.dump(out, open("pickled/top_countries_cossim_matrix.sav", "wb"))
-
-    print("- finished")
