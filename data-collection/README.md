@@ -1,8 +1,10 @@
-# Data Collection Functions
+# Data Collection 
 
-## Preliminary tests
-```
-cd data-collection
-pytest tests/run.py
-```
+NOTE: every script here is to be run from the data-collection directory 
 
+eg.
+```
+python data-aggregator/run.py
+python onemap/run.py
+etc...
+```
