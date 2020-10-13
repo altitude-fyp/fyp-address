@@ -40,7 +40,7 @@ def generate_constants():
             "flag": f"https://www.countryflags.io/{code}/flat/64.png"
         }
 
-    pickle.dump(countries, open("pickled/all_countries.sav", "wb"))
+    pickle.dump(countries, open("pickled/constants.sav", "wb"))
 
     print("- finished")
 
