@@ -1,19 +1,20 @@
-"""
-this file generates constants that need to be generated and pickle stores them
-"""
-import pandas as pd
+import sys
+here = sys.path[0]
 
-from helpers.common import *
+sys.path.append(here[:-len("/scripts/generate_constants")])
+
 from mongodb_helper import *
+import pandas as pd
+import pickle
 
 def generate_constants():
 
     print("generating constants", end=" ")
 
     db = get_database()
-    countries_collection = db["test.aggregate.countries"]
+    countries_collection = db["aggregate.countries"]
 
-    data = pd.read_csv("scripts/files/countries.csv", delimiter="\t")
+    data = pd.read_csv("scripts/generate_constants/countries.csv", delimiter="\t")
 
     d = {}
 
@@ -42,3 +43,6 @@ def generate_constants():
     pickle.dump(countries, open("pickled/all_countries.sav", "wb"))
 
     print("- finished")
+
+if __name__ == "__main__":
+    generate_constants()
