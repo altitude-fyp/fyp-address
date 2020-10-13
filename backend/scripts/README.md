@@ -12,6 +12,7 @@
 1. The run.py will run everything
 2. run this from the backend directory
 
+
 ```
 python scripts/run.py
 ```
