@@ -61,8 +61,10 @@ def get_countries__(items:ItemList):
 
     features = [i for o in data["filter"] for i in o["value"]]
     features = {f:i for i,f in enumerate(features)}
-
-    data["items"].sort(key=lambda x:features[x["name"]])
+    try: 
+        data["items"].sort(key=lambda x:features[x["name"]])
+    except:
+        pass
 
     endtime = time()
 
