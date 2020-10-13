@@ -14,7 +14,7 @@ this file contains all constants used in the application
 
 import pickle
 
-COUNTRIES = pickle.load(open("pickled/all_countries.sav", "rb"))
+COUNTRIES = pickle.load(open("pickled/constants.sav", "rb"))
 
 
 COUNTRY_FEATURE_CATEGORIES = [

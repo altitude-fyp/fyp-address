@@ -3,6 +3,8 @@ from mongodb_helper import *
 from app import constants
 from copy import deepcopy
 
+import pickle
+
 def cosine_similarity(a,b):
     """
     input: 2 country vectors
@@ -48,26 +50,6 @@ def cosine_similarity(a,b):
     return out**8
 
 def get_top_countries(countryname):
-    # cossim_matrix = pickle.load(open("pickled/top_countries_cossim_matrix.sav", "rb"))
-    # top3 = cossim_matrix[countryname][:3]
-    # return [{"name":name, "score":score, "flag":constants.COUNTRIES[name]["flag"]} for name,score in top3]
-
-    db = get_database()
-    embeddings = {}
-
-    for i in db["test.aggregate.embeddings"].find():
-        embeddings[i["_id"]] = i["data"]
-
-    countrydata = embeddings[countryname]
-    countrydata = {k:v for k,v in countrydata.items() if k[:5] == "Finan"}
-
-    out = []
-    for cname, cdata in embeddings.items():
-        cdata = {k:v for k,v in cdata.items() if k[:5] == "Finan"}
-        out.append((cname, cosine_similarity(countrydata, cdata)))
-
-    out.sort(key=lambda x:-x[-1])
-
-    out = [{"name":name, "score":score, "flag": constants.COUNTRIES[name]["flag"]} for name, score in out[1:4]]
-
-    return out
+    cossim_matrix = pickle.load(open("pickled/country_similarity_matrix.sav", "rb"))
+    top3 = cossim_matrix[countryname][:3]
+    return [{"name":name, "score":score, "flag":constants.COUNTRIES[name]["flag"]} for name,score in top3]
