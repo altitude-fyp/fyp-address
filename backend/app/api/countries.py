@@ -25,7 +25,7 @@ def get_countries_():
 
 def get_country(cname):
     db = get_database()
-    out = db["test.aggregate.embeddings"].find_one({"_id": cname})["data"]
+    out = db["aggregate.embeddings"].find_one({"_id": cname})["data"]
     
     return out
 
@@ -35,17 +35,6 @@ def get_countries__(items:ItemList):
     Return country data for frontend application 
     """
     countries = items.countries
-
-    # if input countries == ["Singpaore"] (the default), returns pickled object
-    if len(countries) == 1 and countries[0] == "Singapore":
-        try:
-            starttime = time()
-            out = pickle.load(open("pickled/default_post_api_countries.sav", "rb"))
-            endtime = time()
-
-            out["time taken"] = float(endtime-starttime)
-            return out
-        except: pass
 
     starttime = time()
 
