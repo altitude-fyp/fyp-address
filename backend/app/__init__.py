@@ -19,6 +19,7 @@ app.add_middleware(
 def root():
     return {"message": "This is the backend for address-fyp"}
 
+from app.api.address import *
 from app.api.countries import *
 from app.api.regions import *
 from app.api.charts import *

@@ -20,7 +20,7 @@ def get_private_list():
 private_list = get_private_list()
 
 #input: [{"POSTAL": "380105", "BUILDING": "HDB-GEYLANG EAST", "BLK_NO" : "105"}]
-def check_property_type_list(address_entries, private_list):
+def check_property_type_list(address_entries, private_list = private_list):
     categories = {'HDB':0,'PRIVATE':0, 'OTHERS':0}
     
     for address_details in address_entries:
@@ -34,7 +34,7 @@ def check_property_type_list(address_entries, private_list):
     return categories
 
 #input: {"POSTAL": "380105", "BUILDING": "HDB-GEYLANG EAST", "BLK_NO" : "105"}
-def check_property_type(address, private_list):
+def check_property_type(address, private_list = private_list):
     if address['POSTAL'][-3:] == address['BLK_NO']:
         return 'HDB'
     elif address['BUILDING'] in private_list:
