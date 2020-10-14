@@ -2,83 +2,61 @@
   <v-app>
 
       <v-card>
-        <v-app-bar
-          absolute
-          color="white"
+        <v-app-bar absolute color="white">
 
-        >
           <v-app-bar-nav-icon  @click="drawer = true"></v-app-bar-nav-icon>
         
           <v-toolbar-title>
+            
             <img :src="require('../images/citi_logo.png')" height="40"/>
             <span class="logoTitle">Address Analytics Tool</span>
+          
           </v-toolbar-title>
 
           <v-spacer></v-spacer>
 
-          <v-menu
-            bottom
-            offset-y
-            origin="top right"
-            transition="scale-transition"
-            max-width="400px"
-          >
+          <v-menu bottom offset-y origin="top right" transition="scale-transition" max-width="400px">
 
             <template v-slot:activator="{ attrs, on }">
-              <v-btn
-                class="ml-2"
-                min-width="0"
-                text
-                v-bind="attrs"
-                v-on="on"
-              >
-                <v-badge
-                  color="red"
-                  overlap
-                  bordered
-                >
+
+              <v-btn class="ml-2" min-width="0" text v-bind="attrs" v-on="on">
+                <v-badge color="red" overlap bordered>
+
                   <template v-slot:badge>
                     <span>{{ notifications.length }}</span>
                   </template>
 
                   <v-icon>mdi-bell</v-icon>
+              
                 </v-badge>
               </v-btn>
+
             </template>
 
             <v-list>
-            
+
               <v-list-item-content>
-                <div class="notifications">
-                  <h3>Notifications</h3>
-                </div>
+                <div class="notifications"><h3>Notifications</h3></div>
               </v-list-item-content>
           
-
               <v-divider></v-divider>
 
-              <div  class="notification_row">
-              <v-list-item
-                v-for="(notification, index) in notifications"
-                :key="index"
-                @click=""
-              >
+              <div class="notification_row">
+              <v-list-item v-for="(notification, index) in notifications" :key="index" @click="">
 
                 <v-list-item-title v-if="index === 0">
+                  
                   <v-row style="margin:0">
                     <v-layout align-center>
+                    
                     <v-col>
                       <strong>{{ notification.filename }}</strong> {{ notification.title }}
                     </v-col>
+
                     <v-col class="shrink text-right">
-                      <v-btn 
-                        href="/analytics"
-                        color="#004D8E"
-                        class="white--text mb-2"
-                        depressed
-                      >
-                      View</v-btn>
+                      <v-btn href="/analytics" color="#004D8E" class="white--text mb-2" depressed>View</v-btn>
                     </v-col>
+
                     </v-layout>
                   </v-row>
 
@@ -87,6 +65,7 @@
                       <span style="font-size:13px;margin-bottom:20px;color:#757575">{{ notification.date }}</span>
                     </v-col>
                   </v-row>
+
                 </v-list-item-title>
 
                 <v-list-item-title v-if="index !== 0">
@@ -115,16 +94,10 @@
           </div>
         </v-app-bar>
 
-        <v-navigation-drawer
-          v-model="drawer"
-          absolute
-          temporary
-        >
+        <v-navigation-drawer v-model="drawer" absolute temporary>
 
-          <v-list
-            nav
-            dense
-          >
+          <v-list nav dense>
+
             <v-list-item>
               <v-list-item-avatar>
                 <v-img :src="require('../images/alanmegargel.png')" />
@@ -141,19 +114,17 @@
             <v-divider></v-divider>
 
 
-            <v-list-item-group
-              active-class="deep-blue--text text--accent-4"
-              v-model="selectNav"
-            >
-              <v-list-item
-                v-for="(item, i) in items"
-                :key="i"
-                :to="item.link">
+            <v-list-item-group active-class="deep-blue--text text--accent-4" v-model="selectNav">
+
+              <v-list-item v-for="(item, i) in items" :key="i" :to="item.link">
+
                 <v-list-item-icon>
                   <v-icon>{{item.icon}}</v-icon>
                 </v-list-item-icon>
+                
                 <v-list-item-title>{{ item.title }}</v-list-item-title>
               </v-list-item>
+
             </v-list-item-group>
 
           </v-list>
@@ -165,13 +136,10 @@
             <v-main>
               <nuxt/>
             </v-main>
+
           </v-sheet>
 
-
       </v-card>
-
-
-
 
   </v-app>
 </template>
