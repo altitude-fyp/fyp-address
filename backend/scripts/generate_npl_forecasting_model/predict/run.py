@@ -5,16 +5,13 @@
 
 print()
 print("="*100)
-print("Choosing the best performing model and using it to predict 2020 NPL using 2019 data")
+print("Aggregating models from models.sav and using it to predict 2020 NPL using 2019 data")
 print("="*100)
 print()
 
 # added to not print warnings
 import warnings
 warnings.filterwarnings('ignore')
-
-from pick_best_model import *
-model = pick_best_model()
 
 import pandas as pd
 
@@ -29,7 +26,11 @@ mmscaler = MinMaxScaler()
 mmscaler.fit(x)
 xmm = mmscaler.transform(x)
 
-y_pred = model.predict(xmm)
+from aggregate_model import *
+aggregateModel = AggregateModel()
+aggregateModel.test()
+
+y_pred = aggregateModel.predict(xmm)
 
 out = {cname:pred for cname,pred in zip(cnames.values, y_pred)}
 

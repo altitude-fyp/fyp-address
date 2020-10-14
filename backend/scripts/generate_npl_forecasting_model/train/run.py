@@ -70,15 +70,17 @@ model_metadata = [
     ("KneighborsClassifier n_neighbors=1", KNeighborsClassifier, {"n_neighbors":1})
 ]
 
-models = {}
+models = []
 
-for modelname, Model, kwargs in model_metadata:
+for i in range(5):
     
-    model, score = train(xmm, y.loc[:, "increase"], Model, kwargs)
+    for modelname, Model, kwargs in model_metadata:
+        
+        model, score = train(xmm, y.loc[:, "increase"], Model, kwargs)
 
-    print(modelname, " "*(50-len(modelname)), "accuracy score:", round(score,4))
+        print(modelname, " "*(50-len(modelname)), "accuracy score:", round(score,4))
 
-    models[modelname] = model
+        models.append((modelname,model))
 
 print()
 
