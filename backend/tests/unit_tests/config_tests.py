@@ -19,7 +19,7 @@ def test_env():
     """
     assert "env" in os.listdir(home)
 
-def test_pickled_folder_exist():
+def test_pickled_folder():
     """
     checks if pickled folder is present in backend directory
     """
@@ -30,5 +30,5 @@ def test_pickled_folder_exist():
 
     assert "constants.sav" in pdir
     assert "country_similarity_matrix.sav" in pdir
-
+    assert "npl_binary_forecast.sav" in pdir
     
