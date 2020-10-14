@@ -72,13 +72,13 @@ model_metadata = [
 
 models = []
 
-for i in range(5):
+for i in range(9):
     
     for modelname, Model, kwargs in model_metadata:
         
         model, score = train(xmm, y.loc[:, "increase"], Model, kwargs)
 
-        print(modelname, " "*(50-len(modelname)), "accuracy score:", round(score,4))
+        print(i, modelname, " "*(50-len(modelname)), "accuracy score:", round(score,4), end="\r")
 
         models.append((modelname,model))
 
