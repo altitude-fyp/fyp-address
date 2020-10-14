@@ -1,11 +1,12 @@
 """
+THIS IS TO BE RAN FROM THE DATA-COLLECTION DIRECTORY
+    - python data-aggregator/pull.py
+
 1. pulls raw data from dbpedia, wikipedia and IMF
 2. pickle dump and store in pickled folder (gitignored)
 3. subsequently, just need to pickle load the data from the pickled folder
     - much faster 
 
-NOTE: this script is to be run from the data-collection directory
-    - python3 data-aggregator/pull.py
 """
 
 from helper.common import *

@@ -1,4 +1,8 @@
 """
+THIS IS TO BE RAN FROM THE DATA-COLLECTION DIRECTORY
+
+EG. python data-aggregator/main.py
+
 1. pickle loads data from dbpedia, wikipedia and IMF
 2. cleans and combines all data into final data object
     {
