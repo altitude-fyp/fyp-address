@@ -17,18 +17,14 @@
 
             </v-row> 
 
-            <div v-for="category in selectableFeatures" :key=category.cateegory>
+            <div class="filtersSection">
+                <div v-for="category in selectableFeatures" :key=category.cateegory>
 
-                <div class="filtersSectionTag"> {{ category["category"] }} </div>
+                    <div class="filtersSectionTag"> {{ category["category"] }} </div>
 
-                <div v-for="feature in category.features" :key=feature> 
-                    
-                    <!-- TO DO: MAKE THIS SCROLLABLE -->
-
+                    <div v-for="feature in category.features" :key=feature> 
                         <v-list-item>
                             
-                            <!-- checkbox for each feature -->
-
                                 <v-checkbox 
                                     color="primary"
                                     :label=capitalize(feature)
@@ -39,9 +35,9 @@
                                 </v-checkbox>
 
                         </v-list-item>
+                    </div>
 
                 </div>
-
             </div>
 
         </v-card>
@@ -91,6 +87,11 @@ export default {
     font-weight:700;
     font-size:16px;
     padding:0 16px 0 16px;
+}
+
+.filtersSection {
+    overflow-y: scroll;
+    height:600px;
 }
 
 </style>

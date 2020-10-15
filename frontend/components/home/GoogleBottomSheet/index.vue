@@ -7,7 +7,8 @@
 
                 <metadata-panel 
                     :selectedCountries=selectedCountries
-                    :countriesMetadata=countriesMetadata>
+                    :countriesMetadata=countriesMetadata
+                    @selectCountriesButtonClicked=selectCountries>
                 </metadata-panel>
                 
                 <v-divider></v-divider>
@@ -93,6 +94,10 @@ export default {
             this.$axios.get(url).then((response) => {
                 this.countriesMetadata = response.data
             })
+        },
+
+        selectCountries() {
+            console.log("is it time to select some countries")
         },
 
         getSelectableFeatures() {

@@ -1,8 +1,8 @@
 <template>
 
-    <div>
+    <div v-if="selectedCountries && countriesMetadata">
 
-        <v-card class="mx-auto" outlined v-if="selectedCountries && countriesMetadata">
+        <v-card class="mx-auto" outlined>
 
             <!-- for loop: displays country name and flag image -->
             <div v-for="cname in selectedCountries" :key=cname>
@@ -27,8 +27,8 @@
                 <v-btn
                     color="#004D8E"
                     class="white--text mb-2 sidebar"
-                    depressed> 
-                    
+                    depressed
+                    @click=emit> 
                     Countries to Compare
                 </v-btn>
 
@@ -70,6 +70,16 @@ export default {
     name: "metadata-panel",
 
     props: ["selectedCountries", "countriesMetadata"],
+
+    methods: {
+
+        emit() {
+            //this function is called when "countries to compare" button is clicked
+            //this function emits an event to the parent component to handle
+            this.$emit("selectCountriesButtonClicked")
+        }
+
+    }
 
 }
 
