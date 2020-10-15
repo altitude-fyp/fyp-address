@@ -5,14 +5,47 @@ from pydantic import BaseModel
 from collections import defaultdict
 from typing import List
 import pickle
+from copy import deepcopy
 
 from app import constants
 
 class ItemList(BaseModel):
     countries: List[str]
 
-@app.get("/api/countries/")
-def get_countries_():
+def get_country_data(cname):
+    db = get_database()
+    out = db["aggregate.embeddings"].find_one({"_id": cname})["data"]
+    return out
+
+
+@app.get("/api/countries/metadata/{countries}")
+def get_country_metadata_(countries):
+    """
+    returns country metadata: name, lat, lon, flag, country code for each country
+    """
+    return {cname: constants.COUNTRIES[cname] for cname in countries.split(",")}
+
+
+@app.get("/api/countries/selectableFeatures/{countries}") # AKA filters
+def get_selectable_features(countries):
+    """
+    returns all country features (categorised)
+    """
+    return constants.COUNTRY_FEATURE_CATEGORIES
+
+
+@app.get("/api/countries/statistics/{countries}")
+def get_country_statistics_(countries):
+    """
+    returns data (non-time-series) of all countries
+    """
+    return {cname: get_country_data(cname) for cname in countries.split(",")}
+
+
+
+
+@app.get("/api/countries/list")
+def get_country_list_():
     """
     Return a list of all countries sorted in aphabetical order
     """
@@ -22,12 +55,6 @@ def get_countries_():
             "items": sorted(list(constants.COUNTRIES.keys()))
         }
     }    
-
-def get_country(cname):
-    db = get_database()
-    out = db["aggregate.embeddings"].find_one({"_id": cname})["data"]
-    
-    return out
 
 @app.post("/api/countries/")
 def get_countries__(items:ItemList):

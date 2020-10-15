@@ -1,18 +1,22 @@
 <template>
   <v-container v-if="isLoaded">
     <v-row>
+
       <v-col cols="3">
 
+        <!-- START OF SELECTION PANEL -->
         <v-card
           class="mx-auto"
           outlined
         >
           <div v-if='countries.length === 1'>
+            
             <v-row class="mx-auto">
               <v-col class="mx-auto">
                 <div class="sidebarCountryName">{{ countries[0] }}</div>
               </v-col>
             </v-row>
+            
             <v-row>
               <div class="countryFlagSidebarSection">
                 <img class="countryFlagSidebar" :src="Tags.data.flag[0]" aspect-ratio="2" contain/>
@@ -126,6 +130,7 @@
         </v-card>
 
       </v-col>
+
       <v-col cols="9">
         <h2 class="sectionTitle">Country Statistics</h2>
         <v-card class="mx-auto">
@@ -134,7 +139,9 @@
             <!--Top 8 features-->
             <v-row v-for="x in 2">
               <v-col v-for="n in 4" cols="3">
+              
                 <v-row>
+
                   <v-col v-if="selectTags.length < 4*(x-1)+n">
                     <v-card-subtitle class="featuresTitle"> {{ Tags.data.top8[(4*(x-1)+n)-1].name }}</v-card-subtitle>
                       <!-- Loop to show the flag  -->
@@ -143,6 +150,7 @@
                         <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.top8[(4*(x-1)+n)-1].value[i]) }}</v-card-text>   
                       </div>
                   </v-col>
+                
                   <v-col v-else>
                     <v-card-subtitle class="featuresTitle">{{ Tags.data.items[selectTags[(4*(x-1)+n)-1]].name }}</v-card-subtitle>
                      <!-- Loop to show the flag  -->
@@ -151,8 +159,11 @@
                         <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.items[selectTags[(4*(x-1)+n)-1]].value[i]) }}</v-card-text>   
                       </div>  
                   </v-col>
+                
                   <v-divider vertical></v-divider>
+                
                 </v-row>
+
               </v-col>
             </v-row>
 
