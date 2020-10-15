@@ -65,7 +65,7 @@
                                     <div v-for="cname in selectedCountries" :key=cname class="countryFlagIndicators">
 
                                         <!-- flag for each country goes here -->
-                                        <img 
+                                        <img v-if="countriesMetadata[cname] && countriesMetadata[cname].flag"
                                             :src="countriesMetadata[cname].flag"
                                             align="left"
                                             class="countryFlag"

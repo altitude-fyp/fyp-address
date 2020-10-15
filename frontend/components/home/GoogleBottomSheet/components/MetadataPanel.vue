@@ -13,9 +13,9 @@
                     </v-col>
                 </v-row>
 
-                <v-row>
+                <v-row v-if="countriesMetadata[cname] && countriesMetadata[cname]['flag']">
                     <div class="countryFlagSidebarSection">
-                        <img class="countryFlagSidebar" :src="countriesMetadata[cname].flag" aspect-ratio="2" contain/>
+                        <img class="countryFlagSidebar" :src="countriesMetadata[cname]['flag']" aspect-ratio="2" contain/>
                     </div>
                 </v-row>
 

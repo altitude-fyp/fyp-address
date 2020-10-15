@@ -26,8 +26,8 @@ def get_country_metadata_(countries):
     return {cname: constants.COUNTRIES[cname] for cname in countries.split(",")}
 
 
-@app.get("/api/countries/selectableFeatures/{countries}") # AKA filters
-def get_selectable_features(countries):
+@app.get("/api/countries/selectableFeatures/") # AKA filters
+def get_selectable_features():
     """
     returns all country features (categorised)
     """
@@ -51,9 +51,7 @@ def get_country_list_():
     """
     return {
         "status": "success",
-        "data": {
-            "items": sorted(list(constants.COUNTRIES.keys()))
-        }
+        "countries": sorted(list(constants.COUNTRIES.keys()))
     }    
 
 @app.post("/api/countries/")
