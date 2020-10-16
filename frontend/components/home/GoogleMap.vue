@@ -13,23 +13,21 @@
          disableDefaultUi: false
        }"
       :center="center"
-      :zoom="2"
+      :zoom="11"
       style="min-width: 100%; min-height: 500px;">
 
-      <!--if you require markers, unpack this-->
+      <!-- google map marker goes here -->
       <div v-if="coordinates">
         <GmapMarker
-          :key="index"
-          v-for="(c, index) in coordinates"
-          :position="{lat:c.lat, lng: c.long,}"/>
+          v-for="country in coordinates"
+          :position=" {lat: country.lat, lng: country.lon} "
+          :key="country.name"/>
       </div>
 
       <!-- This is to remove info window on first click-->
       <gmap-info-window :opened="false"/>
 
     </GmapMap>
-
-    {{coordinates}}
 
   </div>
 </template>
@@ -39,13 +37,13 @@ import GoogleBottomSheet from "@/components/home/GoogleBottomSheet";
 import CSVSearch from "@/components/home/CSVSearch";
 
 export default {
+
   name: "GoogleMap",
+  
   components: {CSVSearch, GoogleBottomSheet},
-  props: {
-    coordinates: {
-      type: Array,
-    },
-  },
+  
+  props: ["coordinates"],
+  
   data() {
     return {
       //lat and lng returns singapore by default
@@ -53,9 +51,12 @@ export default {
       markers: [],
     };
   },
+
+
   mounted() {
     this.geolocate();
   },
+
 
   methods: {
 

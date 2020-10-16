@@ -41,7 +41,19 @@ export default {
     },
 
     updateMainCoordinates(countriesMetadata) {
-      this.coordinates = [{lat: 1.3521, lng: 103.8198}]
+      // insert countriesMetadata from google bottom sheet into this.coordinates
+      var out = []
+      for (var cname in countriesMetadata) {
+        var cdata = countriesMetadata[cname]
+
+        out.push({
+          country: cname,
+          lat: cdata.lat,
+          lon: cdata.lon
+        })
+      }
+      
+      this.coordinates = out
     }
 
   }
