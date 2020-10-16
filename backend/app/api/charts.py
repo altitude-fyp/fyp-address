@@ -20,20 +20,10 @@ GRAPH_SHOWN = {
 @app.post("/api/charts/")
 def get_chart_data(items: ItemList):
 
-    if len(items.countries) == 1 and items.countries[0] == "Singapore":
-        try:
-            starttime = time()
-            out = pickle.load(open("pickled/default_post_api_charts.sav", "rb"))
-            endtime = time()
-
-            out["time taken"] = float(endtime-starttime)
-            return out
-        except: pass
-
     starttime = time()
 
     db = get_database()
-    chart_collection = db["test.aggregate.charts"]
+    chart_collection = db["aggregate.charts"]
     out = {"status": "error", "data": {}}
 
     combined_raw_data_list = []
