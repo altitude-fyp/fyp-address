@@ -1,20 +1,15 @@
-import sys
-here = sys.path[0]
-sys.path.append(here[:-(len("scripts"))])
-
 import pickle
 import numpy as np
 from scipy.spatial.distance import euclidean
 from fastdtw import fastdtw
-from mongodb_helper import *
-
 
 def get_npl_country_npl_features(countryname):
     """
     input: country name (e.g Singapore)
     output: returns top 10 features correlating to the bank nonperforming loans to total gross loans (%)
     """
-    all_country_data = pickle.load( open( "pickled/data.sav", "rb" ) )
+        
+    all_country_data = pickle.load(open("pickled/autoregressed_country_data.sav", "rb"))
 
     country_data = {}
 
