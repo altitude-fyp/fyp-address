@@ -35,7 +35,11 @@
                     :chartData=chartData>
                 </key-financial-indicators>
 
-                <top-3></top-3>
+                <top-3-similar-countries
+                    v-if="selectedCountries.length==1"
+                    :top3similarCountries=top3similarCountries
+                    @countrySelectedFromTop3Panel=updateSelectedCountries>
+                </top-3-similar-countries>
 
             </v-col>
 
@@ -57,7 +61,7 @@ import CountrySelectionDialog from "@/components/home/GoogleBottomSheet/componen
 import FeatureSelectionPanel from "@/components/home/GoogleBottomSheet/components/FeatureSelectionPanel.vue"
 import CountryStatistics from "@/components/home/GoogleBottomSheet/components/CountryStatistics.vue"
 import KeyFinancialIndicators from "@/components/home/GoogleBottomSheet/components/KeyFinancialIndicators.vue"
-import Top3 from "@/components/home/GoogleBottomSheet/components/Top3.vue"
+import Top3SimilarCountries from "@/components/home/GoogleBottomSheet/components/Top3SimilarCountries.vue"
 
 
 export default {
@@ -68,7 +72,7 @@ export default {
         "feature-selection-panel": FeatureSelectionPanel,
         "country-statistics": CountryStatistics,
         "key-financial-indicators": KeyFinancialIndicators,
-        "top-3": Top3,
+        "top-3-similar-countries": Top3SimilarCountries,
     },
 
     props: [],
@@ -91,6 +95,7 @@ export default {
             countryStatistics: null,
             showCountrySelectionDialog: false,
             chartData: null,
+            top3similarCountries: null,
         }
     },
 
@@ -106,6 +111,7 @@ export default {
             this.getSelectableFeatures()
             this.getCountryStatistics()
             this.getChartData()
+            this.getTop3SimilarCountries()
         },
     
 
@@ -174,6 +180,18 @@ export default {
 
             this.$axios.get(url).then((response) => {
                 this.chartData = response.data.charts
+            })
+        },
+
+
+        getTop3SimilarCountries() {
+            //this function retrieves top 3 similar countries to main country
+            //this function is called only when selectedCountries.length == 1
+            this.top3similarCountries = null
+            var url = process.env.BACKEND + "/api/analytics/top_countries/" + this.selectedCountries
+
+            this.$axios.get(url).then((response) => {
+                this.top3similarCountries = response.data.top3
             })
 
         }

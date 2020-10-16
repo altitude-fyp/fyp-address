@@ -26,6 +26,9 @@
                                     </line-chart>
 
                                 </div>
+                                <br>
+                                <p class="chartsDescription">{{chart.description}}</p>
+
                             </v-col>
 
                         </v-row>
