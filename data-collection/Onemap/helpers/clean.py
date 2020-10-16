@@ -1,5 +1,3 @@
-import re
-
 """
 cleans onemap data and removes null values
 """
