@@ -163,4 +163,9 @@ export default {
     align-items: center;
 }
 
+.errorMessage {
+    color:#d33232 !important;
+    text-align:center;
+}
+
 </style>

@@ -17,27 +17,19 @@ GRAPH_SHOWN = {
         "Financial Markets Index": "The  Financial Markets Index provides a comprehensive means for economies to benchmark various aspects of their financial markets."
     }
 
-@app.post("/api/charts/")
-def get_chart_data(items: ItemList):
-
-    if len(items.countries) == 1 and items.countries[0] == "Singapore":
-        try:
-            starttime = time()
-            out = pickle.load(open("pickled/default_post_api_charts.sav", "rb"))
-            endtime = time()
-
-            out["time taken"] = float(endtime-starttime)
-            return out
-        except: pass
+@app.get("/api/charts/{countries}")
+def get_chart_data(countries):
 
     starttime = time()
 
     db = get_database()
-    chart_collection = db["test.aggregate.charts"]
-    out = {"status": "error", "data": {}}
+    chart_collection = db["aggregate.charts"]
+    out = {"status": "error"}
+
+    countries = countries.split(",")
 
     combined_raw_data_list = []
-    for country_name in items.countries:
+    for country_name in countries:
         data = chart_collection.find_one({"_id": country_name})["data"]
         combined_raw_data_list.append(data)
 
@@ -47,12 +39,11 @@ def get_chart_data(items: ItemList):
             dd[key].append(value)
 
     if data:
-        result = format_chart_output(dd, items.countries)
+        result = format_chart_output(dd, countries)
         out["status"] = "success"
-        out["data"]["items"] = result
+        out["charts"] = result
 
     endtime = time()
-
     out["time taken"] = float(endtime-starttime)
     
     return out
@@ -76,6 +67,7 @@ def format_chart_output(data_dict, countries_list):
                 obj["years"] = year_list
                 obj["value"].append(value_list)
             result.append(obj)
+            
     return result
 
 def extrapolate(data, desired=[i for i in range(2000,2020)], lag=1):

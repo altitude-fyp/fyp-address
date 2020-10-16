@@ -29,12 +29,13 @@
                     :selectedFeatures=selectedFeatures>
                 </country-statistics>
 
-                <key-financial-indicators></key-financial-indicators>
+                <br><br>
+
+                <key-financial-indicators
+                    :chartData=chartData>
+                </key-financial-indicators>
 
                 <top-3></top-3>
-
-                {{selectedCountries}}
-                {{countriesMetadata}}
 
             </v-col>
 
@@ -89,6 +90,7 @@ export default {
             ],
             countryStatistics: null,
             showCountrySelectionDialog: false,
+            chartData: null,
         }
     },
 
@@ -103,8 +105,10 @@ export default {
             this.getCountriesMetadata()
             this.getSelectableFeatures()
             this.getCountryStatistics()
+            this.getChartData()
         },
     
+
         getCountriesMetadata() {
             // get flag, lat, lon, country code of each country in countries
             this.countriesMetadata = null
@@ -115,22 +119,26 @@ export default {
             })
         },
 
+
         openCountrySelectionDialog() {
             // this function is called when the user clicks on "countries to compare"
             //this function opens the country selection dialog
             this.showCountrySelectionDialog = true
         },
 
+
         closeCountrySelectionDialog() {
             //this function closes the country selection dialog
             this.showCountrySelectionDialog = false
         },
+
 
         updateSelectedCountries(selectedCountries) {
             //this function is called after user submits his selected countries from the country selection dialog
             this.selectedCountries = selectedCountries
             this.getEverything()
         },
+
 
         getSelectableFeatures() {
             // get all selectable features classified by category
@@ -141,6 +149,7 @@ export default {
                 this.selectableFeatures = response.data
             })
         },
+
 
         updateSelectedFeatures(features) {
             // this function triggers on change on checkboxes in selected features
@@ -156,10 +165,20 @@ export default {
             this.$axios.get(url).then((response) => {
                 this.countryStatistics = response.data
             })
+        },
+
+        getChartData() {
+            // this function gets chart data and stores in this.chartData
+            this.chartData = null
+            var url = process.env.BACKEND + "/api/charts/" + this.selectedCountries
+
+            this.$axios.get(url).then((response) => {
+                this.chartData = response.data.charts
+            })
 
         }
-    }
 
+    }
 
 }
 
