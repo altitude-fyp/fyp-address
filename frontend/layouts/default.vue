@@ -3,7 +3,7 @@
 
       <v-card>
         <v-app-bar
-          absolute
+          fixed
           color="white"
 
         >

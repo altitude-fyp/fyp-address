@@ -1,96 +1,100 @@
 <template>
   <v-app>
-    <div style="padding-top: 20px">
+    <div style="padding-top: 50px">
       <div class="parent">
-      <div class="left">
-        <v-row>
-          <h2>File Info</h2>
-        </v-row>
+          <div class="left">
+            <v-row>
+              <h2>File Info</h2>
+            </v-row>
 
-        <v-row>
-          <div class="file">
-            <div class="fileName">
-              address_SG_14102020.csv
-            </div>
-            <div class="fileResults">
-              <div class="fileResultsSuccess">
-                418 records
-                <v-icon color="green">mdi-check</v-icon>
+            <v-row>
+              <div class="file">
+                <div class="fileName">
+                  address_SG_14102020.csv
+                </div>
+                <div class="fileResults">
+                  <div class="fileResultsSuccess">
+                    418 records
+                    <v-icon color="green">mdi-check</v-icon>
+                  </div>
+                  <div class="fileResultsError">
+                    418 records
+                    <v-icon color="red">mdi-close</v-icon>
+                  </div>
+                </div>
               </div>
-              <div class="fileResultsError">
-                418 records
-                <v-icon color="red">mdi-close</v-icon>
-              </div>
-            </div>
+            </v-row>
+
+            <br/><v-divider></v-divider><br/>
+
+            <v-row>
+              <h2>Address data</h2>
+              <v-expansion-panels 
+                accordion 
+                v-model="panel"
+                multiple
+              >
+                <v-expansion-panel>
+                  <v-expansion-panel-header>
+                    <h3>At a Glance</h3>
+                  </v-expansion-panel-header>
+                  <v-expansion-panel-content>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+
+                <v-expansion-panel>
+                  <v-expansion-panel-header>
+                    <h3>Country Level</h3>
+                  </v-expansion-panel-header>
+                  <v-expansion-panel-content>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+              </v-expansion-panels>
+            </v-row>
+
+            <v-row dense>
+              <v-col>
+                <v-card>
+                  <line-chart
+                    v-if="loaded"
+                    :chartdata="chartdata[0]"
+                  />
+                </v-card>
+              </v-col>
+              <v-col>
+                <v-card>
+                  <line-chart
+                    v-if="loaded"
+                    :chartdata="chartdata[1]"
+                  />
+                </v-card>
+              </v-col>
+            </v-row>
+
+            <!-- ############################ -->
+
+            <v-row dense>
+              <v-col>
+                <v-card>
+                  <line-chart
+                    v-if="loaded"
+                    :chartdata="chartdata[2]"
+                  />
+                </v-card>
+              </v-col>
+
+              <v-col>
+                <v-card>
+                  <line-chart
+                    v-if="loaded"
+                    :chartdata="chartdata[3]"
+                  />
+                </v-card>
+              </v-col>
+            </v-row>
           </div>
-        </v-row>
-
-        <br/><v-divider></v-divider><br/>
-
-        <v-row>
-          <h2>Address data</h2>
-          <v-expansion-panels accordion>
-            <v-expansion-panel>
-              <v-expansion-panel-header>
-                <h3>At a Glance</h3>
-              </v-expansion-panel-header>
-              <v-expansion-panel-content>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-              </v-expansion-panel-content>
-            </v-expansion-panel>
-
-            <v-expansion-panel>
-              <v-expansion-panel-header>
-                <h3>Country Level</h3>
-              </v-expansion-panel-header>
-              <v-expansion-panel-content>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-              </v-expansion-panel-content>
-            </v-expansion-panel>
-          </v-expansion-panels>
-        </v-row>
-
-        <v-row dense>
-          <v-col>
-            <v-card>
-              <line-chart
-                v-if="loaded"
-                :chartdata="chartdata[0]"
-              />
-            </v-card>
-          </v-col>
-          <v-col>
-            <v-card>
-              <line-chart
-                v-if="loaded"
-                :chartdata="chartdata[1]"
-              />
-            </v-card>
-          </v-col>
-        </v-row>
-
-        <!-- ############################ -->
-
-         <v-row dense>
-          <v-col>
-            <v-card>
-              <line-chart
-                v-if="loaded"
-                :chartdata="chartdata[2]"
-              />
-            </v-card>
-          </v-col>
-
-          <v-col>
-            <v-card>
-              <line-chart
-                v-if="loaded"
-                :chartdata="chartdata[3]"
-              />
-            </v-card>
-          </v-col>
-        </v-row>
-      </div>
 
       <div class="right">
       <div class="map">
@@ -118,7 +122,8 @@ export default {
     country1: "Japan",
     country2: "Australia",
     loaded: false,
-    chartdata: {}
+    chartdata: {},
+    panel: [0, 1],
   }),
 
   async created() {
@@ -176,13 +181,14 @@ export default {
   .parent {
     margin: 0;
     width: 100%;
-    background-color: #EBEBEB;
   }
 
   .left {
       float: left;
       width: 60%;
       height: 100%;
+      padding-left:50px;
+      padding-right:30px;
   }
 
   .right {
@@ -199,5 +205,23 @@ export default {
     right:0px;
     height:100%;
     overflow:hidden;
+  }
+
+  .expansion {
+    margin-top:15px;
+    margin-bottom:15px;
+  }
+
+  .v-expansion-panel::before {
+   box-shadow: none !important;
+  }
+
+  .v-expansion-panel-header {
+   padding:0;
+  }
+
+  .v-expansion-panel-content >>> .v-expansion-panel-content__wrap {
+    padding:0 15px 0 0;
+    margin-bottom:10px;
   }
 </style>
