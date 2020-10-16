@@ -1,5 +1,7 @@
 <template>
+  
   <div>
+    
     <GmapMap
       :options="{
          zoomControl: true,
@@ -11,22 +13,22 @@
          disableDefaultUi: false
        }"
       :center="center"
-      :zoom="2"
-      style="min-width: 100%; min-height: 500px;"
-    >
-      <!--if you require markers, unpack this-->
+      :zoom="11"
+      style="min-width: 100%; min-height: 500px;">
+
+      <!-- google map marker goes here -->
       <div v-if="coordinates">
         <GmapMarker
-          :key="index"
-          v-for="(c, index) in coordinates"
-          :position="{lat:c.lat, lng: c.long,}"
-        />
+          v-for="country in coordinates"
+          :position=" {lat: country.lat, lng: country.lon} "
+          :key="country.name"/>
       </div>
 
       <!-- This is to remove info window on first click-->
       <gmap-info-window :opened="false"/>
 
     </GmapMap>
+
   </div>
 </template>
 
@@ -35,13 +37,13 @@ import GoogleBottomSheet from "@/components/home/GoogleBottomSheet";
 import CSVSearch from "@/components/home/CSVSearch";
 
 export default {
+
   name: "GoogleMap",
+  
   components: {CSVSearch, GoogleBottomSheet},
-  props: {
-    coordinates: {
-      type: Array,
-    },
-  },
+  
+  props: ["coordinates"],
+  
   data() {
     return {
       //lat and lng returns singapore by default
@@ -49,32 +51,41 @@ export default {
       markers: [],
     };
   },
+
+
   mounted() {
     this.geolocate();
   },
 
+
   methods: {
+
     addMarker(event) {
-      console.log(this.coordinates)
+
       const marker = {
         lat: event.latLng.lat(),
         lng: event.latLng.lng()
       };
       this.markers.push({position: marker});
+
     },
 
     geolocate: function () {
-      navigator.geolocation.getCurrentPosition(position => {
+
+      navigator.geolocation.getCurrentPosition( position => {
+
         this.center = {
           lat: position.coords.latitude,
           lng: position.coords.longitude
-        };
-      });
+        }
+      })
+
     },
 
   },
 };
 </script>
+
 <style scoped>
 
 

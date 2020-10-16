@@ -11,9 +11,7 @@ def get_top_countries_(country_name: str):
     try:
         return {
             "status": "success",
-            "data": {
-                "items": get_top_countries(country_name)
-            }
+            "top3": get_top_countries(country_name)
         }
     
     except Exception as err:
