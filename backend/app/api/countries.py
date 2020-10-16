@@ -52,6 +52,22 @@ def get_country_list_():
         "countries": sorted(list(constants.COUNTRIES.keys()))
     }    
 
+@app.get("/api/countries/csv/{countries}")
+def get_countries_csv_(countries):
+    countries = countries.split(",")
+    countries_data = [get_country_data(cname) for cname in countries]
+    
+    for i in range(len(countries)):
+
+        temp = countries_data[i]
+        out = {"country": countries[i]}
+        for k,v in temp.items():
+            out[k] = v
+        
+        countries_data[i] = out
+
+    return countries_data
+
 
 @app.post("/api/csv/")
 def get_csv_data(items:ItemList):

@@ -8,6 +8,7 @@
                 <metadata-panel 
                     :selectedCountries=selectedCountries
                     :countriesMetadata=countriesMetadata
+                    :CSVData=CSVData
                     @selectCountriesButtonClicked=openCountrySelectionDialog>
                 </metadata-panel>
                 
@@ -82,6 +83,7 @@ export default {
         return {
             selectedCountries: ["Singapore"],
             countriesMetadata: null,
+            CSVData: null,
             selectableFeatures: null,
             selectedFeatures: [
                 "gdp nominal",
@@ -109,6 +111,7 @@ export default {
         getEverything() {
             //this function renders everything based on this.selectedCountries
             this.getCountriesMetadata()
+            this.getCSVData()
             this.getSelectableFeatures()
             this.getCountryStatistics()
             this.getChartData()
@@ -144,6 +147,17 @@ export default {
             //this function is called after user submits his selected countries from the country selection dialog
             this.selectedCountries = selectedCountries
             this.getEverything()
+        },
+
+
+        getCSVData() {
+            // this functions retrieves country data in a format to convert into csv
+            this.CSVData = null
+            var url = process.env.BACKEND + "/api/countries/csv/" + this.selectedCountries
+
+            this.$axios.get(url).then((response) => {
+                this.CSVData = response.data
+            })
         },
 
 

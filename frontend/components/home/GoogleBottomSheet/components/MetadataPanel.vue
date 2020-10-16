@@ -35,9 +35,9 @@
             </v-row>
 
             <!-- download csv button -->
-            <!-- <v-row justify="center">
+            <v-row justify="center" v-if="CSVData">
                 
-                <vue-json-to-csv :json-data="csvdata" :csv-title="'countries_data'">
+                <vue-json-to-csv :json-data="CSVData" :csv-title="'countries_data'">
                 
                     <v-btn
                         outlined
@@ -54,7 +54,7 @@
                     
               </vue-json-to-csv>
 
-            </v-row> -->
+            </v-row>
 
         </v-card>
 
@@ -65,11 +65,17 @@
 
 <script>
 
+import VueJsonToCsv from 'vue-json-to-csv'
+
 export default {
 
     name: "metadata-panel",
 
-    props: ["selectedCountries", "countriesMetadata"],
+    components: {
+        "vue-json-to-csv": VueJsonToCsv
+    },
+
+    props: ["selectedCountries", "countriesMetadata", "CSVData"],
 
     methods: {
 
