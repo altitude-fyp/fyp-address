@@ -14,7 +14,8 @@
                 <v-divider></v-divider>
 
                 <feature-selection-panel 
-                    :selectableFeatures=selectableFeatures 
+                    :selectableFeatures=selectableFeatures
+                    :initialSelectedFeatures=selectedFeatures
                     @checkboxChange=updateSelectedFeatures>
                 </feature-selection-panel>
 

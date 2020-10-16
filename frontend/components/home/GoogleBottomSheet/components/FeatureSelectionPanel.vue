@@ -51,12 +51,18 @@ export default {
 
     name: "feature-selection-panel",
 
-    props: ["selectableFeatures"],
+    props: ["selectableFeatures", "initialSelectedFeatures"],
 
     data() {
         return {
             selectedFeatures: []
         }
+    },
+
+    mounted() {
+
+        this.selectedFeatures = this.initialSelectedFeatures
+
     },
 
     methods: {
