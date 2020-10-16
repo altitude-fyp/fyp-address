@@ -126,6 +126,9 @@ export default {
 
             this.$axios.get(url).then((response) => {
                 this.countriesMetadata = response.data
+
+                // sends countriesMetadata, which contains lat lon data, to parent component
+                this.$emit("changeInSelectedCountries", this.countriesMetadata)
             })
         },
 
