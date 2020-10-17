@@ -12,8 +12,13 @@
        }"
       :center="center"
       :zoom="2"
-      style="min-width: 100%; min-height: 800px;"
-    >
+      style="
+        width:40%;
+        position:fixed;
+        right:0px;
+        height:100%;
+        overflow:hidden;"
+      >
     </GmapMap>
   </div>
 </template>

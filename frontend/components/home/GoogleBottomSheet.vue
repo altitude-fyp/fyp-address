@@ -295,22 +295,6 @@ export default {
       : +(Math.round(num + "e+4")  + "e-4");
     },
 
-    topThreeOnClose(country_name) {
-
-      // this function is called when the user clicks any of the flags in the top 3 countries section
-
-      this.getEverything([country_name])
-    },
-
-    onClose(acceptance) {
-
-      // this function is called when the user selects the countries that he wants to analyze
-
-      this.countries = acceptance[1]
-      this.chartdata = null
-      this.getEverything(this.countries)
-    },
-
     getEverything(countries) {
 
       this.countries = countries

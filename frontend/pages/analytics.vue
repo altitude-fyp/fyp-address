@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app v-if="isLoaded">
     <div style="padding-top: 50px">
       <div class="parent">
           <div class="left">
@@ -36,7 +36,12 @@
               >
                 <v-expansion-panel>
                   <v-expansion-panel-header>
-                    <h3>At a Glance</h3>
+                    <v-img class="analyticsIcons"
+                      max-height="22"
+                      max-width="22"
+                      :src="require('../images/icons/ataglance.png')"
+                    ></v-img>
+                    <h2>At a Glance</h2>
                   </v-expansion-panel-header>
                   <v-expansion-panel-content>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
@@ -45,62 +50,133 @@
 
                 <v-expansion-panel>
                   <v-expansion-panel-header>
-                    <h3>Country Level</h3>
+                    <v-img class="analyticsIcons"
+                      max-height="22"
+                      max-width="22"
+                      :src="require('../images/icons/globe.png')"
+                    ></v-img>
+                    <h2>Singapore</h2>
                   </v-expansion-panel-header>
                   <v-expansion-panel-content>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    
+                    <!--Top 8 features-->
+                    <v-row v-for="x in 2">
+                      <v-col v-for="n in 4">
+                        <v-row>
+                            <v-card-subtitle class="featuresTitle"> {{ Tags.data.top8[(4*(x-1)+n)-1].name }}</v-card-subtitle>
+                            <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.top8[(4*(x-1)+n)-1].value) }}</v-card-text>   
+                        </v-row>
+                      </v-col>
+                    </v-row>
+                    <!--Top 8 features-->
+
+                    <!-- Chart -->
+                    <h3>Key Financial Indicators</h3>
+                    <v-card class="mx-auto charts">
+                      <v-container>
+                        <v-row> 
+                          <v-col v-for="data in chartdata" cols="6">
+                            <v-row>
+                              <v-col>
+                              <div class="chartsTitle">
+                                  <h3>{{data.title}}</h3>
+                              </div>
+                                <div class="charts">
+                                  <line-chart
+                                    v-if="isChartLoaded"
+                                    :chartdata="data"
+                                  />
+                                </div>
+                                <br/>
+                                <p class="chartsDescription">{{data.description}}</p>
+                              </v-col>
+                            </v-row>
+                          </v-col>
+                        </v-row>
+                      </v-container>
+                    </v-card>
+                    <!-- Chart -->
                   </v-expansion-panel-content>
                 </v-expansion-panel>
+
+                <!--Region Data in Country-->
+                <v-expansion-panel>
+                  <v-expansion-panel-header>
+                    <v-img class="analyticsIcons"
+                      max-height="22"
+                      max-width="22"
+                      :src="require('../images/icons/region.png')"
+                    ></v-img>
+                    <h2>Regions in Singapore</h2>
+                  </v-expansion-panel-header>
+                  
+                  <v-expansion-panel-content>                    
+                    <v-toolbar flat>
+                        <v-tabs
+                          v-model="tabs"
+                          fixed-tabs
+                        >
+                          <v-tabs-slider></v-tabs-slider>
+                          <v-tab
+                            href="#tab-1"
+                            class="primary--text"
+                          >
+                            <v-icon>mdi-phone</v-icon>
+                            <span class="regionTabText">At a Glance</span>
+                          </v-tab>
+
+                          <v-tab
+                            href="#tab-2"
+                            class="primary--text"
+                          >
+                            <v-icon>mdi-heart</v-icon>
+                            <span class="regionTabText">Economy</span>
+                          </v-tab>
+
+                          <v-tab
+                            href="#tab-3"
+                            class="primary--text"
+                          >
+                            <v-icon>mdi-account-box</v-icon>
+                            <span class="regionTabText">Society</span>
+                          </v-tab>
+
+                          <v-tab
+                            href="#tab-4"
+                            class="primary--text"
+                          >
+                            <v-icon>mdi-account-box</v-icon>
+                            <span class="regionTabText">Household</span>
+                          </v-tab>
+                        </v-tabs>
+                    </v-toolbar>
+
+                    <v-tabs-items v-model="tabs">
+                      <v-tab-item
+                        v-for="i in 4"
+                        :key="i"
+                        :value="'tab-' + i"
+                      >
+                        <v-card flat>
+                          <v-card-text v-text="text"></v-card-text>
+                        </v-card>
+                      </v-tab-item>
+                    </v-tabs-items>
+                  
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
+                <!--Region Data in Country-->
+
               </v-expansion-panels>
             </v-row>
-
-            <v-row dense>
-              <v-col>
-                <v-card>
-                  <line-chart
-                    v-if="loaded"
-                    :chartdata="chartdata[0]"
-                  />
-                </v-card>
-              </v-col>
-              <v-col>
-                <v-card>
-                  <line-chart
-                    v-if="loaded"
-                    :chartdata="chartdata[1]"
-                  />
-                </v-card>
-              </v-col>
-            </v-row>
-
-            <!-- ############################ -->
-
-            <v-row dense>
-              <v-col>
-                <v-card>
-                  <line-chart
-                    v-if="loaded"
-                    :chartdata="chartdata[2]"
-                  />
-                </v-card>
-              </v-col>
-
-              <v-col>
-                <v-card>
-                  <line-chart
-                    v-if="loaded"
-                    :chartdata="chartdata[3]"
-                  />
-                </v-card>
-              </v-col>
-            </v-row>
+            <br/><br/>
           </div>
 
+      <!--Google Maps-->
       <div class="right">
-      <div class="map">
-        <google-map :coordinates="coordinates"/>
+        <google-map-analytics :coordinates="coordinates"/>
       </div>
-      </div>
+      <!--Google Maps-->
     </div>
     </div>
   </v-app>
@@ -118,33 +194,102 @@ export default {
   components: {BarChart, lineChart, GoogleMapAnalytics},
 
   data: () => ({
-    country: "Singapore",
-    country1: "Japan",
-    country2: "Australia",
     loaded: false,
     chartdata: {},
     panel: [0, 1],
+    isLoaded: false,
+    tabs: null,
+    Tags: null,
+    chartdata: [],
+    isLoaded: false,
+    isChartLoaded: false,
+    data: null,
+    countries: ['Singapore'],
+    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
   }),
 
-  async created() {
-    this.loaded = false
-    try {
-      // const response = await axios.get( process.env.BACKEND + '/api/charts/'  + this.country)
-      const req = {
-        "countries": [
-          this.country, this.country1, this.country2
-        ]
-      }
-      const response = await axios.post( process.env.BACKEND + '/api/charts/', req)
+  mounted() {
+    this.getEverything(["Singapore"]);
+  },
 
-      // this.chartdata = JSON.parse(JSON.stringify(response.data))
-      this.chartdata = response.data.data.items
-      console.log(this.chartdata)
-      this.loaded = true
-    } catch (e) {
-      console.error(e)
-    }
+    methods: {
+    formatValue(num) {
+      return Math.abs(Number(num)) >= 1.0e+9
+
+      ? (Math.abs(Number(num)) / 1.0e+9).toFixed(2) + " billion"
+
+      : Math.abs(Number(num)) >= 1.0e+6
+
+      ? (Math.abs(Number(num)) / 1.0e+6).toFixed(2) + " million"
+
+      : +(Math.round(num + "e+4")  + "e-4");
+    },
+
+    topThreeOnClose(country_name) {
+
+      // this function is called when the user clicks any of the flags in the top 3 countries section
+
+      this.getEverything([country_name])
+    },
+
+    onClose(acceptance) {
+
+      // this function is called when the user selects the countries that he wants to analyze
+
+      this.countries = acceptance[1]
+      this.chartdata = null
+      this.getEverything(this.countries)
+    },
+
+    getEverything(countries) {
+
+      this.countries = countries
+
+      // GETTING COUNTRY DATA
+      this.$axios.$post(process.env.BACKEND + '/api/countries/', {
+          "countries": countries
+        }
+      ).then((Tags) => {
+        this.Tags = Tags
+        console.log(this.Tags)
+        this.isLoaded = true
+        this.$emit('load-coordinates', this.Tags.data.coordinates)
+      })
+
+      // GETTING CHARTS DATA FOR COUNTRY
+      this.$axios.$post( process.env.BACKEND + '/api/charts/', {
+        "countries": countries
+
+      }).then((response) => {
+
+        this.chartdata = response.data.items
+        this.isChartLoaded = true
+      })
+
+      // GETTING TOP3 COUNTRIES ONLY IF LEN(COUNTRIES) == 1
+      if (countries.length == 1) {
+        this.$axios.$get( process.env.BACKEND + '/api/analytics/top_countries/' + countries[0]).then((topThree) => {
+
+            this.topThree = topThree
+            this.getTopThree = true
+          }
+        ) 
+      } else {
+        this.getTopThree = false
+      }
+
+      this.$axios.$post( process.env.BACKEND + '/api/csv/', {
+        "countries": countries
+
+      }).then((data) => {
+          this.csvdata = data
+          this.getCsvData = true
+        }
+      )
+
+    },
   }
+
 };
 </script>
 
@@ -199,29 +344,53 @@ export default {
     padding: 0;
   }
 
-  .map {
-    width: 40%;
-    position: fixed;
-    right:0px;
-    height:100%;
-    overflow:hidden;
-  }
-
-  .expansion {
-    margin-top:15px;
-    margin-bottom:15px;
-  }
-
   .v-expansion-panel::before {
    box-shadow: none !important;
   }
 
   .v-expansion-panel-header {
    padding:0;
+   margin-top:20px;
+   margin-bottom:20px;
   }
 
   .v-expansion-panel-content >>> .v-expansion-panel-content__wrap {
     padding:0 15px 0 0;
+    margin-bottom:25px;
+  }
+
+  .analyticsIcons {
+    margin-right:10px;
+  }
+
+  .regionTabText {
+    text-transform: none !important;
+    margin-left: 10px;
+    font-size:16px;
+  }
+
+  .featuresTitle{
+    color:#215085 !important;
+    font-weight:700;
+    font-size:16px;
+    padding:16px;
+  }
+
+  .charts  {
+    box-shadow: none !important;
+    padding-left:10px;
+    padding-right:10px;
+  }
+
+  .chartsTitle{
+    color:#d29a42;
     margin-bottom:10px;
+    text-align:center;
+  }
+
+  .chartsDescription {
+    font-size:13px;
+    padding-left:10px;
+    padding-right:10px;
   }
 </style>
