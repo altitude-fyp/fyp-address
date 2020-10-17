@@ -1,12 +1,14 @@
 <template>
-  
+
   <!--This is the main page where it is just '/'-->
   <v-app>
-    <!-- <google-map :coordinates="coordinates"/> -->
-    <!-- <c-s-v-search/> -->
-    <!-- <GoogleBottomSheet @load-coordinates="showMarkers"/> -->
-
-    <test></test>
+     <google-map :coordinates="coordinates"/>
+     <c-s-v-search/>
+    <v-container>
+      <country-selection-dialog/>
+      <country-statistics/>
+      <feature-selection-panel/>
+    </v-container>
 
   </v-app>
 
@@ -17,17 +19,20 @@
 
 
 import GoogleMap from "@/components/home/GoogleMap";
-import GoogleBottomSheet from "~/components/home/GoogleBottomSheet";
 import CSVSearch from "@/components/home/CSVSearch";
+import CountrySelectionDialog from "@/components/home/GoogleBottomSheet/components/CountrySelectionDialog";
+import CountryStatistics from "@/components/home/GoogleBottomSheet/components/CountryStatistics";
+import FeatureSelectionPanel from "@/components/home/GoogleBottomSheet/components/FeatureSelectionPanel";
 
-import test from "@/components/home/GoogleBottomSheet/index";
 
 export default {
   components: {
+    FeatureSelectionPanel,
+    CountryStatistics,
+    CountrySelectionDialog,
     CSVSearch,
-    GoogleBottomSheet,
     GoogleMap,
-    test
+
   },
   data() {
     return {
