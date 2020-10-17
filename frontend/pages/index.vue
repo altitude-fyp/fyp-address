@@ -1,5 +1,5 @@
 <template>
-  
+
   <!--This is the main page where it is just '/'-->
   <v-app>
 
