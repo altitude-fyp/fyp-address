@@ -1,7 +1,8 @@
 <template>
   <!--fluid style="padding-top: 400px; padding-left: 240px; position:absolute; z-index: 1;"-->
-  <v-container >
+  <v-container>
     <v-row>
+      <!--Select US or Singapore button-->
       <v-col cols="2" style="padding-top: 20px;">
         <v-select
           v-model="preselect"
@@ -14,7 +15,9 @@
           dense
         ></v-select>
       </v-col>
-      <v-col cols="10">
+
+      <!--Address Search Bar-->
+      <v-col cols="8">
         <v-text-field
           v-model="address"
           prepend-inner-icon="mdi-magnify"
@@ -22,6 +25,23 @@
           v-on:keypress.enter="lookUpAddress"
         >
         </v-text-field>
+      </v-col>
+
+      <!--upload CSV button-->
+      <v-col cols="2" style="padding-top: 20px;">
+
+        <v-file-input
+          placeholder="Upload CSV"
+          v-model="csv"
+          prepend-icon="mdi-upload"
+          accept=".csv"
+          dense
+          outlined
+          @change="csvAccept"
+        >
+
+        </v-file-input>
+
       </v-col>
     </v-row>
 
@@ -31,19 +51,34 @@
 </template>
 
 <script>
+
+import Papa from 'papaparse'
+
 export default {
   name: "CSVSearch",
+  components: {
+    Papa,
+  },
   data() {
-    return{
+    return {
       preselect: 'Singapore',
       address: '',
       items: ['Singapore', 'USA'],
+      csv: null,
+      data: null,
     }
   },
   methods: {
-    lookUpAddress(){
+    lookUpAddress() {
       /*console.log(this.preselect)
       console.log(this.address)*/
+    },
+    csvAccept() {
+      Papa.parse(this.csv, {
+        complete: function(results) {
+          console.log("Finished:", results.data);
+        }
+      });
     }
 
   }

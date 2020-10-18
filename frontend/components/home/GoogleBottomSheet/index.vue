@@ -10,7 +10,7 @@
           :countriesMetadata=countriesMetadata
           :CSVData=CSVData
           @selectCountriesButtonClicked=openCountrySelectionDialog
-          @selectRegionButtonClicked=openRegionSelectionDialog>
+          @selectRegionsButtonClicked=openRegionSelectionDialog>
         </metadata-panel>
 
         <v-divider></v-divider>

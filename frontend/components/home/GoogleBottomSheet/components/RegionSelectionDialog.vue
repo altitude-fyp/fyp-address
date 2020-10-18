@@ -42,8 +42,8 @@
               <!-- error message for when user selects more than 4 countries -->
               <v-card-subtitle
                 class="errorMessage"
-                v-if="disableCountrySearch">
-                You have selected the maximum number of countries for comparison, please select a maximum of 4 countries
+                v-if="disableRegionSearch">
+                You have selected the maximum number of regions for comparison, please select a maximum of 4 regions
               </v-card-subtitle>
 
               <!-- reset and submit button goes here -->
