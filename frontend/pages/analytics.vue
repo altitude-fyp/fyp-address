@@ -1,8 +1,13 @@
 <template>
-  <v-app v-if="isLoaded">
+  
+  <v-app>
+
     <div style="padding-top: 50px">
+  
       <div class="parent">
+  
           <div class="left">
+            
             <v-row>
               <h2>File Info</h2>
             </v-row>
@@ -24,17 +29,24 @@
                 </div>
               </div>
             </v-row>
+          
+          </div>
+
 
             <br/><v-divider></v-divider><br/>
 
             <v-row>
+
               <h2>Address data</h2>
+              
               <v-expansion-panels 
                 accordion 
                 v-model="panel"
-                multiple
-              >
+                multiple>
+
+
                 <v-expansion-panel>
+                  
                   <v-expansion-panel-header>
                     <v-img class="analyticsIcons"
                       max-height="22"
@@ -43,12 +55,15 @@
                     ></v-img>
                     <h2>At a Glance</h2>
                   </v-expansion-panel-header>
+
                   <v-expansion-panel-content>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
                   </v-expansion-panel-content>
+
                 </v-expansion-panel>
 
                 <v-expansion-panel>
+
                   <v-expansion-panel-header>
                     <v-img class="analyticsIcons"
                       max-height="22"
@@ -57,21 +72,40 @@
                     ></v-img>
                     <h2>Singapore</h2>
                   </v-expansion-panel-header>
-                  <v-expansion-panel-content>
-                    
+
+                  <v-expansion-panel-content></v-expansion-panel-content>
+
+                </v-expansion-panel>                    
+
+              </v-expansion-panels>
+
+            </v-row>
+
+            <country-statistics
+                :countriesMetadata="{1:1}"
+                :countryStatistics=countryStatistics
+                :selectedCountries=selectedCountries
+                :selectedFeatures=selectedCountryStatisticsFeatures>
+            </country-statistics>
+
+            <key-financial-indicators
+              :chartData=chartData>
+            </key-financial-indicators>
+
+
                     <!--Top 8 features-->
-                    <v-row v-for="x in 2">
+                    <!-- <v-row v-for="x in 2">
                       <v-col v-for="n in 4">
                         <v-row>
                             <v-card-subtitle class="featuresTitle"> {{ Tags.data.top8[(4*(x-1)+n)-1].name }}</v-card-subtitle>
                             <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.top8[(4*(x-1)+n)-1].value) }}</v-card-text>   
                         </v-row>
                       </v-col>
-                    </v-row>
+                    </v-row> -->
                     <!--Top 8 features-->
 
                     <!-- Chart -->
-                    <h3>Key Financial Indicators</h3>
+                    <!-- <h3>Key Financial Indicators</h3>
                     <v-card class="mx-auto charts">
                       <v-container>
                         <v-row> 
@@ -94,13 +128,14 @@
                           </v-col>
                         </v-row>
                       </v-container>
-                    </v-card>
-                    <!-- Chart -->
-                  </v-expansion-panel-content>
-                </v-expansion-panel>
+                    </v-card> -->
+                    <!-- Chart END -->
+
+                  <!-- </v-expansion-panel-content>
+                </v-expansion-panel> -->
 
                 <!--Region Data in Country-->
-                <v-expansion-panel>
+                <!-- <v-expansion-panel>
                   <v-expansion-panel-header>
                     <v-img class="analyticsIcons"
                       max-height="22"
@@ -161,136 +196,174 @@
                           <v-card-text v-text="text"></v-card-text>
                         </v-card>
                       </v-tab-item>
-                    </v-tabs-items>
+                    </v-tabs-items> -->
                   
-                  </v-expansion-panel-content>
-                </v-expansion-panel>
+                  <!-- </v-expansion-panel-content>
+                </v-expansion-panel> -->
                 <!--Region Data in Country-->
 
-              </v-expansion-panels>
-            </v-row>
-            <br/><br/>
-          </div>
+              <!-- </v-expansion-panels> -->
+            <!-- </v-row> -->
+            <!-- <br/><br/>
+          </div> -->
 
       <!--Google Maps-->
       <div class="right">
         <google-map-analytics :coordinates="coordinates"/>
       </div>
       <!--Google Maps-->
+      </div>
     </div>
-    </div>
+
   </v-app>
 
 </template>
 
 <script>
-import axios from 'axios';
 import lineChart from "@/components/analytics/lineChart";
 import BarChart from "@/components/analytics/barChart";
 import GoogleMapAnalytics from "@/components/home/GoogleMapAnalytics";
 
+import CountryStatistics from "@/components/home/GoogleBottomSheet/components/CountryStatistics.vue"
+
 export default {
   name: "analytics",
-  components: {BarChart, lineChart, GoogleMapAnalytics},
+  components: {
+    BarChart, lineChart, GoogleMapAnalytics,
+    "country-statistics": CountryStatistics,
+    },
 
-  data: () => ({
-    loaded: false,
-    chartdata: {},
-    panel: [0, 1],
-    isLoaded: false,
-    tabs: null,
-    Tags: null,
-    chartdata: [],
-    isLoaded: false,
-    isChartLoaded: false,
-    data: null,
-    countries: ['Singapore'],
-    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-  }),
+  data() {
+    return {
+      selectedCountries: ["Singapore"],
+      countryStatistics: null,
+      selectedCountryStatisticsFeatures: [
+          "gdp nominal",
+          "unemployment rate",
+          "Financial Development Index",
+          "population density",
+          "literacy rate",
+          "life expectacy (overall)",
+          "gini",
+          "Consumer Price Index, All items",
+      ],
+      chartData: null
+
+    }
+  },
 
   mounted() {
-    this.getEverything(["Singapore"]);
+    this.getEverything();
   },
 
     methods: {
-    formatValue(num) {
-      return Math.abs(Number(num)) >= 1.0e+9
 
-      ? (Math.abs(Number(num)) / 1.0e+9).toFixed(2) + " billion"
+      getEverything() {
+        this.getCountryStatistics()
+        this.getChartData()
+      },
 
-      : Math.abs(Number(num)) >= 1.0e+6
+      getCountryStatistics() {
+          // get statistics from aggregate.countries
+          this.countryStatistics = null
+          var url = process.env.BACKEND + "/api/countries/statistics/" + this.selectedCountries
 
-      ? (Math.abs(Number(num)) / 1.0e+6).toFixed(2) + " million"
+          this.$axios.get(url).then((response) => {
+              this.countryStatistics = response.data
+          })
+      },
 
-      : +(Math.round(num + "e+4")  + "e-4");
-    },
+      getChartData() {
+        // this function gets chart data and stores in this.chartData
+        this.chartData = null
+        var url = process.env.BACKEND + "/api/charts/" + this.selectedCountries
 
-    topThreeOnClose(country_name) {
+        this.$axios.get(url).then((response) => {
+            this.chartData = response.data.charts
+        })
+      },
 
-      // this function is called when the user clicks any of the flags in the top 3 countries section
 
-      this.getEverything([country_name])
-    },
+    // formatValue(num) {
+    //   return Math.abs(Number(num)) >= 1.0e+9
 
-    onClose(acceptance) {
+    //   ? (Math.abs(Number(num)) / 1.0e+9).toFixed(2) + " billion"
 
-      // this function is called when the user selects the countries that he wants to analyze
+    //   : Math.abs(Number(num)) >= 1.0e+6
 
-      this.countries = acceptance[1]
-      this.chartdata = null
-      this.getEverything(this.countries)
-    },
+    //   ? (Math.abs(Number(num)) / 1.0e+6).toFixed(2) + " million"
 
-    getEverything(countries) {
+    //   : +(Math.round(num + "e+4")  + "e-4");
+    // },
 
-      this.countries = countries
+    // topThreeOnClose(country_name) {
 
-      // GETTING COUNTRY DATA
-      this.$axios.$post(process.env.BACKEND + '/api/countries/', {
-          "countries": countries
-        }
-      ).then((Tags) => {
-        this.Tags = Tags
-        console.log(this.Tags)
-        this.isLoaded = true
-        this.$emit('load-coordinates', this.Tags.data.coordinates)
-      })
+    //   // this function is called when the user clicks any of the flags in the top 3 countries section
 
-      // GETTING CHARTS DATA FOR COUNTRY
-      this.$axios.$post( process.env.BACKEND + '/api/charts/', {
-        "countries": countries
+    //   this.getEverything([country_name])
+    // },
 
-      }).then((response) => {
+    // onClose(acceptance) {
 
-        this.chartdata = response.data.items
-        this.isChartLoaded = true
-      })
+    //   // this function is called when the user selects the countries that he wants to analyze
 
-      // GETTING TOP3 COUNTRIES ONLY IF LEN(COUNTRIES) == 1
-      if (countries.length == 1) {
-        this.$axios.$get( process.env.BACKEND + '/api/analytics/top_countries/' + countries[0]).then((topThree) => {
+    //   this.countries = acceptance[1]
+    //   this.chartdata = null
+    //   this.getEverything(this.countries)
+    // },
 
-            this.topThree = topThree
-            this.getTopThree = true
-          }
-        ) 
-      } else {
-        this.getTopThree = false
-      }
+  //   getEverything(countries) {
 
-      this.$axios.$post( process.env.BACKEND + '/api/csv/', {
-        "countries": countries
+  //     this.countries = countries
 
-      }).then((data) => {
-          this.csvdata = data
-          this.getCsvData = true
-        }
-      )
+  //     // GETTING COUNTRY DATA
+  //     this.$axios.$post(process.env.BACKEND + '/api/countries/', {
+  //         "countries": countries
+  //       }
+  //     ).then((Tags) => {
+  //       this.Tags = Tags
+  //       console.log(this.Tags)
+  //       this.isLoaded = true
+  //       this.$emit('load-coordinates', this.Tags.data.coordinates)
+  //     })
 
-    },
+  //     // GETTING CHARTS DATA FOR COUNTRY
+  //     this.$axios.$post( process.env.BACKEND + '/api/charts/', {
+  //       "countries": countries
+
+  //     }).then((response) => {
+
+  //       this.chartdata = response.data.items
+  //       this.isChartLoaded = true
+  //     })
+
+  //     // GETTING TOP3 COUNTRIES ONLY IF LEN(COUNTRIES) == 1
+  //     if (countries.length == 1) {
+  //       this.$axios.$get( process.env.BACKEND + '/api/analytics/top_countries/' + countries[0]).then((topThree) => {
+
+  //           this.topThree = topThree
+  //           this.getTopThree = true
+  //         }
+  //       ) 
+  //     } else {
+  //       this.getTopThree = false
+  //     }
+
+  //     this.$axios.$post( process.env.BACKEND + '/api/csv/', {
+  //       "countries": countries
+
+  //     }).then((data) => {
+  //         this.csvdata = data
+  //         this.getCsvData = true
+  //       }
+  //     )
+
+  //   },
+  // }
   }
 
-};
+}
+
 </script>
 
 <style scoped>
