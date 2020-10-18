@@ -11,7 +11,7 @@
          disableDefaultUi: false
        }"
       :center="center"
-      :zoom="2"
+      :zoom="11"
       style="
         width:40%;
         position:fixed;

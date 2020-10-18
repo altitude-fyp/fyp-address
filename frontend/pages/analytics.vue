@@ -1,189 +1,146 @@
 <template>
-  
   <v-app>
-
     <div style="padding-top: 50px">
-  
       <div class="parent">
-  
           <div class="left">
+
+            <!-- File Info -->
+            <v-row>
+              <h2 class="headerText">File Info</h2>
+            </v-row>
             
             <v-row>
-              <h2>File Info</h2>
-            </v-row>
-
-            <v-row>
               <div class="file">
-                <div class="fileName">
+                <span class="fileName">
                   address_SG_14102020.csv
-                </div>
+                </span>
                 <div class="fileResults">
-                  <div class="fileResultsSuccess">
+                  <span class="fileResultsSuccess">
                     418 records
                     <v-icon color="green">mdi-check</v-icon>
-                  </div>
-                  <div class="fileResultsError">
-                    418 records
+                  </span>
+                  <span class="fileResultsError">
+                    23 records
                     <v-icon color="red">mdi-close</v-icon>
-                  </div>
+                  </span>
+                  <span class="link">View
+                  </span>
                 </div>
               </div>
-            </v-row>
-          
-          </div>
+            </v-row><br/>
 
+            <v-row>
+              <span class="uploadDate">Last uploaded on 18 October 2020, 07:30 AM</span>
+            </v-row>
+            <!-- File Info -->
 
             <br/><v-divider></v-divider><br/>
 
             <v-row>
 
-              <h2>Address data</h2>
+              <h2 class="headerText">Address data</h2>
               
               <v-expansion-panels 
                 accordion 
                 v-model="panel"
                 multiple>
 
-
                 <v-expansion-panel>
-                  
                   <v-expansion-panel-header>
                     <v-img class="analyticsIcons"
-                      max-height="22"
-                      max-width="22"
+                      max-height="18"
+                      max-width="18"
                       :src="require('../images/icons/ataglance.png')"
                     ></v-img>
-                    <h2>At a Glance</h2>
+                    <h3>At a Glance</h3>
                   </v-expansion-panel-header>
 
                   <v-expansion-panel-content>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    <v-row class="atAGlanceResults">
+                      <v-col>Test</v-col>
+                      <v-col>10</v-col>
+                      <v-col>Toa Payoh</v-col>
+                    </v-row>
+                    <v-row class="atAGlanceSubHeader">
+                      <v-col>Singapore</v-col>
+                      <v-col>regions</v-col>
+                      <v-col>region with the highest no. of addresses</v-col>
+                    </v-row>
                   </v-expansion-panel-content>
-
                 </v-expansion-panel>
 
                 <v-expansion-panel>
-
                   <v-expansion-panel-header>
                     <v-img class="analyticsIcons"
-                      max-height="22"
-                      max-width="22"
+                      max-height="18"
+                      max-width="18"
                       :src="require('../images/icons/globe.png')"
                     ></v-img>
-                    <h2>Singapore</h2>
+                    <h3>Singapore</h3>
                   </v-expansion-panel-header>
 
-                  <v-expansion-panel-content></v-expansion-panel-content>
+                  <v-expansion-panel-content>
+                      <country-statistics
+                          :countriesMetadata="{1:1}"
+                          :countryStatistics=countryStatistics
+                          :selectedCountries=selectedCountries
+                          :selectedFeatures=selectedCountryStatisticsFeatures>
+                      </country-statistics>
 
-                </v-expansion-panel>                    
+                      <key-financial-indicators
+                        :chartData=chartData>
+                      </key-financial-indicators>
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
 
-              </v-expansion-panels>
-
-            </v-row>
-
-            <country-statistics
-                :countriesMetadata="{1:1}"
-                :countryStatistics=countryStatistics
-                :selectedCountries=selectedCountries
-                :selectedFeatures=selectedCountryStatisticsFeatures>
-            </country-statistics>
-
-            <key-financial-indicators
-              :chartData=chartData>
-            </key-financial-indicators>
-
-
-                    <!--Top 8 features-->
-                    <!-- <v-row v-for="x in 2">
-                      <v-col v-for="n in 4">
-                        <v-row>
-                            <v-card-subtitle class="featuresTitle"> {{ Tags.data.top8[(4*(x-1)+n)-1].name }}</v-card-subtitle>
-                            <v-card-text style="font-size: 16px;">{{ formatValue(Tags.data.top8[(4*(x-1)+n)-1].value) }}</v-card-text>   
-                        </v-row>
-                      </v-col>
-                    </v-row> -->
-                    <!--Top 8 features-->
-
-                    <!-- Chart -->
-                    <!-- <h3>Key Financial Indicators</h3>
-                    <v-card class="mx-auto charts">
-                      <v-container>
-                        <v-row> 
-                          <v-col v-for="data in chartdata" cols="6">
-                            <v-row>
-                              <v-col>
-                              <div class="chartsTitle">
-                                  <h3>{{data.title}}</h3>
-                              </div>
-                                <div class="charts">
-                                  <line-chart
-                                    v-if="isChartLoaded"
-                                    :chartdata="data"
-                                  />
-                                </div>
-                                <br/>
-                                <p class="chartsDescription">{{data.description}}</p>
-                              </v-col>
-                            </v-row>
-                          </v-col>
-                        </v-row>
-                      </v-container>
-                    </v-card> -->
-                    <!-- Chart END -->
-
-                  <!-- </v-expansion-panel-content>
-                </v-expansion-panel> -->
-
-                <!--Region Data in Country-->
-                <!-- <v-expansion-panel>
+                <v-expansion-panel>
                   <v-expansion-panel-header>
                     <v-img class="analyticsIcons"
-                      max-height="22"
-                      max-width="22"
+                      max-height="18"
+                      max-width="18"
                       :src="require('../images/icons/region.png')"
                     ></v-img>
-                    <h2>Regions in Singapore</h2>
+                    <h3>Regions in Singapore</h3>
                   </v-expansion-panel-header>
-                  
-                  <v-expansion-panel-content>                    
-                    <v-toolbar flat>
-                        <v-tabs
-                          v-model="tabs"
-                          fixed-tabs
+
+                  <v-expansion-panel-content>
+                    <v-toolbar elevation="0">
+                      <v-tabs
+                        v-model="tabs"
+                        fixed-tabs
+                      >
+                        <v-tabs-slider></v-tabs-slider>
+                        <v-tab
+                          href="#tab-1"
+                          class="primary--text"
                         >
-                          <v-tabs-slider></v-tabs-slider>
-                          <v-tab
-                            href="#tab-1"
-                            class="primary--text"
-                          >
-                            <v-icon>mdi-phone</v-icon>
-                            <span class="regionTabText">At a Glance</span>
-                          </v-tab>
+                          <v-icon>mdi-phone</v-icon>
+                          
+                        </v-tab>
 
-                          <v-tab
-                            href="#tab-2"
-                            class="primary--text"
-                          >
-                            <v-icon>mdi-heart</v-icon>
-                            <span class="regionTabText">Economy</span>
-                          </v-tab>
+                        <v-tab
+                          href="#tab-2"
+                          class="primary--text"
+                        >
+                          <v-icon>mdi-heart</v-icon>
+                          
+                        </v-tab>
 
-                          <v-tab
-                            href="#tab-3"
-                            class="primary--text"
-                          >
-                            <v-icon>mdi-account-box</v-icon>
-                            <span class="regionTabText">Society</span>
-                          </v-tab>
+                        <v-tab
+                          href="#tab-3"
+                          class="primary--text"
+                        >
+                          <v-icon>mdi-account-box</v-icon>
+                        </v-tab>
 
-                          <v-tab
-                            href="#tab-4"
-                            class="primary--text"
-                          >
-                            <v-icon>mdi-account-box</v-icon>
-                            <span class="regionTabText">Household</span>
-                          </v-tab>
-                        </v-tabs>
+                        <v-tab
+                          href="#tab-4"
+                          class="primary--text"
+                        >
+                          <v-icon>mdi-account-box</v-icon>
+                        </v-tab>
+
+                      </v-tabs>
                     </v-toolbar>
 
                     <v-tabs-items v-model="tabs">
@@ -196,16 +153,27 @@
                           <v-card-text v-text="text"></v-card-text>
                         </v-card>
                       </v-tab-item>
-                    </v-tabs-items> -->
-                  
-                  <!-- </v-expansion-panel-content>
-                </v-expansion-panel> -->
-                <!--Region Data in Country-->
+                    </v-tabs-items>
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
 
-              <!-- </v-expansion-panels> -->
-            <!-- </v-row> -->
-            <!-- <br/><br/>
-          </div> -->
+                <v-expansion-panel>
+                  <v-expansion-panel-header>
+                    <v-img class="analyticsIcons"
+                      max-height="18"
+                      max-width="18"
+                      :src="require('../images/icons/code.png')"
+                    ></v-img>
+                    <h3>Code Snippet</h3>
+                  </v-expansion-panel-header>
+
+                  <v-expansion-panel-content>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                  </v-expansion-panel-content>
+                </v-expansion-panel>              
+              </v-expansion-panels>
+            </v-row>
+          </div>
 
       <!--Google Maps-->
       <div class="right">
@@ -214,23 +182,22 @@
       <!--Google Maps-->
       </div>
     </div>
-
   </v-app>
-
 </template>
 
 <script>
 import lineChart from "@/components/analytics/lineChart";
 import BarChart from "@/components/analytics/barChart";
 import GoogleMapAnalytics from "@/components/home/GoogleMapAnalytics";
-
-import CountryStatistics from "@/components/home/GoogleBottomSheet/components/CountryStatistics.vue"
+import CountryStatistics from "@/components/analytics/CountryStatisticsAnalytics.vue"
+import KeyFinancialIndicators from "@/components/analytics/KeyFinancialIndicatorsAnalytics.vue"
 
 export default {
   name: "analytics",
   components: {
     BarChart, lineChart, GoogleMapAnalytics,
     "country-statistics": CountryStatistics,
+    "key-financial-indicators": KeyFinancialIndicators,
     },
 
   data() {
@@ -247,8 +214,10 @@ export default {
           "gini",
           "Consumer Price Index, All items",
       ],
-      chartData: null
-
+      chartData: null,
+      tabs: null,
+      panel: [0, 0],
+      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
     }
   },
 
@@ -282,84 +251,6 @@ export default {
             this.chartData = response.data.charts
         })
       },
-
-
-    // formatValue(num) {
-    //   return Math.abs(Number(num)) >= 1.0e+9
-
-    //   ? (Math.abs(Number(num)) / 1.0e+9).toFixed(2) + " billion"
-
-    //   : Math.abs(Number(num)) >= 1.0e+6
-
-    //   ? (Math.abs(Number(num)) / 1.0e+6).toFixed(2) + " million"
-
-    //   : +(Math.round(num + "e+4")  + "e-4");
-    // },
-
-    // topThreeOnClose(country_name) {
-
-    //   // this function is called when the user clicks any of the flags in the top 3 countries section
-
-    //   this.getEverything([country_name])
-    // },
-
-    // onClose(acceptance) {
-
-    //   // this function is called when the user selects the countries that he wants to analyze
-
-    //   this.countries = acceptance[1]
-    //   this.chartdata = null
-    //   this.getEverything(this.countries)
-    // },
-
-  //   getEverything(countries) {
-
-  //     this.countries = countries
-
-  //     // GETTING COUNTRY DATA
-  //     this.$axios.$post(process.env.BACKEND + '/api/countries/', {
-  //         "countries": countries
-  //       }
-  //     ).then((Tags) => {
-  //       this.Tags = Tags
-  //       console.log(this.Tags)
-  //       this.isLoaded = true
-  //       this.$emit('load-coordinates', this.Tags.data.coordinates)
-  //     })
-
-  //     // GETTING CHARTS DATA FOR COUNTRY
-  //     this.$axios.$post( process.env.BACKEND + '/api/charts/', {
-  //       "countries": countries
-
-  //     }).then((response) => {
-
-  //       this.chartdata = response.data.items
-  //       this.isChartLoaded = true
-  //     })
-
-  //     // GETTING TOP3 COUNTRIES ONLY IF LEN(COUNTRIES) == 1
-  //     if (countries.length == 1) {
-  //       this.$axios.$get( process.env.BACKEND + '/api/analytics/top_countries/' + countries[0]).then((topThree) => {
-
-  //           this.topThree = topThree
-  //           this.getTopThree = true
-  //         }
-  //       ) 
-  //     } else {
-  //       this.getTopThree = false
-  //     }
-
-  //     this.$axios.$post( process.env.BACKEND + '/api/csv/', {
-  //       "countries": countries
-
-  //     }).then((data) => {
-  //         this.csvdata = data
-  //         this.getCsvData = true
-  //       }
-  //     )
-
-  //   },
-  // }
   }
 
 }
@@ -368,9 +259,10 @@ export default {
 
 <style scoped>
   .file {
-    width:600px;
+    width:700px;
     margin-top:15px;
   }
+
   .fileName {
     float:left;
   }
@@ -386,6 +278,7 @@ export default {
 
   .fileResultsError {
     margin:0 auto;
+    padding-right:40px;
   }
 
   .successDot {
@@ -465,5 +358,33 @@ export default {
     font-size:13px;
     padding-left:10px;
     padding-right:10px;
+  }
+
+  .uploadDate {
+    color:#5a5a5a;
+    font-size:12px;
+  }
+
+  .link {
+    color:#215085;
+    font-size:14px;
+    font-weight:700;
+  }
+
+  .headerText {
+    color:#215085;
+  }
+  
+  .atAGlanceResults {
+    text-align:center;
+    font-size:30px;
+    color:#215085;
+    font-weight:700;
+  }
+
+  .atAGlanceSubHeader {
+    text-align:center;
+    font-size:14px;
+    margin-top:-15px;
   }
 </style>
