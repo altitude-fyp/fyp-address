@@ -1,88 +1,69 @@
+from time import time
 from app import app
 from mongodb_helper import *
-from .constants import *
 from pydantic import BaseModel
 from collections import defaultdict
 from typing import List
+import pickle
+from copy import deepcopy
+
+from app import constants
 
 class ItemList(BaseModel):
     countries: List[str]
 
-@app.get("/api/countries")
-def get_countries_list():
+def get_country_data(cname):
     db = get_database()
-    constant_collection = db["constant"]
-    data = constant_collection.find_one({"_id": "continents"})
-
-    out = {"status": "error", "data": {}}
-    if data:
-        out["status"] = "success"
-        out["data"]["items"] = data["data"]
+    out = db["aggregate.embeddings"].find_one({"_id": cname})["data"]
     return out
 
-def format_countries_filter(data_dict):
-    data_list = []
-    for key, value in data_dict.items():
-        data_list.append(key)
-    return data_list
+
+@app.get("/api/countries/metadata/{countries}")
+def get_country_metadata_(countries):
+    """
+    returns country metadata: name, lat, lon, flag, country code for each country
+    """
+    return {cname: constants.COUNTRIES[cname] for cname in countries.split(",")}
 
 
-@app.post("/api/countries/")
-def get_countries_data(items: ItemList):
-    db = get_database()
-    aggregate_countries_collection = db["aggregate.embeddings"]
-    coordinates = get_coordinates()
-    flag = get_flag()
-    out = {"status": "error", "data": {}}
+@app.get("/api/countries/selectableFeatures/") # AKA filters
+def get_selectable_features():
+    """
+    returns all country features (categorised)
+    """
+    return constants.COUNTRY_FEATURE_CATEGORIES
 
-    combined_raw_data_list = []
-    coordinates_list = []
-    flag_list= []
-    for country_name in items.countries:
-        data = aggregate_countries_collection.find_one({"_id": country_name})["data"]
-        combined_raw_data_list.append(data)
-        coordinates_list.append(coordinates[country_name])
-        flag_list.append(flag[country_name])
 
-    dd = defaultdict(list)
-    for d in combined_raw_data_list:
-        for key, value in d.items():
-            dd[key].append(value)
+@app.get("/api/countries/statistics/{countries}")
+def get_country_statistics_(countries):
+    """
+    returns data (non-time-series) of all countries
+    """
+    return {cname: get_country_data(cname) for cname in countries.split(",")}
 
-    if data:
-        result = format_countries_data(dd)
-        out["status"] = "success"
-        out["data"]["coordinates"] = coordinates_list
-        out["data"]["flag"] = flag_list
-        out["data"]["filter"] = get_filter_list()
-        out["data"]["top8"] = result[1]
-        out["data"]["items"] = result[0]
-    return out
 
-def format_countries_data(data_dict):
-    data_list = []
-    top8_list = []
-    top8_filter = ["Gdp nominal", "Hdi", "Financial Development Index", "Consumer Price Index, All items",
-                   "Population total", "Area total", "Unemployment rate", "Life expectancy (overall)"]
-    master_list = get_master_filter_list()
-    for item in master_list:
-        obj = {}
-        obj["name"] = item
-        obj["value"] = data_dict[item]
-        data_list.append(obj)
+@app.get("/api/countries/list")
+def get_country_list_():
+    """
+    Return a list of all countries sorted in aphabetical order
+    """
+    return {
+        "status": "success",
+        "countries": sorted(list(constants.COUNTRIES.keys()))
+    }    
 
-        if item in top8_filter:
-            top8_list.append(obj)
-    return [data_list, top8_list]
+@app.get("/api/countries/csv/{countries}")
+def get_countries_csv_(countries):
+    countries = countries.split(",")
+    countries_data = [get_country_data(cname) for cname in countries]
+    
+    for i in range(len(countries)):
 
-def get_coordinates():
-    db = get_database()
-    constant_collection = db["constant"]
-    data = constant_collection.find_one({"_id": "coordinates"})
-    return data["data"]
+        temp = countries_data[i]
+        out = {"country": countries[i]}
+        for k,v in temp.items():
+            out[k] = v
+        
+        countries_data[i] = out
 
-def get_flag():
-    db = get_database()
-    constant_collection = db["constant"]
-    data = constant_collection.find_one({"_id": "flag"})
-    return data["data"]
+    return countries_data

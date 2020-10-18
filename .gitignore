@@ -2,9 +2,10 @@
 __pycache__
 *.pyc
 env
-.env
+backend/.env
+data-collection/.env
 .pytest_cache
 .ipynb_checkpoints
-pickled
+*.sav
 .idea
 node_modules

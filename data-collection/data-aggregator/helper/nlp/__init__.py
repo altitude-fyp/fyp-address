@@ -1,29 +1,20 @@
-from helper.nlp.cosine_similarity import cosine_similarity
-
-def clean(word):
-    def clean_brackets(word):
-        for i,ch in enumerate(word):
-            if ch in "[{(":
-                return word[:i].strip()
-        return word.strip()
-
-    def clean_space(word):
-        return word.replace(" ", "_")
-    
-    return clean_space(clean_brackets(word))
-    
+from helper.nlp.cosine_similarity import cosine_similarity    
 
 def match(target, iterable):
-    target = clean(target)
+
     bestword = 0
     bestscore = 0
     
     for word in iterable:
         
-        if word in target:
-            return word, 2
+        if word == target:
+            return word, 1
 
         sim = cosine_similarity(target, word)
+
+        if target in word or word in target:
+            sim += 1
+
         if sim > bestscore:
             bestword, bestscore = word, sim
 
