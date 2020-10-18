@@ -10,6 +10,6 @@ def test_get_api_analytics_top_countries():
     r = client.get("/api/analytics/top_countries/Singapore")
     assert r.status_code == 200
     
-    json = r.json()
-    assert json["status"] == "success"
-    assert len(json["data"]["items"]) == 3
+    data = r.json()
+    assert data["status"] == "success"
+    assert len(data["top3"]) == 3

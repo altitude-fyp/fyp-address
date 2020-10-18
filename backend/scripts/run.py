@@ -14,9 +14,9 @@ ex = "python3"
 if platform.system() == "Windows":
     ex = "python"
 
-for command in commands:
+for script in scripts:
     """
     auto-detects platform used, as "python" is used in windows and "python3" is used otherwise
     """
-    os.system(ex + " " + command)
+    os.system(ex + " " + script)
 
