@@ -5,7 +5,7 @@
 # 4. Plot the graphs for each region using the points in utility graph 
 
 # Calculating the data for OneMap to get the results 
-# Economic Status 
+# Economic Status (1)
 def economic_status_1(employed, unemployed):
     num = unemployed
     den = unemployed + employed 
@@ -25,7 +25,7 @@ def economic_status_1(employed, unemployed):
         bin1 = 100 
     return (bin1/100 * 0.10)
 
-# Education Attending
+# Education Attending (2)
 def education_attending_2(pre_primary, primary, secondary, post_secondary, polytechnic, prof_qualification_diploma, university 
 ):
     num = pre_primary + primary + secondary + post_secondary
@@ -46,7 +46,7 @@ def education_attending_2(pre_primary, primary, secondary, post_secondary, polyt
         bin1 = 100 
     return (bin1/100 * 0.05)
 
-# Household Monthly Income 
+# Household Monthly Income (3)
 def household_monthly_income_3(below_sgd_1000, sgd_1000, sgd_2000, sgd_3000, sgd_4000, sgd_5000, sgd_6000, sgd_70009, sgd_8000, sgd_9000, sgd_10000_over): 
     num = below_sgd_1000 + sgd_1000 + sgd_2000 + sgd_3000 + sgd_4000 + sgd_5000
     den = below_sgd_1000 + sgd_1000 + sgd_2000 + sgd_3000 + sgd_4000 + sgd_5000 + sgd_6000 + sgd_70009 + sgd_8000 + sgd_9000 + sgd_10000_over
@@ -66,7 +66,7 @@ def household_monthly_income_3(below_sgd_1000, sgd_1000, sgd_2000, sgd_3000, sgd
         bin1 = 100 
     return (bin1/100 * 0.20)
 
-# Industry
+# Industry (4) 
 def industry_4(manufacturing, construction, wholesale_retail_trade, transportation_storage, accomodation_food_services, information_communications, financial_insurance_services, real_estate_services, professional_services, admin_support_services, public_admin_education, health_social_services, arts_entertainment_recreation, other_comm_social_personal, others, hotels_restaurants, transport_communications, business_services, other_services_industries
 ): 
     num = manufacturing + construction + wholesale_retail_trade + transportation_storage + accomodation_food_services + information_communications + real_estate_services + admin_support_services + public_admin_education + health_social_services + arts_entertainment_recreation + other_comm_social_personal + others + hotels_restaurants + transport_communications + business_services + other_services_industries
@@ -87,7 +87,7 @@ def industry_4(manufacturing, construction, wholesale_retail_trade, transportati
         bin1 = 100 
     return (bin1/100 * 0.05)
 
-# Marital Status 
+# Marital Status (5) 
 def marital_status_5(single, married, widowed, divorced): 
     num = married + divorced
     den = single + married + widowed + divorced
@@ -108,7 +108,7 @@ def marital_status_5(single, married, widowed, divorced):
         bin1 = 100 
     return (bin1/100 * 0.05)
 
-# Mode of Transport to Work 
+# Mode of Transport to Work (6)
 def mode_of_transport_6(bus, mrt, mrt_bus, mrt_car, mrt_other, taxi, car, pvt_chartered_bus, lorry_pickup, motorcycle_scooter, others 
 ): 
     num =  bus + mrt + mrt_bus + mrt_car + mrt_other + taxi + pvt_chartered_bus + lorry_pickup + motorcycle_scooter + others 
@@ -129,7 +129,7 @@ def mode_of_transport_6(bus, mrt, mrt_bus, mrt_car, mrt_other, taxi, car, pvt_ch
         bin1 = 100 
     return (bin1/100 * 0.10)
 
-
+# Occupation (7)
 def occupation_7(senior_officials_managers, professionals, associate_professionals_tech, clerical, service_sales, agricultural_fishery, production_craftsmen, plant_machine_operators, cleaners_labourers , workers_not_classified):
     num = associate_professionals_tech + clerical + service_sales + agricultural_fishery + production_craftsmen + plant_machine_operators + cleaners_labourers + workers_not_classified 
     den = senior_officials_managers + professionals + associate_professionals_tech + clerical + service_sales + agricultural_fishery + production_craftsmen + plant_machine_operators + cleaners_labourers + workers_not_classified 
@@ -149,6 +149,7 @@ def occupation_7(senior_officials_managers, professionals, associate_professiona
         bin1 = 100 
     return (bin1/100 * 0.10)
 
+# Population (8)
 def population_age_group_8(age_0_4, age_5_9, age_10_14, age_15_19, age_20_24, age_25_29, age_30_34, age_35_39, age_40_44, age_45_49, age_50_54, age_55_59, age_60_64, age_65_69, age_70_74, age_75_79, age_80_84, age_85_over):
     num = age_0_4 + age_5_9 + age_10_14 + age_15_19 + age_40_44 + age_45_49 + age_50_54 + age_55_59 + age_60_64 + age_65_69 + age_70_74 + age_75_79 + age_80_84 + age_85_over
     den = age_0_4 + age_5_9 + age_10_14 + age_15_19 + age_20_24 + age_25_29 + age_30_34 + age_35_39 + age_40_44 + age_45_49 + age_50_54 + age_55_59 + age_60_64 + age_65_69 + age_70_74 + age_75_79 + age_80_84 + age_85_over
@@ -168,6 +169,7 @@ def population_age_group_8(age_0_4, age_5_9, age_10_14, age_15_19, age_20_24, ag
         bin1 = 100 
     return (bin1/100 * 0.10)
 
+# Tenancy (9)
 def tenancy_9(owner, tenant, others): 
     num = tenant + others
     den = owner + tenant + others
@@ -187,6 +189,7 @@ def tenancy_9(owner, tenant, others):
         bin1 = 100 
     return (bin1/100 * 0.10)
 
+# Household (10)
 def type_of_household_10(hdb_1_2_room_flats, hdb_3_room_flats, hdb_4_room_flats, hdb_5_room_executive_flats, condominiums, landed_properties):
     num = hdb_1_2_room_flats + hdb_3_room_flats + hdb_4_room_flats
     den = hdb_1_2_room_flats + hdb_3_room_flats + hdb_4_room_flats + hdb_5_room_executive_flats + condominiums + landed_properties
@@ -206,6 +209,7 @@ def type_of_household_10(hdb_1_2_room_flats, hdb_3_room_flats, hdb_4_room_flats,
         bin1 = 100 
     return (bin1/100 * 0.07)
 
+# Household Type (11)
 def type_of_household_population_11(hdb_1_2_room_flats, hdb_3_room_flats, hdb_4_room_flats, hdb_5_room_executive_flats, condominiums, landed_properties):
     num = hdb_1_2_room_flats + hdb_3_room_flats + hdb_4_room_flats
     den = hdb_1_2_room_flats + hdb_3_room_flats + hdb_4_room_flats + hdb_5_room_executive_flats + condominiums + landed_properties
@@ -225,7 +229,7 @@ def type_of_household_population_11(hdb_1_2_room_flats, hdb_3_room_flats, hdb_4_
         bin1 = 100 
     return (bin1/100 * 0.08)
 
-# Sum all of the 11 factors and convert to risk aversion range  
+# Sum all of the 11 factors and convert to risk aversion range (12)
 def risk_aversion_12(f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11):
     A = ((f1 + f2 + f3 + f4 + f5 + f6 + f7 + f8 + f9 + f10 + f11) * 3)
     
@@ -235,6 +239,7 @@ def risk_aversion_12(f1,f2,f3,f4,f5,f6,f7,f8,f9,f10,f11):
         A = 5 
     return A  
 
+# Utility Value (13)
 def utility (a): 
     e = 0.12
     sd = 0.05
@@ -242,14 +247,14 @@ def utility (a):
     u = e - (sf * sd**2 * a)
     return (u)
 
-# Returns CAL x and y data points with slope value
+# Returns CAL x and y data points with slope value (SKIP FOR NOW)
 def cal (x = [0, 0.26], y = [0.07, 0.12]): 
     from scipy.stats import linregress
     stats = linregress(x, y)
     sharpe = stats[0]
     return (x, y, sharpe)
 
-# Expected Return with weight in Risky Assets 
+# Expected Return with weight in Risky Assets (Chart: 15)
 def expected_return (): 
     e = 0.12
     rf = 0.07
@@ -262,7 +267,7 @@ def expected_return ():
         expected_returns.append(er)
     return(risky, expected_returns)
 
-# Returns the data points for 'Utility as a Function of Allocation to Risky Asset'
+# Returns the data points for 'Utility as a Function of Allocation to Risky Asset' (Chart: 16)
 def utility_to_risky (a): 
     e = 0.12
     rf = 0.07
@@ -280,6 +285,7 @@ def utility_to_risky (a):
         utility_values.append(u)
     return(risky, utility_values)
 
+# Optimal_y (14)
 # Returns you the optimal y and risk free weight
 # This point can be highlighted on the graph 
 def optimal_y (a): 
@@ -292,8 +298,7 @@ def optimal_y (a):
     risk_free_weight = 1 - optimal_y
     return (optimal_y, risk_free_weight)
 
-
-# Indifference Curve based on the highest utility 
+# Indifference Curve based on the highest utility (Chart: 17)
 def indifference_curve (u, a): 
     # At standard deviation of 0, U = rf
     rf = 0.07
