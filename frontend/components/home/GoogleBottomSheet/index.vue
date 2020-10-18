@@ -1,59 +1,66 @@
 <template>
-    <v-container>
-        
-        <v-row>
-            
-            <v-col cols=3>
+  <v-container>
 
-                <metadata-panel 
-                    :selectedCountries=selectedCountries
-                    :countriesMetadata=countriesMetadata
-                    :CSVData=CSVData
-                    @selectCountriesButtonClicked=openCountrySelectionDialog>
-                </metadata-panel>
-                
-                <v-divider></v-divider>
+    <v-row>
 
-                <feature-selection-panel 
-                    :selectableFeatures=selectableFeatures
-                    :initialSelectedFeatures=selectedFeatures
-                    @checkboxChange=updateSelectedFeatures>
-                </feature-selection-panel>
+      <v-col cols=3>
 
-            </v-col>
+        <metadata-panel
+          :selectedCountries=selectedCountries
+          :countriesMetadata=countriesMetadata
+          :CSVData=CSVData
+          @selectCountriesButtonClicked=openCountrySelectionDialog
+          @selectRegionButtonClicked=openRegionSelectionDialog>
+        </metadata-panel>
 
-            <v-col cols="9">
+        <v-divider></v-divider>
 
-                <country-statistics
-                    :countriesMetadata=countriesMetadata
-                    :countryStatistics=countryStatistics
-                    :selectedCountries=selectedCountries
-                    :selectedFeatures=selectedFeatures>
-                </country-statistics>
+        <feature-selection-panel
+          :selectableFeatures=selectableFeatures
+          :initialSelectedFeatures=selectedFeatures
+          @checkboxChange=updateSelectedFeatures>
+        </feature-selection-panel>
 
-                <br><br>
+      </v-col>
 
-                <key-financial-indicators
-                    :chartData=chartData>
-                </key-financial-indicators>
+      <v-col cols="9">
 
-                <top-3-similar-countries
-                    v-if="selectedCountries.length==1"
-                    :top3similarCountries=top3similarCountries
-                    @countrySelectedFromTop3Panel=updateSelectedCountries>
-                </top-3-similar-countries>
+        <country-statistics
+          :countriesMetadata=countriesMetadata
+          :countryStatistics=countryStatistics
+          :selectedCountries=selectedCountries
+          :selectedFeatures=selectedFeatures>
+        </country-statistics>
 
-            </v-col>
+        <br><br>
 
-        </v-row>
+        <key-financial-indicators
+          :chartData=chartData>
+        </key-financial-indicators>
 
-        <country-selection-dialog 
-            :showCountrySelectionDialog=showCountrySelectionDialog
-            @closeCountrySelectionDialogEvent="closeCountrySelectionDialog"
-            @submitSelectedCountriesEvent="updateSelectedCountries">
-        </country-selection-dialog>
+        <top-3-similar-countries
+          v-if="selectedCountries.length==1"
+          :top3similarCountries=top3similarCountries
+          @countrySelectedFromTop3Panel=updateSelectedCountries>
+        </top-3-similar-countries>
 
-    </v-container>
+      </v-col>
+
+    </v-row>
+
+    <country-selection-dialog
+      :showCountrySelectionDialog=showCountrySelectionDialog
+      @closeCountrySelectionDialogEvent="closeCountrySelectionDialog"
+      @submitSelectedCountriesEvent="updateSelectedCountries">
+    </country-selection-dialog>
+
+    <region-selection-dialog
+      :showRegionSelectionDialog=showRegionSelectionDialog
+      @closeRegionSelectionDialogEvent="closeRegionSelectionDialog"
+    >
+    </region-selection-dialog>
+
+  </v-container>
 </template>
 
 <script>
@@ -64,157 +71,170 @@ import FeatureSelectionPanel from "@/components/home/GoogleBottomSheet/component
 import CountryStatistics from "@/components/home/GoogleBottomSheet/components/CountryStatistics.vue"
 import KeyFinancialIndicators from "@/components/home/GoogleBottomSheet/components/KeyFinancialIndicators.vue"
 import Top3SimilarCountries from "@/components/home/GoogleBottomSheet/components/Top3SimilarCountries.vue"
+import RegionSelectionDialog from "@/components/home/GoogleBottomSheet/components/RegionSelectionDialog";
 
 
 export default {
-    
-    components: {
-        "metadata-panel": MetadataPanel,
-        "country-selection-dialog": CountrySelectionDialog,
-        "feature-selection-panel": FeatureSelectionPanel,
-        "country-statistics": CountryStatistics,
-        "key-financial-indicators": KeyFinancialIndicators,
-        "top-3-similar-countries": Top3SimilarCountries,
+
+  components: {
+    RegionSelectionDialog,
+    "metadata-panel": MetadataPanel,
+    "country-selection-dialog": CountrySelectionDialog,
+    "feature-selection-panel": FeatureSelectionPanel,
+    "country-statistics": CountryStatistics,
+    "key-financial-indicators": KeyFinancialIndicators,
+    "top-3-similar-countries": Top3SimilarCountries,
+  },
+
+  props: [],
+
+  data() {
+    return {
+      selectedCountries: ["Singapore"],
+      countriesMetadata: null,
+      CSVData: null,
+      selectableFeatures: null,
+      selectedFeatures: [
+        "gdp nominal",
+        "unemployment rate",
+        "Financial Development Index",
+        "population density",
+        "literacy rate",
+        "life expectacy (overall)",
+        "gini",
+        "Consumer Price Index, All items",
+      ],
+      countryStatistics: null,
+      showCountrySelectionDialog: false,
+      showRegionSelectionDialog: false,
+      chartData: null,
+      top3similarCountries: null,
+    }
+  },
+
+  mounted() {
+    this.getEverything()
+  },
+
+  methods: {
+
+    getEverything() {
+      //this function renders everything based on this.selectedCountries
+      this.getCountriesMetadata()
+      this.getCSVData()
+      this.getSelectableFeatures()
+      this.getCountryStatistics()
+      this.getChartData()
+      this.getTop3SimilarCountries()
     },
 
-    props: [],
 
-    data() {
-        return {
-            selectedCountries: ["Singapore"],
-            countriesMetadata: null,
-            CSVData: null,
-            selectableFeatures: null,
-            selectedFeatures: [
-                "gdp nominal",
-                "unemployment rate",
-                "Financial Development Index",
-                "population density",
-                "literacy rate",
-                "life expectacy (overall)",
-                "gini",
-                "Consumer Price Index, All items",
-            ],
-            countryStatistics: null,
-            showCountrySelectionDialog: false,
-            chartData: null,
-            top3similarCountries: null,
-        }
+    getCountriesMetadata() {
+      // get flag, lat, lon, country code of each country in countries
+      this.countriesMetadata = null
+      var url = process.env.BACKEND + "/api/countries/metadata/" + this.selectedCountries
+
+      this.$axios.get(url).then((response) => {
+        this.countriesMetadata = response.data
+
+        // sends countriesMetadata, which contains lat lon data, to parent component
+        this.$emit("changeInSelectedCountries", this.countriesMetadata)
+      })
     },
 
-    mounted() {
-        this.getEverything()
+
+    openCountrySelectionDialog() {
+      // this function is called when the user clicks on "countries to compare"
+      //this function opens the country selection dialog
+      this.showCountrySelectionDialog = true
     },
 
-    methods: {
 
-        getEverything() {
-            //this function renders everything based on this.selectedCountries
-            this.getCountriesMetadata()
-            this.getCSVData()
-            this.getSelectableFeatures()
-            this.getCountryStatistics()
-            this.getChartData()
-            this.getTop3SimilarCountries()
-        },
-    
-
-        getCountriesMetadata() {
-            // get flag, lat, lon, country code of each country in countries
-            this.countriesMetadata = null
-            var url = process.env.BACKEND + "/api/countries/metadata/" + this.selectedCountries
-
-            this.$axios.get(url).then((response) => {
-                this.countriesMetadata = response.data
-
-                // sends countriesMetadata, which contains lat lon data, to parent component
-                this.$emit("changeInSelectedCountries", this.countriesMetadata)
-            })
-        },
+    closeCountrySelectionDialog() {
+      //this function closes the country selection dialog
+      this.showCountrySelectionDialog = false
+    },
 
 
-        openCountrySelectionDialog() {
-            // this function is called when the user clicks on "countries to compare"
-            //this function opens the country selection dialog
-            this.showCountrySelectionDialog = true
-        },
+    updateSelectedCountries(selectedCountries) {
+      //this function is called after user submits his selected countries from the country selection dialog
+      this.selectedCountries = selectedCountries
+      this.getEverything()
+    },
+
+    openRegionSelectionDialog() {
+      // this function is called when the user clicks on "region to compare"
+      //this function opens the country selection dialog
+      this.showRegionSelectionDialog = true
+    },
+
+    closeRegionSelectionDialog() {
+      //this function closes the region selection dialog
+      this.showRegionSelectionDialog = false
+    },
+
+    getCSVData() {
+      // this functions retrieves country data in a format to convert into csv
+      this.CSVData = null
+      var url = process.env.BACKEND + "/api/countries/csv/" + this.selectedCountries
+
+      this.$axios.get(url).then((response) => {
+        this.CSVData = response.data
+      })
+    },
 
 
-        closeCountrySelectionDialog() {
-            //this function closes the country selection dialog
-            this.showCountrySelectionDialog = false
-        },
+    getSelectableFeatures() {
+      // get all selectable features classified by category
+      this.selectableFeatures = null
+      var url = process.env.BACKEND + "/api/countries/selectableFeatures/"
+
+      this.$axios.get(url).then((response) => {
+        this.selectableFeatures = response.data
+      })
+    },
 
 
-        updateSelectedCountries(selectedCountries) {
-            //this function is called after user submits his selected countries from the country selection dialog
-            this.selectedCountries = selectedCountries
-            this.getEverything()
-        },
+    updateSelectedFeatures(features) {
+      // this function triggers on change on checkboxes in selected features
+      this.selectedFeatures = features
+    },
 
 
-        getCSVData() {
-            // this functions retrieves country data in a format to convert into csv
-            this.CSVData = null
-            var url = process.env.BACKEND + "/api/countries/csv/" + this.selectedCountries
+    getCountryStatistics() {
+      // get statistics from aggregate.countries
+      this.countryStatistics = null
+      var url = process.env.BACKEND + "/api/countries/statistics/" + this.selectedCountries
 
-            this.$axios.get(url).then((response) => {
-                this.CSVData = response.data
-            })
-        },
+      this.$axios.get(url).then((response) => {
+        this.countryStatistics = response.data
+      })
+    },
 
+    getChartData() {
+      // this function gets chart data and stores in this.chartData
+      this.chartData = null
+      var url = process.env.BACKEND + "/api/charts/" + this.selectedCountries
 
-        getSelectableFeatures() {
-            // get all selectable features classified by category
-            this.selectableFeatures = null
-            var url = process.env.BACKEND + "/api/countries/selectableFeatures/"
-
-            this.$axios.get(url).then((response) => {
-                this.selectableFeatures = response.data
-            })
-        },
-
-
-        updateSelectedFeatures(features) {
-            // this function triggers on change on checkboxes in selected features
-            this.selectedFeatures = features
-        },
+      this.$axios.get(url).then((response) => {
+        this.chartData = response.data.charts
+      })
+    },
 
 
-        getCountryStatistics() {
-            // get statistics from aggregate.countries
-            this.countryStatistics = null
-            var url = process.env.BACKEND + "/api/countries/statistics/" + this.selectedCountries
+    getTop3SimilarCountries() {
+      //this function retrieves top 3 similar countries to main country
+      //this function is called only when selectedCountries.length == 1
+      this.top3similarCountries = null
+      var url = process.env.BACKEND + "/api/analytics/top_countries/" + this.selectedCountries
 
-            this.$axios.get(url).then((response) => {
-                this.countryStatistics = response.data
-            })
-        },
-
-        getChartData() {
-            // this function gets chart data and stores in this.chartData
-            this.chartData = null
-            var url = process.env.BACKEND + "/api/charts/" + this.selectedCountries
-
-            this.$axios.get(url).then((response) => {
-                this.chartData = response.data.charts
-            })
-        },
-
-
-        getTop3SimilarCountries() {
-            //this function retrieves top 3 similar countries to main country
-            //this function is called only when selectedCountries.length == 1
-            this.top3similarCountries = null
-            var url = process.env.BACKEND + "/api/analytics/top_countries/" + this.selectedCountries
-
-            this.$axios.get(url).then((response) => {
-                this.top3similarCountries = response.data.top3
-            })
-
-        }
+      this.$axios.get(url).then((response) => {
+        this.top3similarCountries = response.data.top3
+      })
 
     }
+
+  }
 
 }
 
