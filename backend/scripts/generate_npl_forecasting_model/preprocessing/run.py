@@ -1,3 +1,4 @@
+import pickle
 """
 1. takes time series data from aggregate.charts
 2. preprocesses it (fill null, remove irrelevant etc)
@@ -81,6 +82,7 @@ for cname, co in data.items():
     
     data[cname] = {fname: fo for fname, fo in co.items() if fname in keep}
 
+pickle.dump(data, open("pickled/autoregressed_country_data.sav.sav", "wb"))
 """
 2-way autoregression to standardize time-series data first from 2000-2019
 after this step, all values should be length 20
