@@ -69,8 +69,7 @@ def household_monthly_income_3(below_sgd_1000, sgd_1000, sgd_2000, sgd_3000, sgd
     return (bin1/100 * 0.20)
 
 # Industry (4) 
-def industry_4(manufacturing, construction, wholesale_retail_trade, transportation_storage, accomodation_food_services, information_communications, financial_insurance_services, real_estate_services, professional_services, admin_support_services, public_admin_education, health_social_services, arts_entertainment_recreation, other_comm_social_personal, others, hotels_restaurants, transport_communications, business_services, other_services_industries
-): 
+def industry_4(manufacturing, construction, wholesale_retail_trade, transportation_storage, accomodation_food_services, information_communications, financial_insurance_services, real_estate_services, professional_services, admin_support_services, public_admin_education, health_social_services, arts_entertainment_recreation, other_comm_social_personal, others, hotels_restaurants, transport_communications, business_services, other_services_industries): 
     num = manufacturing + construction + wholesale_retail_trade + transportation_storage + accomodation_food_services + information_communications + real_estate_services + admin_support_services + public_admin_education + health_social_services + arts_entertainment_recreation + other_comm_social_personal + others + hotels_restaurants + transport_communications + business_services + other_services_industries
     den = manufacturing + construction + wholesale_retail_trade + transportation_storage + accomodation_food_services + information_communications + financial_insurance_services + real_estate_services + professional_services + admin_support_services + public_admin_education + health_social_services + arts_entertainment_recreation + other_comm_social_personal + others + hotels_restaurants + transport_communications + business_services + other_services_industries
     result = num / den
@@ -113,8 +112,7 @@ def marital_status_5(single, married, widowed, divorced):
     return (bin1/100 * 0.05)
 
 # Mode of Transport to Work (6)
-def mode_of_transport_6(bus, mrt, mrt_bus, mrt_car, mrt_other, taxi, car, pvt_chartered_bus, lorry_pickup, motorcycle_scooter, others 
-): 
+def mode_of_transport_6(bus, mrt, mrt_bus, mrt_car, mrt_other, taxi, car, pvt_chartered_bus, lorry_pickup, motorcycle_scooter, others): 
     num =  bus + mrt + mrt_bus + mrt_car + mrt_other + taxi + pvt_chartered_bus + lorry_pickup + motorcycle_scooter + others 
     den =  bus + mrt + mrt_bus + mrt_car + mrt_other + taxi + car + pvt_chartered_bus + lorry_pickup + motorcycle_scooter + others 
     result = num / den
