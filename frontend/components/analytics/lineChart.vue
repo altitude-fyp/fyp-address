@@ -1,30 +1,27 @@
+
 <script>
 import { Line } from 'vue-chartjs'
 
 export default {
+  
   name: "lineChart",
+  
   extends: Line,
-  props: {
-    chartdata: {
-      type: Object,
-      default: null
-    }
-  },
+  
+  props: ["chartData"],
+
   // First time load chart
   mounted() {
     this.renderLineChart();
   },
-  // Compute to convert props to  child component data
-  computed: {
-    chartData: function() {
-      return this.chartdata;
-    }
-  },
+  
   methods: {
+
     renderLineChart: function() {
       let colour_code = ["#2d4059", "#ea5455", "#f07b3f", "#ffd460"]
       let datasets_arr = []
       let size_arr = JSON.parse(JSON.stringify(this.chartData.countries)).length
+
       for (let i=0; i < size_arr; i++) {
         datasets_arr.push({
             fill: false,
@@ -35,7 +32,9 @@ export default {
             data: JSON.parse(JSON.stringify(this.chartData.value))[i]
         })
       }
-      console.log(datasets_arr)
+
+      // console.log(datasets_arr)
+
       let obj = {
           labels: JSON.parse(JSON.stringify(this.chartData.years)),
           datasets: datasets_arr
@@ -43,12 +42,15 @@ export default {
       this.renderChart(obj)
     }
   },
+
+
   // Watch prop change to re-render chart
   watch: {
     chartdata: function() {
       this.renderLineChart();
     }
   }
+
 }
 
 </script>
