@@ -22,14 +22,14 @@ def insert_population_function(area, data):
 
 if __name__ == "__main__":
 
-    polygon_data = get_area_polygons()
+    # polygon_data = get_area_polygons()
 
-    mongo_clear("onemap.polygons")
-    for area, data in polygon_data.items():
-        print(f"inserting into onemap.polygons: {area}" + " "*40, end="\r")
-        mongo_insert({"_id":area, "data":data}, "onemap.polygons")
+    # mongo_clear("onemap.polygons")
+    # for area, data in polygon_data.items():
+    #     print(f"inserting into onemap.polygons: {area}" + " "*40, end="\r")
+    #     mongo_insert({"_id":area, "data":data}, "onemap.polygons")
 
-    print("\n")
+    # print("\n")
 
     mongo_clear("onemap.raw")
     population_data = get_population_data(insert_population_function)

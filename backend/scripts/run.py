@@ -6,8 +6,9 @@ os.system("rm -rf pickled")
 os.system("mkdir pickled")
 
 scripts = [
-    "scripts/generate_constants/run.py",
-    "scripts/generate_country_similarity_matrix/run.py"
+    # "scripts/generate_constants/run.py",
+    # "scripts/generate_country_similarity_matrix/run.py",
+    "scripts/generate_finance/run.py"
 ]
 
 ex = "python3"
