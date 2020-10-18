@@ -1,10 +1,10 @@
 <template>
-  
+
   <!--This is the main page where it is just '/'-->
   <v-app>
 
     <google-map :coordinates="coordinates"/>
-    <!-- <c-s-v-search/> -->
+    <c-s-v-search/>
 
     <google-bottom-sheet
       @changeInSelectedCountries="updateMainCoordinates">
@@ -18,12 +18,14 @@
 
 import GoogleMap from "@/components/home/GoogleMap.vue";
 import GoogleBottomSheet from "@/components/home/GoogleBottomSheet/index.vue";
+import CSVSearch from "@/components/home/CSVSearch";
 
 export default {
 
   components: {
+    CSVSearch,
     "google-map": GoogleMap,
-    "google-bottom-sheet": GoogleBottomSheet 
+    "google-bottom-sheet": GoogleBottomSheet
   },
 
 
@@ -52,7 +54,7 @@ export default {
           lon: cdata.lon
         })
       }
-      
+
       this.coordinates = out
     }
 

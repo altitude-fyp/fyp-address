@@ -1,8 +1,8 @@
 <template>
-    
+
     <div>
         <v-row justify="center">
-            
+
             <v-dialog
                 v-model="showCountrySelectionDialog"
                 fullscreen
@@ -11,7 +11,7 @@
                 scrollable>
 
                 <v-card class="scroll">
-                    
+
                     <!-- toolbar: blue bar thing at the top of the dialog -->
                     <v-toolbar flat dark color="#004D8E" max-height="70px">
                         <!-- this is the cross button at the top left of the dialog -->
@@ -41,29 +41,41 @@
                             </v-autocomplete>
 
                             <!-- error message for when user selects more than 4 countries -->
-                            <v-card-subtitle 
+                            <v-card-subtitle
                                 class="errorMessage"
                                 v-if="disableCountrySearch">
-                                You have selected the maximum number of countries for comparison
+                                You have selected the maximum number of countries for comparison, please select a maximum of 4 countries
                             </v-card-subtitle>
 
                             <!-- reset and submit button goes here -->
                             <div class="resetSubmitButtons">
 
                                 <!-- reset button -->
-                                <v-btn class="button" 
+                              <div style="padding-right:10px">
+                                <v-btn class="button"
                                     depressed
                                     @click="resetSelectedCountries">
                                     Reset All
                                 </v-btn>
-
+                              </div>
                                 <!-- submit button -->
-                                <v-btn class="button white--text" 
-                                    depressed color="#004D8E" 
+
+                              <div v-if="selectedCountries.length <= 4">
+                                <v-btn class="button white--text"
+                                    depressed color="#004D8E"
                                     @click="submitSelectedCountries">
                                     Submit
                                 </v-btn>
-                                
+                              </div>
+                              <div v-else>
+                                <v-btn class="button white--text"
+                                       depressed color="#004D8E"
+                                       disabled
+                                       @click="submitSelectedCountries">
+                                  Submit
+                                </v-btn>
+                              </div>
+
                             </div>
 
                         </div>
@@ -81,7 +93,7 @@
 <script>
 
 export default {
-    
+
     name: "country-selection-dialog",
 
     props: ["showCountrySelectionDialog"],
@@ -111,7 +123,7 @@ export default {
 
             this.$axios.get(url).then((response) => {
                 this.allCountries = response.data.countries
-            })  
+            })
         },
 
         resetSelectedCountries() {
