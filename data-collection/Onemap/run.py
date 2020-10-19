@@ -10,6 +10,7 @@ from mongodb_helper import *
 from helpers.population import *
 from helpers.polygons import *
 from helpers.clean import *
+from helpers.clean_charts import *
 
 def insert_population_function(area, data):
     """
@@ -22,26 +23,35 @@ def insert_population_function(area, data):
 
 if __name__ == "__main__":
 
-    polygon_data = get_area_polygons()
+    # polygon_data = get_area_polygons()
 
-    mongo_clear("onemap.polygons")
-    for area, data in polygon_data.items():
-        print(f"inserting into onemap.polygons: {area}" + " "*40, end="\r")
-        mongo_insert({"_id":area, "data":data}, "onemap.polygons")
+    # mongo_clear("onemap.polygons")
+    # for area, data in polygon_data.items():
+    #     print(f"inserting into onemap.polygons: {area}" + " "*40, end="\r")
+    #     mongo_insert({"_id":area, "data":data}, "onemap.polygons")
 
-    print("\n")
+    # print("\n")
 
-    mongo_clear("onemap.raw")
-    population_data = get_population_data(insert_population_function)
+    # # mongo_clear("onemap.raw")
+    # population_data = get_population_data(insert_population_function)
 
-    print("\nCleaning onemap data\n")
+    # print("\nCleaning onemap data\n")
 
-    data = [i for i in get_database()["onemap.raw"].find()]
-    data = clean(data)
+    data = [i for i in get_database()["onemap"].find()]
+    # data = clean(data)
+    # print(data)
+    # mongo_clear("onemap")
+    # for i in data:
+    #     print(f"inserting into onemap: {i['_id']}" + " "*40, end="\r")
+    #     mongo_insert(i, "onemap")
+
+    print("\nCleaning onemap data for charts\n")
+
+    data = clean_charts(data)
     
-    mongo_clear("onemap")
+    mongo_clear("onemap.charts")
     for i in data:
         print(f"inserting into onemap: {i['_id']}" + " "*40, end="\r")
-        mongo_insert(i, "onemap")
+        mongo_insert(i, "onemap.charts")
     
     print("\n\ndone\n")
