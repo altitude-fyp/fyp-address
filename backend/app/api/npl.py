@@ -6,6 +6,7 @@ from collections import defaultdict
 from statsmodels.tsa.ar_model import AutoReg
 from time import time
 import pickle
+from .analytics_helper.npl_countries_features import *
 
 class ItemList(BaseModel):
     countries: List[str]
@@ -137,3 +138,25 @@ def get_sorted_npl_data():
             "status": "failure",
             "error": str(err),
         }
+
+
+@app.post("/api/npl_country_features/")
+def get_sorted_npl_data(countryname):
+    """
+    output: get top 10 features correlating to non performing loans
+    """
+    starttime = time()
+
+    try:
+        return {
+            "status": "success",
+            "items": get_npl_country_npl_features(countryname)
+        }
+    
+    except Exception as err:
+        return {
+            "status": "failure",
+            "error": str(err),
+        }
+
+
