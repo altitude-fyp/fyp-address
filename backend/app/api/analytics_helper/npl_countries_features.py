@@ -31,4 +31,4 @@ def get_npl_country_npl_features(countryname):
 
     sorted_similarity = sorted(similarity.items(), key=lambda kv: kv[1])
 
-    return sorted_similarity[:10]
+    return sorted_similarity[1:11]
