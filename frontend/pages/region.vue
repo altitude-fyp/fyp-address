@@ -2,6 +2,7 @@
   <v-app>
     <google-map :coordinates="coordinates"/>
     <c-s-v-search/>
+    <MetadataPanel/>
     <tabs/>
   </v-app>
 </template>
@@ -10,10 +11,11 @@
 import GoogleMap from "@/components/home/GoogleMap";
 import CSVSearch from "@/components/home/CSVSearch";
 import tabs from "@/components/region/tabs";
+import MetadataPanel from "@/components/home/GoogleBottomSheet/components/MetadataPanel";
 
 export default {
   name: "region",
-  components: {CountrySelectionDialog, tabs, CSVSearch, GoogleMap},
+  components: {MetadataPanel, tabs, CSVSearch, GoogleMap},
 
   data() {
     return {
