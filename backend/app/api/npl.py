@@ -14,7 +14,7 @@ class ItemList(BaseModel):
 GRAPH_SHOWN = {
         "Bank nonperforming loans to total gross loans (%)" : " Bank nonperforming loans to total gross loans are the value of nonperforming loans divided by the total value of the loan portfolio (including nonperforming loans before the deduction of specific loan-loss provisions). The loan amount recorded as nonperforming should be the gross value of the loan as recorded on the balance sheet, not just the amount that is overdue."}
 
-@app.post("/api/npl_charts/")
+@app.get("/api/analytics/npl_charts/")
 def get_chart_data(items: ItemList):
 
     starttime = time()
@@ -103,7 +103,7 @@ def extrapolate(data, desired=[i for i in range(2000,2020)], lag=1):
     
     return {k:v for k,v in zip(desired, temp)}
 
-@app.post("/api/sorted_npl_data/")
+@app.get("/api/analytics/sorted_npl_data/")
 def get_sorted_npl_data():
     """
     output: sorted countries by non performing loans
@@ -140,7 +140,7 @@ def get_sorted_npl_data():
         }
 
 
-@app.post("/api/npl_country_features/")
+@app.get("/api/analytics/npl_country_features/")
 def get_sorted_npl_data(countryname):
     """
     output: get top 10 features correlating to non performing loans
