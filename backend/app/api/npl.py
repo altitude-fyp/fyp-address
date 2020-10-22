@@ -14,17 +14,22 @@ class ItemList(BaseModel):
 GRAPH_SHOWN = {
         "Bank nonperforming loans to total gross loans (%)" : " Bank nonperforming loans to total gross loans are the value of nonperforming loans divided by the total value of the loan portfolio (including nonperforming loans before the deduction of specific loan-loss provisions). The loan amount recorded as nonperforming should be the gross value of the loan as recorded on the balance sheet, not just the amount that is overdue."}
 
-@app.get("/api/analytics/npl_charts/")
-def get_chart_data(items: ItemList):
+@app.get("/api/analytics/npl_charts/{countries}")
+def get_chart_data(countries):
+
 
     starttime = time()
 
     db = get_database()
     chart_collection = db["worldbank"]
-    out = {"status": "error", "data": {}}
+
+    out = {"status": "error"}
+
+    countries = countries.split(",")
+
 
     combined_raw_data_list = []
-    for country_name in items.countries:
+    for country_name in countries:
         data = chart_collection.find_one({"_id": country_name})["data"]
         combined_raw_data_list.append(data)
 
@@ -34,12 +39,11 @@ def get_chart_data(items: ItemList):
             dd[key].append(value)
 
     if data:
-        result = format_chart_output(dd, items.countries)
+        result = format_chart_output(dd, countries)
         out["status"] = "success"
-        out["data"]["items"] = result
+        out["charts"] = result
 
     endtime = time()
-
     out["time taken"] = float(endtime-starttime)
     
     return out
