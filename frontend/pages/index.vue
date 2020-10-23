@@ -4,6 +4,7 @@
   <v-app>
 
     <google-map :coordinates="coordinates"/>
+    
     <c-s-v-search/>
 
     <google-bottom-sheet
