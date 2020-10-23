@@ -96,7 +96,6 @@ export default {
     },
 
     zoom() {
-      console.log(this.coordinates)
       if (this.coordinates.length==1 && this.coordinates[0].country == "Singapore") return 12
       if (this.coordinates.length == 1) return 6
       return 3
