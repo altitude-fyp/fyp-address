@@ -41,6 +41,8 @@ def generate_finance():
         optimaly_list.append(optimal_y[0])
         risk_free_weight_list.append(optimal_y[1])
 
+        break
+
     df = pd.DataFrame(region = region_list, utility = utility_list, optimal_y = optimaly_list, risk_free_weight = risk_free_weight_list)
     
     df.to_csv('finance.csv') 
