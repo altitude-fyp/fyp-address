@@ -47,10 +47,6 @@
 
     </GmapMap>
 
-    <p v-for="region in regionPolygons" :key="region.name">
-      {{region.name}} {{region.showInfoWindow}}
-    </p>
-
   </div>
 </template>
 
