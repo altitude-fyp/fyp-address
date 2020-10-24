@@ -342,14 +342,15 @@ def clean_charts(data_obj):
         "Religion": clean_religion,
         "Spoken At Home": clean_spoken_at_home,
         "Tenancy": clean_tenancy,
-        "Type of Dwellin Household": clean_type_of_dwelling_household,
-        "Type of Dwelling Pop": clean_type_of_dwelling_pop
+        "Type Of Dwelling Household": clean_type_of_dwelling_household,
+        "Type Of Dwelling Pop": clean_type_of_dwelling_pop
 
     }
 
     for region in data_obj:
         clean_obj = {'_id': region['_id'], 'data': {}}
         for indicator, indicator_object in region['data'].items():
+            print(indicator)
             clean_func = d.get(indicator, None)
 
             if clean_func and indicator_object:
