@@ -37,8 +37,7 @@
           accept=".csv"
           dense
           outlined
-          @change="csvAccept"
-        >
+          @change="csvAccept" >
 
         </v-file-input>
 
@@ -69,16 +68,25 @@ export default {
     }
   },
   methods: {
+    
     lookUpAddress() {
       /*console.log(this.preselect)
       console.log(this.address)*/
     },
+
     csvAccept() {
+    
       Papa.parse(this.csv, {
+        
+        delimiter: ",",
+        header: true,
+
         complete: function(results) {
           console.log("Finished:", results.data);
         }
+
       });
+
     }
 
   }
