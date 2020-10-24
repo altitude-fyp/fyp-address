@@ -17,16 +17,14 @@ Output: region level data for all regions in 1 country
 def get_regions():
 
     db = get_database()
-    constant_collection = db["constant"]
+    onemap_collection = db["onemap"]
 
     out = { "status": "error", "data": None }
-    # data = constant_collection.find_one({"_id": "country"})    
-    # if data:
-        # out["status"] = "success"
-        # out["data"] = data["data"]
-
-    out["status"] = "success"
-    out["data"] = ["Newton", "Paya Lebar", "Bedok"]
+    data = onemap_collection.find()    
+    if data:
+        planning_areas = [area["_id"].title() for area in data]
+        out["status"] = "success"
+        out["data"] = planning_areas
 
     return out 
 
