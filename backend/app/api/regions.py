@@ -29,14 +29,20 @@ def get_regions():
     return out 
 
 
-@app.get("/api/regions/{region_name}")
-def get_regions_data(region_name: str):
+@app.get("/api/regions/{regions}")
+def get_regions_chart_data(region_name: str):
     
     db = get_database()
-    imf_collection = db["onemap"]
+    onemap_chart_collection = db["onemap.charts"]
+
+    countries = countries.split(",")
+    
+    combined_raw_data_list = []
+    for country_name in countries:
+        data = onemap_chart_collection.find_one({"_id": country_name})
+        combined_raw_data_list.append(data)
 
     out = { "status": "error", "data": None }
-    data = imf_collection.find_one({"_id": country_name})
 
     if data:
         out["status"] = "success"
