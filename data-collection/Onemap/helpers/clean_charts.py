@@ -10,14 +10,14 @@ def clean_charts(data_obj):
         data = {'Employed':0, 'Unemployed':0, 'Inactive':0}
 
         for key,value in data_obj.items():
-            if 'employed' in key:
-                data['Employed'] += value
-            elif 'unemployed' in key:
+            if 'unemployed' in key:
                 data['Unemployed'] += value
+            elif 'employed' in key:
+                data['Employed'] += value
             elif 'inactive' in key:
                 data['Inactive'] += value
 
-        return {"labels":list(data.keys()), "data":list(data.values())}
+        return data
         
     def clean_education_attending(data_obj):
         """
@@ -42,7 +42,7 @@ def clean_charts(data_obj):
             elif 'university' in key:
                 data['University'] += value
 
-        return {"labels":list(data.keys()), "data":list(data.values())}
+        return data
         
     def clean_ethnic_group(data_obj):
         """
@@ -61,7 +61,7 @@ def clean_charts(data_obj):
             elif 'others' in key:
                 data['Others'] += value
 
-        return {"labels":list(data.keys()), "data":list(data.values())}
+        return data
         
     def clean_household_monthly_income(data_obj):
         """ 
@@ -98,7 +98,7 @@ def clean_charts(data_obj):
                 elif 'sgd' in key:
                     data['10000 or more'] += value
 
-        return {"labels":list(data.keys()), "data":list(data.values())}
+        return data
         
     def clean_household_size(data_obj):
         """ 
@@ -108,10 +108,10 @@ def clean_charts(data_obj):
         data = {}
 
         for key,value in data_obj.items():
-            if str(value) != '' and 'person' in key:
+            if value and 'person' in key:
                 data[key.replace('person','')] = value
 
-        return {"labels":list(data.keys()), "data":list(data.values())}
+        return data
 
     def clean_household_structure(data_obj):
         """ 
@@ -148,7 +148,7 @@ def clean_charts(data_obj):
                 elif '8000' in key:
                     data['8000 or more'] += value
 
-        return {"labels":list(data.keys()), "data":list(data.values())}
+        return data
 
     def clean_industry(data_obj):
         """ 
@@ -165,7 +165,7 @@ def clean_charts(data_obj):
                 print(industry_name)
                 data[industry_name] = value
 
-        return {"labels":list(data.keys()), "data":list(data.values())}
+        return data
 
     def clean_language_literature(data_obj):
         """ 
@@ -183,7 +183,7 @@ def clean_charts(data_obj):
             if 'l2' in key and 'two' in key:
                 data['Others'] = value
         
-        return {"labels":list(data.keys()), "data":list(data.values())}
+        return data
 
 
     def clean_marital_status(data_obj):
@@ -209,7 +209,7 @@ def clean_charts(data_obj):
                 industry_name = key.replace('_', ' ').title()
                 data[industry_name] = value
 
-        return {"labels":list(data.keys()), "data":list(data.values())}
+        return data
 
     def clean_occupation(data_obj):
         """ 
@@ -225,20 +225,28 @@ def clean_charts(data_obj):
                 industry_name = key.replace('_', ' ').title()
                 data[industry_name] = value
 
-        return {"labels":list(data.keys()), "data":list(data.values())}
+        return data
 
     def clean_population_age_group(data_obj):
         
-        data = {}
+        data = {'0':0, '10':0, '20':0, '30':0, '40':0, '50':0, '60':0, '70':0, '80':0} 
 
         for key, value in data_obj.items():
             if 'total_total' != key and 'total' in key:
                 try:
-                    data[key.split('_')[1] + '-' + key.split('_')[2]] = value
+                    if key.split('_')[1] in data or str(int(key.split('_')[2] - 10)) in data:
+                        data[key.split('_')[1]] = value
+                    elif 'over' in key:
+                        data['80'] = value
                 except:
                     pass
         
-        return {"labels":list(data.keys()), "data":list(data.values())}
+        new_keys = ['0-9','10-19','20-29','30-39','40-49','50-59','60-69','70-79','80-Over']
+
+        for key,n_key in zip(sorted(list(data.keys())), new_keys):
+            data[n_key] = data.pop(key)
+
+        return data
 
     def clean_religion(data_obj):
         """ 
@@ -253,7 +261,7 @@ def clean_charts(data_obj):
                 industry_name = key.replace('_', ' ').title()
                 data[industry_name] = value
 
-        return {"labels":list(data.keys()), "data":list(data.values())}
+        return data
 
     def clean_spoken_at_home(data_obj):
         """ 
@@ -268,7 +276,7 @@ def clean_charts(data_obj):
                 industry_name = key.replace('_', ' ').title()
                 data[industry_name] = value
 
-        return {"labels":list(data.keys()), "data":list(data.values())}
+        return data
 
     def clean_tenancy(data_obj):
         """ 
@@ -283,7 +291,7 @@ def clean_charts(data_obj):
                 industry_name = key.replace('_', ' ').title()
                 data[industry_name] = value
 
-        return {"labels":list(data.keys()), "data":list(data.values())}
+        return data
 
     def clean_type_of_dwelling_household(data_obj):
         """ 
@@ -298,7 +306,7 @@ def clean_charts(data_obj):
                 industry_name = key.replace('_', ' ').title()
                 data[industry_name] = value
 
-        return {"labels":list(data.keys()), "data":list(data.values())}
+        return data
 
     def clean_type_of_dwelling_pop(data_obj):
         """ 
@@ -313,7 +321,7 @@ def clean_charts(data_obj):
                 industry_name = key.replace('_', ' ').title()
                 data[industry_name] = value
 
-        return {"labels":list(data.keys()), "data":list(data.values())}
+        return data
 
 
     cleaned_data = []
@@ -323,7 +331,7 @@ def clean_charts(data_obj):
         "Education Attending": clean_education_attending,
         "Ethnic Group": clean_ethnic_group,
         "Household Monthly Income Work": clean_household_monthly_income,
-        "Household Size": clean_household_structure,
+        "Household Size": clean_household_size,
         "Income From Work": clean_income_from_work,
         "Industry": clean_industry,
         "Language Literate": clean_language_literature,
@@ -340,12 +348,12 @@ def clean_charts(data_obj):
     }
 
     for region in data_obj:
-        clean_obj = {'_id': region['_id']}
+        clean_obj = {'_id': region['_id'], 'data': {}}
         for indicator, indicator_object in region['data'].items():
             clean_func = d.get(indicator, None)
 
             if clean_func and indicator_object:
-                clean_obj[indicator] = clean_func(indicator_object)
+                clean_obj['data'][indicator] = clean_func(indicator_object)
 
         cleaned_data.append(clean_obj)
 
