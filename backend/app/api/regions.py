@@ -54,9 +54,16 @@ def get_region_polygon(region_name):
 
     out = db["onemap.polygons"].find_one({"_id": region_name})["data"]
 
+    polygon = [{"lat": i[1], "lng": i[0]} for i in json.loads(out)["coordinates"][0][0]]
+
+    lat = sum([coordinate["lat"] for coordinate in polygon])/len(polygon)
+    lng = sum([coordinate["lng"] for coordinate in polygon])/len(polygon)
+
     return {
         "name": region_name,
-        "polygon": [{"lat": i[1], "lng": i[0]} for i in json.loads(out)["coordinates"][0][0]]
+        "polygon": polygon,
+        "center": {"lat": lat, "lng": lng},
+        "showInfoWindow": False
     }
 
 

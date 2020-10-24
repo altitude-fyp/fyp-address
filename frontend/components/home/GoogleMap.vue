@@ -20,34 +20,36 @@
       </div>
 
       <!-- temp: polygon goes here -->
-      <div>
+      <div v-for="[i,region] in Object.entries(regionPolygons)" :key=i>
+
         <GmapPolygon
-          v-for="region in regionPolygons"
-          :key=region.country
           :paths="region.polygon"
-          :options="polygonOptions" />
-
+          :options="polygonOptions"
+          @click="toggleShowInfoWindow(i)" />
+      
+        <GmapInfoWindow 
+          v-if="region.showInfoWindow"
+          :key=region.name
+          :options="{
+            content: 'this is ' + region.name
+          }"
+          :position=region.center />
+        
       </div>
-
-      <!-- infowindow test -->
-      <GmapInfoWindow 
-        :options="{
-          content: 'this is an infowindow'
-        }"
-        :position=center />
-
 
       <!-- marker clustering test goes here -->
       <GmapCluster>
         <GmapMarker 
           v-for="position in testMarkers"
           :key="position.lat + Math.random()"
-          :position=position
-          />
-
+          :position=position />
       </GmapCluster>
 
     </GmapMap>
+
+    <p v-for="region in regionPolygons" :key="region.name">
+      {{region.name}} {{region.showInfoWindow}}
+    </p>
 
   </div>
 </template>
@@ -109,7 +111,11 @@ export default {
       this.$axios.get(url).then((response) => {
         this.testMarkers = response.data[0].polygon
       })
+    },
 
+
+    toggleShowInfoWindow(i) {
+      this.regionPolygons[i].showInfoWindow = !this.regionPolygons[i].showInfoWindow
     },
    
   },
