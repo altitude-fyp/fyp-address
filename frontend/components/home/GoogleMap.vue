@@ -11,11 +11,41 @@
 
       <!-- google map marker goes here -->
       <div v-if="coordinates">
+        
         <GmapMarker
           v-for="country in coordinates"
           :position="{lat: country.lat, lng: country.lon}"
           :key="country.name"/>
+
       </div>
+
+      <!-- temp: polygon goes here -->
+      <div>
+        <GmapPolygon
+          v-for="region in regionPolygons"
+          :key=region.country
+          :paths="region.polygon"
+          :options="polygonOptions" />
+
+      </div>
+
+      <!-- infowindow test -->
+      <GmapInfoWindow 
+        :options="{
+          content: 'this is an infowindow'
+        }"
+        :position=center />
+
+
+      <!-- marker clustering test goes here -->
+      <GmapCluster>
+        <GmapMarker 
+          v-for="position in testMarkers"
+          :key="position.lat + Math.random()"
+          :position=position
+          />
+
+      </GmapCluster>
 
     </GmapMap>
 
@@ -32,8 +62,6 @@ export default {
   
   data() {
     return {
-      //lat and lng returns singapore by default
-      markers: [],
 
       gmapOptions: {
         zoomControl: true,
@@ -43,39 +71,47 @@ export default {
         rotateControl: false,
         fullscreenControl: false,
         disableDefaultUi: false
-      }
+      },
+
+      polygonOptions: {
+        strokeColor: "#FF0000",
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        fillColor: "#FF0000",
+        fillOpacity: 0.35,
+      },
+
+      regionPolygons: [],
+    
+      testMarkers: null
 
     };
   },
 
 
   mounted() {
-    this.geolocate();
+    this.temp()
   },
 
 
   methods: {
 
-    addMarker(event) {
+    temp() {
+      //this function is temporary and is to be integrated with region functions
 
-      const marker = {
-        lat: event.latLng.lat(),
-        lng: event.latLng.lng()
-      };
-      this.markers.push({position: marker});
+      let url = process.env.BACKEND + "/api/regions/polygons/paya lebar,changi,yishun,bishan,aljunied,newton,boon lay,jurong east"
 
-    },
-
-    geolocate: function () {
-
-      navigator.geolocation.getCurrentPosition( position => {
-
-        this.center = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        }
+      this.$axios.get(url).then((response) => {
+        this.regionPolygons = response.data
       })
+
+      url = process.env.BACKEND + "/api/regions/polygons/serangoon"
+      this.$axios.get(url).then((response) => {
+        this.testMarkers = response.data[0].polygon
+      })
+
     },
+   
   },
 
 
