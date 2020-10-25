@@ -5,12 +5,12 @@
         <v-app-bar fixed color="white">
 
           <v-app-bar-nav-icon  @click="drawer = true"></v-app-bar-nav-icon>
-        
+
           <v-toolbar-title>
-            
+
             <img :src="require('../images/citi_logo.png')" height="40"/>
             <span class="logoTitle">Address Analytics Tool</span>
-          
+
           </v-toolbar-title>
 
           <v-spacer></v-spacer>
@@ -27,7 +27,7 @@
                   </template>
 
                   <v-icon>mdi-bell</v-icon>
-              
+
                 </v-badge>
               </v-btn>
 
@@ -38,17 +38,17 @@
               <v-list-item-content>
                 <div class="notifications"><h3>Notifications</h3></div>
               </v-list-item-content>
-          
+
               <v-divider></v-divider>
 
               <div class="notification_row">
               <v-list-item v-for="(notification, index) in notifications" :key="index" @click="">
 
                 <v-list-item-title v-if="index === 0">
-                  
+
                   <v-row style="margin:0">
                     <v-layout align-center>
-                    
+
                     <v-col>
                       <strong>{{ notification.filename }}</strong> {{ notification.title }}
                     </v-col>
@@ -121,7 +121,7 @@
                 <v-list-item-icon>
                   <v-icon>{{item.icon}}</v-icon>
                 </v-list-item-icon>
-                
+
                 <v-list-item-title>{{ item.title }}</v-list-item-title>
               </v-list-item>
 
@@ -172,11 +172,12 @@ export default {
       drawer: false,
       username: 'Alan Megargel',
       activeBtn: 0,
-      
+
       items: [
         {title: 'Home', icon: 'mdi-home', link: '/'},
         {title: 'Analytics', icon: 'mdi-chart-areaspline',link: '/analytics'},
         {title: 'Scheduled Job', icon: 'mdi-history',link: '/scheduledJob'},
+        {title: 'API Documentation', icon: 'mdi-note-text',link: '/apidocs'},
 
       ],
 

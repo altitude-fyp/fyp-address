@@ -6,6 +6,7 @@ from collections import defaultdict
 from statsmodels.tsa.ar_model import AutoReg
 from time import time
 import pickle
+from .analytics_helper.npl_countries_features import *
 
 class ItemList(BaseModel):
     countries: List[str]
@@ -13,17 +14,22 @@ class ItemList(BaseModel):
 GRAPH_SHOWN = {
         "Bank nonperforming loans to total gross loans (%)" : " Bank nonperforming loans to total gross loans are the value of nonperforming loans divided by the total value of the loan portfolio (including nonperforming loans before the deduction of specific loan-loss provisions). The loan amount recorded as nonperforming should be the gross value of the loan as recorded on the balance sheet, not just the amount that is overdue."}
 
-@app.post("/api/npl_charts/")
-def get_chart_data(items: ItemList):
+@app.get("/api/analytics/npl_charts/{countries}")
+def get_chart_data(countries):
+
 
     starttime = time()
 
     db = get_database()
     chart_collection = db["worldbank"]
-    out = {"status": "error", "data": {}}
+
+    out = {"status": "error"}
+
+    countries = countries.split(",")
+
 
     combined_raw_data_list = []
-    for country_name in items.countries:
+    for country_name in countries:
         data = chart_collection.find_one({"_id": country_name})["data"]
         combined_raw_data_list.append(data)
 
@@ -33,12 +39,11 @@ def get_chart_data(items: ItemList):
             dd[key].append(value)
 
     if data:
-        result = format_chart_output(dd, items.countries)
+        result = format_chart_output(dd, countries)
         out["status"] = "success"
-        out["data"]["items"] = result
+        out["charts"] = result
 
     endtime = time()
-
     out["time taken"] = float(endtime-starttime)
     
     return out
@@ -102,7 +107,7 @@ def extrapolate(data, desired=[i for i in range(2000,2020)], lag=1):
     
     return {k:v for k,v in zip(desired, temp)}
 
-@app.post("/api/sorted_npl_data/")
+@app.get("/api/analytics/sorted_npl_data/")
 def get_sorted_npl_data():
     """
     output: sorted countries by non performing loans
@@ -119,17 +124,18 @@ def get_sorted_npl_data():
         if "Financial, Financial Soundness Indicators, Core Set, Deposit Takers, Asset Quality, Non-performing Loans to Total Gross Loans, Percent" in i["data"]:
             npl_data[i["_id"]] = i["data"]["Financial, Financial Soundness Indicators, Core Set, Deposit Takers, Asset Quality, Non-performing Loans to Total Gross Loans, Percent"]
 
-    sorted_npl_data = sorted(npl_data.items(), key=lambda kv: kv[1])
+    top_10_sorted_npl_data = dict(sorted(npl_data.items(), key=lambda kv: kv[1])[:10])
+    bottom_10_sorted_npl_data = dict(sorted(npl_data.items(), key=lambda kv: kv[1])[-10:])
 
-    sorted_npl_data_list = []
-
-    for country,npl in sorted_npl_data:
-        sorted_npl_data_list.append({"name": country, "value": npl})
+    charts = []
+        
+    charts.append({"title": "Top 10 Countries for Non-Performing Loans" , "description": "The top 10 countries with the best non-performing loans performance.", "countries": list(top_10_sorted_npl_data.keys()), "value": list(top_10_sorted_npl_data.values())})
+    charts.append({"title": "Bottom 10 Countries for Non-Performing Loans" , "description": "The bottom 10 countries with the worst non-performing loans performance.", "countries": list(bottom_10_sorted_npl_data.keys()), "value": list(bottom_10_sorted_npl_data.values())})
 
     try:
         return {
             "status": "success",
-            "items": sorted_npl_data_list
+            "charts": charts
         }
     
     except Exception as err:
@@ -137,3 +143,25 @@ def get_sorted_npl_data():
             "status": "failure",
             "error": str(err),
         }
+
+
+@app.get("/api/analytics/npl_country_features/")
+def get_sorted_npl_data(countryname):
+    """
+    output: get top 10 features correlating to non performing loans
+    """
+    starttime = time()
+
+    try:
+        return {
+            "status": "success",
+            "items": get_npl_country_npl_features(countryname)
+        }
+    
+    except Exception as err:
+        return {
+            "status": "failure",
+            "error": str(err),
+        }
+
+
