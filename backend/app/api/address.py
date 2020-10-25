@@ -38,3 +38,7 @@ def get_individual_address_data(item:Item):
     result["data"]["house_type"] = property_type
 
     return result
+
+@app.post("/api/address/csv")
+def post_address_csv(item:Item):
+    return item.address

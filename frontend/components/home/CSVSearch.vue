@@ -81,8 +81,15 @@ export default {
         delimiter: ",",
         header: true,
 
-        complete: function(results) {
-          console.log("Finished:", results.data);
+        complete: (results) => {
+          // this function is called when papaparse finishes parsing the CSV
+          // this function sends the CSV data to the backend
+
+          let url = process.env.BACKEND + "/api/address/csv/"
+          this.$axios.post(url, {"csvdata": url}).then((response) => {
+            console.log(response.data)
+          })
+
         }
 
       });
