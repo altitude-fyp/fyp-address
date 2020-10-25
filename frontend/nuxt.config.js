@@ -37,6 +37,7 @@ export default {
   */
   plugins: [
     '~/plugins/GoogleMap',
+    '~/plugins/vue-highlightjs',
   ],
   /*
   ** Auto import components
