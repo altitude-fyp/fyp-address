@@ -81,3 +81,28 @@ def format_chart_output(data_dict, regions_list):
         result.append(obj)
             
     return result
+
+def get_regions_data(regions):
+    """
+        Input: 1 region in Singapore
+        Output: Region data
+    """
+    db = get_database()
+    onemap_chart_collection = db["onemap"]
+    
+    if len(regions) > 1:
+        regions = regions.split(",")
+        combined_raw_data = {}
+        for region in regions:
+            data = onemap_chart_collection.find_one({"_id": region.lower()})["data"]
+            combined_raw_data[region] = data
+
+    combined_raw_data = onemap_chart_collection.find_one({"_id": region.lower()})["data"]
+
+    out = {"status": "error", "data": {}}
+
+    if data:
+        out["status"] = "success"
+        out["data"] = combined_raw_data
+
+    return out
