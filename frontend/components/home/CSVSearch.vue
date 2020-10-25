@@ -37,8 +37,7 @@
           accept=".csv"
           dense
           outlined
-          @change="csvAccept"
-        >
+          @change="csvAccept" >
 
         </v-file-input>
 
@@ -69,16 +68,32 @@ export default {
     }
   },
   methods: {
+    
     lookUpAddress() {
       /*console.log(this.preselect)
       console.log(this.address)*/
     },
+
     csvAccept() {
+    
       Papa.parse(this.csv, {
-        complete: function(results) {
-          console.log("Finished:", results.data);
+        
+        delimiter: ",",
+        header: true,
+
+        complete: (results) => {
+          // this function is called when papaparse finishes parsing the CSV
+          // this function sends the CSV data to the backend
+
+          let url = process.env.BACKEND + "/api/address/csv/"
+          this.$axios.post(url, {"csvdata": url}).then((response) => {
+            console.log(response.data)
+          })
+
         }
+
       });
+
     }
 
   }

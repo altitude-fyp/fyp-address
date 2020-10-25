@@ -1,6 +1,9 @@
 from app import app
 from mongodb_helper import *
+
+import json
 from collections import defaultdict
+
 
 '''
 /api/regions/<countryName>/<regionName>
@@ -41,6 +44,41 @@ def get_regions_chart_data(regions):
         data = onemap_chart_collection.find_one({"_id": region.lower()})["data"]
         combined_raw_data_list.append(data)
 
+# temporary
+def get_region_polygon(region_name):
+    db = get_database()
+
+    out = db["onemap.polygons"].find_one({"_id": region_name})["data"]
+
+    polygon = [{"lat": i[1], "lng": i[0]} for i in json.loads(out)["coordinates"][0][0]]
+
+    lat = sum([coordinate["lat"] for coordinate in polygon])/len(polygon)
+    lng = sum([coordinate["lng"] for coordinate in polygon])/len(polygon)
+
+    return {
+        "name": region_name,
+        "polygon": polygon,
+        "center": {"lat": lat, "lng": lng},
+        "showInfoWindow": False
+    }
+
+
+
+# TEMPORARY
+@app.get("/api/regions/polygons/{region_names}")
+def get_region_polygons(region_names):
+    out = []
+    for name in region_names.split(","):
+        try:
+            out.append(get_region_polygon(name))
+        except:
+            pass
+    
+    return out
+
+# BANG PLS CHECK
+@app.get("/api/regions/{region_name}")
+def get_regions_data(region_name: str):
     out = {"status": "error", "data": {}}
 
     dd = defaultdict(list)
@@ -106,3 +144,4 @@ def get_regions_data(regions):
         out["data"] = combined_raw_data
 
     return out
+

@@ -60,3 +60,7 @@ def get_individual_address_data(item:Item):
     result["data"]["country_data"] = country_data
 
     return result
+
+@app.post("/api/address/csv")
+def post_address_csv(item:Item):
+    return item.address
