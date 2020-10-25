@@ -124,17 +124,18 @@ def get_sorted_npl_data():
         if "Financial, Financial Soundness Indicators, Core Set, Deposit Takers, Asset Quality, Non-performing Loans to Total Gross Loans, Percent" in i["data"]:
             npl_data[i["_id"]] = i["data"]["Financial, Financial Soundness Indicators, Core Set, Deposit Takers, Asset Quality, Non-performing Loans to Total Gross Loans, Percent"]
 
-    sorted_npl_data = sorted(npl_data.items(), key=lambda kv: kv[1])
+    top_10_sorted_npl_data = dict(sorted(npl_data.items(), key=lambda kv: kv[1])[:10])
+    bottom_10_sorted_npl_data = dict(sorted(npl_data.items(), key=lambda kv: kv[1])[-10:])
 
-    sorted_npl_data_list = []
-
-    for country,npl in sorted_npl_data:
-        sorted_npl_data_list.append({"name": country, "value": npl})
+    charts = []
+        
+    charts.append({"title": "Top 10 Countries for Non-Performing Loans" , "description": "The top 10 countries with the best non-performing loans performance.", "countries": list(top_10_sorted_npl_data.keys()), "value": list(top_10_sorted_npl_data.values())})
+    charts.append({"title": "Bottom 10 Countries for Non-Performing Loans" , "description": "The bottom 10 countries with the worst non-performing loans performance.", "countries": list(bottom_10_sorted_npl_data.keys()), "value": list(bottom_10_sorted_npl_data.values())})
 
     try:
         return {
             "status": "success",
-            "items": sorted_npl_data_list
+            "charts": charts
         }
     
     except Exception as err:
