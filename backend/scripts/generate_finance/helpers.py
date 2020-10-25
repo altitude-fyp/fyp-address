@@ -48,12 +48,16 @@ def education_attending_2(pre_primary, primary, secondary, post_secondary, polyt
     return (bin1/100 * 0.05)
 
 # Household Monthly Income (3)
-def household_monthly_income_3(below_sgd_1000, sgd_1000, sgd_2000, sgd_3000, sgd_4000, sgd_5000, sgd_6000, sgd_70009, sgd_8000, sgd_9000, sgd_10000_over): 
-    num = below_sgd_1000 + sgd_1000 + sgd_2000 + sgd_3000 + sgd_4000 + sgd_5000
-    den = below_sgd_1000 + sgd_1000 + sgd_2000 + sgd_3000 + sgd_4000 + sgd_5000 + sgd_6000 + sgd_70009 + sgd_8000 + sgd_9000 + sgd_10000_over
-    result = num / den
+def household_monthly_income_3(below_sgd_1000, sgd_1000, sgd_2000, sgd_3000, sgd_4000, sgd_5000, sgd_6000, sgd_70009, sgd_8000, sgd_9000, sgd_10000_over):
+
+    num = sum([i for i in [below_sgd_1000, sgd_1000, sgd_2000, sgd_3000, sgd_4000, sgd_5000] if i is not None])
+    den = sum([i for i in [below_sgd_1000, sgd_1000, sgd_2000, sgd_3000, sgd_4000, sgd_5000, sgd_6000, sgd_70009, sgd_8000, sgd_9000, sgd_10000_over] if i is not None])
+
     if den == 0:
         return 0
+
+    result = num / den
+    
     if result < 0.10: 
         bin1 = 0 
     elif result < 0.15: 
@@ -66,15 +70,19 @@ def household_monthly_income_3(below_sgd_1000, sgd_1000, sgd_2000, sgd_3000, sgd
         bin1 = 80
     else: 
         bin1 = 100 
+
     return (bin1/100 * 0.20)
 
 # Industry (4) 
 def industry_4(manufacturing, construction, wholesale_retail_trade, transportation_storage, accomodation_food_services, information_communications, financial_insurance_services, real_estate_services, professional_services, admin_support_services, public_admin_education, health_social_services, arts_entertainment_recreation, other_comm_social_personal, others, hotels_restaurants, transport_communications, business_services, other_services_industries): 
     num = manufacturing + construction + wholesale_retail_trade + transportation_storage + accomodation_food_services + information_communications + real_estate_services + admin_support_services + public_admin_education + health_social_services + arts_entertainment_recreation + other_comm_social_personal + others + hotels_restaurants + transport_communications + business_services + other_services_industries
     den = manufacturing + construction + wholesale_retail_trade + transportation_storage + accomodation_food_services + information_communications + financial_insurance_services + real_estate_services + professional_services + admin_support_services + public_admin_education + health_social_services + arts_entertainment_recreation + other_comm_social_personal + others + hotels_restaurants + transport_communications + business_services + other_services_industries
-    result = num / den
+    
     if den == 0:
         return 0    
+    
+    result = num / den
+    
     if result < 0.65: 
         bin1 = 0 
     elif result < 0.70: 
@@ -115,9 +123,12 @@ def marital_status_5(single, married, widowed, divorced):
 def mode_of_transport_6(bus, mrt, mrt_bus, mrt_car, mrt_other, taxi, car, pvt_chartered_bus, lorry_pickup, motorcycle_scooter, others): 
     num =  bus + mrt + mrt_bus + mrt_car + mrt_other + taxi + pvt_chartered_bus + lorry_pickup + motorcycle_scooter + others 
     den =  bus + mrt + mrt_bus + mrt_car + mrt_other + taxi + car + pvt_chartered_bus + lorry_pickup + motorcycle_scooter + others 
-    result = num / den
+    
     if den == 0:
         return 0 
+
+    result = num / den
+
     if result < 0.30: 
         bin1 = 0 
     elif result < 0.40: 
