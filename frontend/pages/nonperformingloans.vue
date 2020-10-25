@@ -12,8 +12,6 @@
           <v-autocomplete class="elevation-0"
             v-model="value"
             :items="items"
-            clearable
-            filled
             rounded
             solo
             label="Enter country name"
@@ -21,12 +19,14 @@
           </v-col>
 
         <v-col cols="1">
+        <div style="margin-top:5px">
         <v-btn
           depressed
           color="primary"
         >
           Search
         </v-btn>
+        </div>
         </v-col>
       </v-row>
       
@@ -38,6 +38,12 @@
             <v-row>
                 <img src="https://www.countryflags.io/sg/flat/64.png" style="height:40px;margin-right:10px;"/>
                 <h2 class="headerText">Singapore</h2>
+
+                <v-spacer></v-spacer>
+                <!-- Forecast -->
+                  <img :src="require('../images/up_arrow.png')" style="height:20px;margin-top:10px;margin-right:15px"/>
+                  <span style="margin-top:10px;font-weight:700">2021 Forecast</span>
+                
             </v-row>
 
             <v-row v-for="i in 2" :key=i>
@@ -47,67 +53,58 @@
               </v-col>
             </v-row>
 
-            <npl-country-chart
-                :chartData=chartData>
-            </npl-country-chart>
+              <npl-country-chart
+                  :chartData=chartData>
+              </npl-country-chart>
 
             <br/><v-divider></v-divider><br/>
 
             <v-row>
-
               <h2 class="headerText">Top 10 & Bottom 10 Countries</h2>
-              
-              <v-expansion-panels 
-                accordion 
-                v-model="panel"
-                multiple>
-
-                <v-expansion-panel>
-                  <v-expansion-panel-header>
-                    <v-img class="analyticsIcons"
-                      max-height="18"
-                      max-width="18"
-                      :src="require('../images/icons/ataglance.png')"
-                    ></v-img>
-                    <h3>At a Glance</h3>
-                  </v-expansion-panel-header>
-
-                  <v-expansion-panel-content>
-                    <v-row class="atAGlanceResults">
-                      <v-col>Test</v-col>
-                      <v-col>10</v-col>
-                      <v-col>Toa Payoh</v-col>
-                    </v-row>
-                    <v-row class="atAGlanceSubHeader">
-                      <v-col>Singapore</v-col>
-                      <v-col>regions</v-col>
-                      <v-col>region with the highest no. of addresses</v-col>
-                    </v-row>
-                  </v-expansion-panel-content>
-                </v-expansion-panel>
-
-                <v-expansion-panel>
-                  <v-expansion-panel-header>
-                    <v-img class="analyticsIcons"
-                      max-height="18"
-                      max-width="18"
-                      :src="require('../images/icons/globe.png')"
-                    ></v-img>
-                    <h3>Singapore</h3>
-                  </v-expansion-panel-header>
-
-                  <v-expansion-panel-content>
-                      <country-statistics
-                          :countriesMetadata="{1:1}"
-                          :countryStatistics=countryStatistics
-                          :selectedCountries=selectedCountries
-                          :selectedFeatures=selectedCountryStatisticsFeatures>
-                      </country-statistics>
-
-                  </v-expansion-panel-content>
-                </v-expansion-panel>
-              </v-expansion-panels>
             </v-row>
+
+            <v-row>
+              <npl-top10-chart
+                  :top10ChartData=top10ChartData>
+              </npl-top10-chart>
+            </v-row>
+
+            <v-row>
+              <v-toolbar elevation="0">
+                <v-tabs
+                  v-model="tabs"
+                  
+                >
+                  <v-tabs-slider></v-tabs-slider>
+                  <v-tab
+                    href="#tab-1"
+                    class="primary--text"
+                  >
+                    <v-icon>mdi-phone</v-icon>
+                  </v-tab>
+
+                  <v-tab
+                    href="#tab-2"
+                    class="primary--text"
+                  >
+                    <v-icon>mdi-heart</v-icon>
+                  </v-tab>
+                </v-tabs>
+              </v-toolbar>
+
+              <v-tabs-items v-model="tabs">
+                <v-tab-item
+                  v-for="i in 2"
+                  :key="i"
+                  :value="'tab-' + i"
+                >
+                  <v-card flat>
+                    <v-card-text v-text="text"></v-card-text>
+                  </v-card>
+                </v-tab-item>
+              </v-tabs-items>
+            </v-row>
+
         </v-container>
     </div>
   </v-app>
@@ -115,11 +112,16 @@
 
 <script>
 import lineChart from "@/components/analytics/lineChart";
-import BarChart from "@/components/analytics/barChart";
+import barChart from "@/components/analytics/barChart";
 import CountryStatistics from "@/components/analytics/CountryStatisticsAnalytics.vue"
 import NPLCountryChart from "@/components/nonperformingloans/NPLCountryChart.vue"
+import NPLTop10Chart from "@/components/nonperformingloans/NPLTop10Chart.vue"
 
   export default {
+    components: {
+      "npl-country-chart": NPLCountryChart,
+      "npl-top10-chart": NPLTop10Chart
+    },
     data: () => ({
       items: ['Angola', 'Australia', 'Canada', 'Chad', 'Comoros', 'Dominica', 'Equatorial Guinea', 'Estonia', 'Greece', 'Hong Kong', 'Luxembourg', 'Macao', 'Norway', 'Saint Kitts and Nevis', 'San Marino', 'Sweden', 'Switzerland', 'Tajikistan', 'Ukraine', 'United States'],
       values: ['Angola', 'Australia', 'Canada', 'Chad', 'Comoros', 'Dominica', 'Equatorial Guinea', 'Estonia', 'Greece', 'Hong Kong', 'Luxembourg', 'Macao', 'Norway', 'Saint Kitts and Nevis', 'San Marino', 'Sweden', 'Switzerland', 'Tajikistan', 'Ukraine', 'United States'],
@@ -137,6 +139,10 @@ import NPLCountryChart from "@/components/nonperformingloans/NPLCountryChart.vue
           "Consumer Price Index, All items",
       ],
       chartData: null,
+      top10ChartData: null,
+      tabs: null,
+      panel: [0, 0],
+      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
     }),
 
     mounted() {
@@ -146,27 +152,28 @@ import NPLCountryChart from "@/components/nonperformingloans/NPLCountryChart.vue
   methods: {
 
       getEverything() {
-        this.getCountryStatistics()
         this.getChartData()
+        this.getTop10Chart()
       },
 
-      getCountryStatistics() {
-          // get statistics from aggregate.countries
-          this.countryStatistics = null
-          var url = process.env.BACKEND + "/api/countries/statistics/" + this.selectedCountries
-
-          this.$axios.get(url).then((response) => {
-              this.countryStatistics = response.data
-          })
-      },
-
+      //Bank nonperforming loans to total gross loans chart
       getChartData() {
         // this function gets chart data and stores in this.chartData
         this.chartData = null
-        var url = process.env.BACKEND + "/api/charts/" + this.selectedCountries
+        var url = process.env.BACKEND + "/api/analytics/npl_charts/" + this.selectedCountries
 
         this.$axios.get(url).then((response) => {
             this.chartData = response.data.charts
+        })
+      },
+
+      getTop10Chart() {
+        // this function gets chart data and stores in this.chartData
+        this.top10ChartData = null
+        var url = process.env.BACKEND + "/api/analytics/sorted_npl_data/"
+
+        this.$axios.get(url).then((response) => {
+            this.top10ChartData = response.data.charts
         })
       },
   }

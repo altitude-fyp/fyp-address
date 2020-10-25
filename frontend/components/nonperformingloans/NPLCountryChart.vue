@@ -1,9 +1,7 @@
 <template>
-    <div v-if="chartData">
-        <!-- title goes here -->
-        <h3>Test</h3>            
+    <div v-if="chartData">    
             <v-row>
-                <v-col v-for="chart in chartData" cols=6 :key=chart.title>
+                <v-col v-for="chart in chartData":key=chart.title>
                     <v-row>
                         <v-col>
                             <!-- title for each chart goes here -->

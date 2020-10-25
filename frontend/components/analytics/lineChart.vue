@@ -1,4 +1,3 @@
-
 <script>
 import { Line } from 'vue-chartjs'
 
@@ -39,7 +38,10 @@ export default {
           labels: JSON.parse(JSON.stringify(this.chartData.years)),
           datasets: datasets_arr
         }
-      this.renderChart(obj)
+      let options = {
+          maintainAspectRatio:false
+        }
+      this.renderChart(obj, options)
     }
   },
 

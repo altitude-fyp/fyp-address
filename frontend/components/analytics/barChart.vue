@@ -2,27 +2,66 @@
 import { Bar } from 'vue-chartjs'
 
 export default {
+  
   name: "barChart",
+  
   extends: Bar,
-  data: () => ({
-    chartdata: {
-      labels: ['lABEL 1', 'Label 2'],
-      datasets: [
-        {
-          label: 'Data One',
-          backgroundColor: '#79f8b6',
-          data: [40, 20]
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false
-    }
-  }),
+  
+  props: ["top10ChartData"],
 
-  mounted () {
-    this.renderChart(this.chartdata, this.options)
+  // First time load chart
+  mounted() {
+    this.renderBarChart();
+  },
+  
+  methods: {
+
+    renderBarChart: function() {
+      let colour_code = ["#2d4059", "#ea5455", "#f07b3f", "#ffd460"]
+      let datasets_arr = []
+      let size_arr = JSON.parse(JSON.stringify(this.top10ChartData.countries)).length
+
+      // for (let i=0; i < size_arr; i++) {
+      //   datasets_arr.push({
+      //       fill: false,
+      //       label: JSON.parse(JSON.stringify(this.top10ChartData.countries))[i],
+      //       backgroundColor: colour_code[i],
+      //       borderColor: colour_code[i],
+      //       borderWidth: 1,
+      //       data: JSON.parse(JSON.stringify(this.top10ChartData.value))
+      //   })
+      // }
+
+      // console.log(datasets_arr)
+
+      let obj = {
+          labels: JSON.parse(JSON.stringify(this.top10ChartData.countries)),
+          datasets: [
+            {
+              label: "Score",
+              fill: false,
+              backgroundColor: "#2d4059",
+              borderColor: "#2d4059",
+              borderWidth: 1,
+              data: JSON.parse(JSON.stringify(this.top10ChartData.value))
+            }
+          ]
+        }
+      let options = {
+          maintainAspectRatio:false
+        }
+      this.renderChart(obj, options)
+    }
+  },
+
+
+  // Watch prop change to re-render chart
+  watch: {
+    top10Chartdata: function() {
+      this.renderChart();
+    }
   }
+
 }
+
 </script>
