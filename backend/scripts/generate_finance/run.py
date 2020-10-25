@@ -24,28 +24,33 @@ def generate_finance():
         eleven_factors = calculate_eleven_factors(region_data)
         # print("eleven_factors value: " + str(eleven_factors))
 
-    #     # Calculate risk_aversion
-    #     risk_aversion = risk_aversion_12(eleven_factors)
-    #     # print("risk_aversion value: " + str(risk_aversion))
+        # Calculate risk_aversion
+        risk_aversion = risk_aversion_12(eleven_factors)
+        # print("risk_aversion value: " + str(risk_aversion))
 
     #     # Calculate utility value
-    #     utility = calculate_utility(risk_aversion)
+        utility = calculate_utility(risk_aversion)
     #     # print("utility value: " + str(utility))
 
     #     # Calculate optimal_y
-    #     optimal_y = calculate_optimal_y(risk_aversion)
+        optimal_y = calculate_optimal_y(risk_aversion)
     #     # print("optimal_y value: " + str(optimal_y))
 
-    #     region_list.append(region)
-    #     utility_list.append(utility)
-    #     optimaly_list.append(optimal_y[0])
-    #     risk_free_weight_list.append(optimal_y[1])
+        region_list.append(region)
+        utility_list.append(utility)
+        optimaly_list.append(optimal_y[0])
+        risk_free_weight_list.append(optimal_y[1])
 
     #     break
 
-    # df = pd.DataFrame(region = region_list, utility = utility_list, optimal_y = optimaly_list, risk_free_weight = risk_free_weight_list)
+    df = pd.DataFrame({
+        "region": region_list,
+        "utility": utility_list,
+        "optimal_y": optimaly_list,
+        "risk_free_weight": risk_free_weight_list
+    })
     
-    # df.to_csv('finance.csv') 
+    df.to_csv('finance.csv', index=False) 
 
 def calculate_eleven_factors(region_data):
     # Calculate list of eleven factors
