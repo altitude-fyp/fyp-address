@@ -145,11 +145,17 @@ def mode_of_transport_6(bus, mrt, mrt_bus, mrt_car, mrt_other, taxi, car, pvt_ch
 
 # Occupation (7)
 def occupation_7(senior_officials_managers, professionals, associate_professionals_tech, clerical, service_sales, agricultural_fishery, production_craftsmen, plant_machine_operators, cleaners_labourers , workers_not_classified):
+
+    senior_officials_managers, professionals, associate_professionals_tech, clerical, service_sales, agricultural_fishery, production_craftsmen, plant_machine_operators, cleaners_labourers , workers_not_classified = [i if i else 0 for i in [senior_officials_managers, professionals, associate_professionals_tech, clerical, service_sales, agricultural_fishery, production_craftsmen, plant_machine_operators, cleaners_labourers , workers_not_classified]]
+
     num = associate_professionals_tech + clerical + service_sales + agricultural_fishery + production_craftsmen + plant_machine_operators + cleaners_labourers + workers_not_classified 
     den = senior_officials_managers + professionals + associate_professionals_tech + clerical + service_sales + agricultural_fishery + production_craftsmen + plant_machine_operators + cleaners_labourers + workers_not_classified 
-    result = num / den
+    
     if den == 0:
         return 0    
+
+    result = num / den
+
     if result < 0.30: 
         bin1 = 0 
     elif result < 0.40: 
@@ -168,9 +174,12 @@ def occupation_7(senior_officials_managers, professionals, associate_professiona
 def population_age_group_8(age_0_4, age_5_9, age_10_14, age_15_19, age_20_24, age_25_29, age_30_34, age_35_39, age_40_44, age_45_49, age_50_54, age_55_59, age_60_64, age_65_69, age_70_74, age_75_79, age_80_84, age_85_over):
     num = age_0_4 + age_5_9 + age_10_14 + age_15_19 + age_40_44 + age_45_49 + age_50_54 + age_55_59 + age_60_64 + age_65_69 + age_70_74 + age_75_79 + age_80_84 + age_85_over
     den = age_0_4 + age_5_9 + age_10_14 + age_15_19 + age_20_24 + age_25_29 + age_30_34 + age_35_39 + age_40_44 + age_45_49 + age_50_54 + age_55_59 + age_60_64 + age_65_69 + age_70_74 + age_75_79 + age_80_84 + age_85_over
-    result = num / den
+    
     if den == 0:
         return 0    
+
+    result = num / den
+
     if result < 0.70: 
         bin1 = 0 
     elif result < 0.75: 
@@ -189,9 +198,12 @@ def population_age_group_8(age_0_4, age_5_9, age_10_14, age_15_19, age_20_24, ag
 def tenancy_9(owner, tenant, others): 
     num = tenant + others
     den = owner + tenant + others
-    result = num / den
+    
     if den == 0:
         return 0    
+
+    result = num / den
+
     if result < 0.05: 
         bin1 = 0 
     elif result < 0.10: 
@@ -210,9 +222,12 @@ def tenancy_9(owner, tenant, others):
 def type_of_household_10(hdb_1_2_room_flats, hdb_3_room_flats, hdb_4_room_flats, hdb_5_room_executive_flats, condominiums, landed_properties):
     num = hdb_1_2_room_flats + hdb_3_room_flats + hdb_4_room_flats
     den = hdb_1_2_room_flats + hdb_3_room_flats + hdb_4_room_flats + hdb_5_room_executive_flats + condominiums + landed_properties
-    result = num / den
+    
     if den == 0:
         return 0   
+    
+    result = num / den
+
     if result < 0.20: 
         bin1 = 0 
     elif result < 0.30: 
@@ -231,9 +246,12 @@ def type_of_household_10(hdb_1_2_room_flats, hdb_3_room_flats, hdb_4_room_flats,
 def type_of_household_population_11(hdb_1_2_room_flats, hdb_3_room_flats, hdb_4_room_flats, hdb_5_room_executive_flats, condominiums, landed_properties):
     num = hdb_1_2_room_flats + hdb_3_room_flats + hdb_4_room_flats
     den = hdb_1_2_room_flats + hdb_3_room_flats + hdb_4_room_flats + hdb_5_room_executive_flats + condominiums + landed_properties
-    result = num / den
+    
     if den == 0:
         return 0    
+
+    result = num / den
+
     if result < 0.20: 
         bin1 = 0 
     elif result < 0.30: 

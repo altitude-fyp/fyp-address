@@ -150,19 +150,26 @@ def calculate_eleven_factors(region_data):
                 value.get("others",0)
             )
             eleven_factors.append(cal_mode_of_transport)
+
         elif key == "Occupation":
+
             cal_occupation = occupation_7(
                 value.get("senior_officials_managers",0), 
                 value.get("professionals",0), 
                 value.get("associate_professionals_tech",0), 
-                value.get("clerical"), value["service_sales",0), 
+                value.get("clerical"),
+                value.get("service_sales",0), 
                 value.get("agricultural_fishery",0), 
                 value.get("production_craftsmen",0), 
                 value.get("plant_machine_operators",0), 
                 value.get("cleaners_labourers",0), 
-                value/get("workers_not_classified",0])
+                value.get("workers_not_classified",0)
+            )
+
             eleven_factors.append(cal_occupation)
+
         elif key == "Population Age Group":
+
             cal_population_age_group = population_age_group_8(
                 value.get("age_0_4_total",0), 
                 value.get("age_5_9_total",0), 
@@ -181,32 +188,47 @@ def calculate_eleven_factors(region_data):
                 value.get("age_70_74_total",0), 
                 value.get("age_75_79_total",0), 
                 value.get("age_80_84_total",0), 
-                value.get("age_85_over_total",0])
+                value.get("age_85_over_total",0)
+            )
+
             eleven_factors.append(cal_population_age_group)
-        elif key == "Tenancy":
+
+        elif value and key == "Tenancy":
+
             cal_tenancy = tenancy_9(
                 value.get("owner",0), 
                 value.get("tenant",0), 
-                value.get("others",0])
+                value.get("others",0)
+            )
+            
             eleven_factors.append(cal_tenancy)
-        elif key == "Type Of Dwelling Household":
+
+        elif value and key == "Type Of Dwelling Household":
+
             cal_type_of_dwelling_household = type_of_household_10(
                 value.get("hdb_1_and_2_room_flats",0), 
                 value.get("hdb_3_room_flats",0), 
                 value.get("hdb_4_room_flats",0), 
                 value.get("hdb_5_room_and_executive_flats",0), 
                 value.get("condominiums_and_other_apartments",0), 
-                value.get("landed_properties",0])
+                value.get("landed_properties",0)
+            )
+            
             eleven_factors.append(cal_type_of_dwelling_household)
+
         elif key == "Type Of Dwelling Pop":
+
             cal_type_of_dwelling_pop = type_of_household_population_11(
                 value.get("hdb_1_and_2_room_flats",0), 
                 value.get("hdb_3_room_flats",0), 
                 value.get("hdb_4_room_flats",0), 
                 value.get("hdb_5_room_and_executive_flats",0), 
                 value.get("condominiums_and_other_apartments",0), 
-                value.get("landed_properties",0])
+                value.get("landed_properties",0)
+            )
+
             eleven_factors.append(cal_type_of_dwelling_pop)
+
     return eleven_factors
              
 if __name__ == "__main__":
