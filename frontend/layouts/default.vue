@@ -2,7 +2,7 @@
   <v-app>
 
       <v-card>
-        <v-app-bar absolute color="white">
+        <v-app-bar fixed color="white">
 
           <v-app-bar-nav-icon  @click="drawer = true"></v-app-bar-nav-icon>
 
