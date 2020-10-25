@@ -50,10 +50,17 @@
 
 <script>
 export default {
+
   name: "tabs",
+
+  components: {
+    chartData: null,
+  },
+
   data() {
     return {
       tab: null,
+      selectedRegions: "ang mo kio",
       items: [
         {
           header: 'At a Glance',
@@ -72,8 +79,27 @@ export default {
           icon: 'mdi-home'
         }]
     }
+  },
+
+  mounted() {
+      this.getEverything()
+    },
+
+  methods: {
+    getEverything() {
+        this.getChartData()
+      },
+    
+    getChartData() {
+      // this function gets chart data and stores in this.chartData
+      this.chartData = null
+      var url = process.env.BACKEND + "/api/charts/regions/" + this.selectedRegions
+
+      this.$axios.get(url).then((response) => {
+        this.chartData = response.data.charts
+      })
+    }
   }
-  ,
 }
 </script>
 
