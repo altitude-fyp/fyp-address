@@ -9,58 +9,43 @@
         v-for="item in items"
         :key="item"
       >
-        <v-icon style="padding-right: 8px;">{{item.icon}}</v-icon> {{ item.header }}
+        <v-icon color="blue darken-3" style="padding-right: 8px;">{{item.icon}}</v-icon> {{ item.header }}
 
       </v-tab>
     </v-tabs>
 
     <v-tabs-items v-model="tab">
-      <v-tab-item><!--First Tab Content-->
+      <v-tab-item v-for="(value, name, index) in chartData" :key="index"><!--First Tab Content-->
         <v-card
           flat
         >
-          <v-card-text>TEXT 1</v-card-text>
+
+          <region-tab :chartData=value></region-tab>
+
         </v-card>
       </v-tab-item> <!--First Tab Content-->
-      <v-tab-item><!--Second Tab Content-->
-        <v-card
-          flat
-        >
-          <v-card-text>TEXT 2</v-card-text>
-        </v-card>
-      </v-tab-item><!--Second Tab Content-->
-      <v-tab-item><!--Third Tab Content-->
-        <v-card
-          flat
-        >
-          <v-card-text>TEXT 3</v-card-text>
-        </v-card>
-      </v-tab-item><!--Third Tab Content-->
-      <v-tab-item><!--Fourth Tab Content-->
-        <v-card
-          flat
-        >
-          <v-card-text>TEXT 4</v-card-text>
-        </v-card>
-      </v-tab-item><!--Fourth Tab Content-->
-
+      </v-tab-item>
     </v-tabs-items>
   </v-container>
 </template>
 
 <script>
+
+import RegionTab from "@/components/region/components/RegionTab.vue"
+
 export default {
 
   name: "tabs",
 
   components: {
-    chartData: null,
+    "region-tab": RegionTab,
+    chartData: null
   },
 
   data() {
     return {
       tab: null,
-      selectedRegions: "ang mo kio",
+      selectedRegions: "ang mo kio,bishan",
       items: [
         {
           header: 'At a Glance',
@@ -77,9 +62,15 @@ export default {
         {
           header: 'Household',
           icon: 'mdi-home'
-        }]
+        }
+        // ,
+        // {
+        //   header: 'Investment',
+        //   icon: 'mdi-cash-multiple'
+        // }
+      ]
     }
-  },
+  }, 
 
   mounted() {
       this.getEverything()
@@ -96,7 +87,7 @@ export default {
       var url = process.env.BACKEND + "/api/charts/regions/" + this.selectedRegions
 
       this.$axios.get(url).then((response) => {
-        this.chartData = response.data.charts
+        this.chartData = response.data.data
       })
     }
   }
