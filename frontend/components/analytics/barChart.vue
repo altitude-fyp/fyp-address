@@ -21,19 +21,6 @@ export default {
       let datasets_arr = []
       let size_arr = JSON.parse(JSON.stringify(this.top10ChartData.countries)).length
 
-      // for (let i=0; i < size_arr; i++) {
-      //   datasets_arr.push({
-      //       fill: false,
-      //       label: JSON.parse(JSON.stringify(this.top10ChartData.countries))[i],
-      //       backgroundColor: colour_code[i],
-      //       borderColor: colour_code[i],
-      //       borderWidth: 1,
-      //       data: JSON.parse(JSON.stringify(this.top10ChartData.value))
-      //   })
-      // }
-
-      // console.log(datasets_arr)
-
       let obj = {
           labels: JSON.parse(JSON.stringify(this.top10ChartData.countries)),
           datasets: [
