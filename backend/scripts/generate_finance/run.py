@@ -18,6 +18,10 @@ def generate_finance():
     risk_free_weight_list = []
     product_category_list = []
     citi_product_list = []
+    risky_values_graph_1 = []
+    utility_values_graph_1 = []
+    standard_deviation_graph_2 = []
+    expected_returns_graph_2 = []
 
     # Get Data from Onemap (all regions)
     for i in onemap_collection.find():
@@ -48,6 +52,11 @@ def generate_finance():
         products = citi_products(product_cat)
         # print(str(region) + ": " + str(products))
 
+        utility_full = utility_to_risky(risk_aversion)
+
+        indifference_full = indifference_curve(risk_aversion)
+
+        # Things that we want to show on FE
         region_list.append(region)
         risk_aversion_list.append(risk_aversion) # Will be useful to show 
         utility_list.append(utility) # Not useful to show since the values are all weird cos of the data 
@@ -56,7 +65,11 @@ def generate_finance():
         product_category_list.append(product_cat) # No need to show in frontend 
         citi_product_list.append(products) # Show the list of citi products for the region 
 
-        # Things that we want to show on FE
+        risky_values_graph_1.append(utility_full[0])
+        utility_values_graph_1.append(utility_full[1])
+
+        standard_deviation_graph_2.append(indifference_full[0])
+        expected_returns_graph_2.append(indifference_full[1])
 
     #   break
 
@@ -67,7 +80,11 @@ def generate_finance():
         "optimal_y": optimaly_list,
         "risk_free_weight": risk_free_weight_list,
         "product_category": product_category_list, 
-        "citi_products": citi_product_list
+        "citi_products": citi_product_list,
+        "graph_1_x": risky_values_graph_1,
+        "graph_1_y": utility_values_graph_1,
+        "graph_2_x": standard_deviation_graph_2,
+        "graph_2_y": expected_returns_graph_2
     })
     
     df.to_csv('finance.csv', index=False) 

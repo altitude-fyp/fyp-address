@@ -325,38 +325,6 @@ def expected_return ():
         expected_returns.append(er)
     return(risky, expected_returns)
 
-# Returns the data points for 'Utility as a Function of Allocation to Risky Asset' (Chart: 16)
-def utility_to_risky (a): 
-    e = 0.12
-    rf = 0.07
-    r_sd = 0.26
-    rf_sd = 0.00
-    sf = 0.5
-    
-    risky = [0, 0.1 , 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1] # x axis
-    utility_values = [] # y axis 
-    for y in risky:
-        risk_free = 1 - y
-        er = e * y + risk_free * rf
-        sd = r_sd * y + risk_free * rf_sd 
-        u = er - (sf * sd**2 * a)
-        utility_values.append(u)
-    return(risky, utility_values)
-
-    # Indifference Curve based on the highest utility (Chart: 17)
-def indifference_curve (u, a): 
-    # At standard deviation of 0, U = rf
-    rf = 0.07
-    sd_list = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
-    sf = 0.5
-    
-    new_rate = []
-    
-    for sd in sd_list: 
-        rate = rf + (sf * sd**2 * a)
-        new_rate.append(rate)
-    return (sd_list, new_rate)
-
 def product_category(optimal_y):
     if optimal_y <= 0.10000:
         category = 0
@@ -431,3 +399,35 @@ citi_products_dict = {
     24: "Travel Insurance",
     25: "FX"
 }
+
+# Returns the data points for 'Utility as a Function of Allocation to Risky Asset' (Chart: 16)
+def utility_to_risky (a): 
+    e = 0.12
+    rf = 0.07
+    r_sd = 0.26
+    rf_sd = 0.00
+    sf = 0.5
+    
+    risky = [0, 0.1 , 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1] # x axis
+    utility_values = [] # y axis 
+    for y in risky:
+        risk_free = 1 - y
+        er = e * y + risk_free * rf
+        sd = r_sd * y + risk_free * rf_sd 
+        u = er - (sf * sd**2 * a)
+        utility_values.append(u)
+    return(risky, utility_values)
+
+    # Indifference Curve based on the highest utility (Chart: 17)
+def indifference_curve (a): 
+    # At standard deviation of 0, U = rf
+    rf = 0.07
+    sd_list = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+    sf = 0.05
+    
+    new_rate = []
+    
+    for sd in sd_list: 
+        rate = rf + (sf * sd**2 * a)
+        new_rate.append(rate)
+    return (sd_list, new_rate)
