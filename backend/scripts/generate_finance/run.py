@@ -48,7 +48,7 @@ def generate_finance():
         # print("cat:" + str(products))
 
         region_list.append(region)
-        utility_list.append(utility)
+        utility_list.append(utility) # Not useful to show since the values are all weird cos of the data 
         optimaly_list.append(optimal_y[0])
         risk_free_weight_list.append(optimal_y[1])
         product_category_list.append(product_cat)

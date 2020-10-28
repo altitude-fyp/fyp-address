@@ -382,23 +382,52 @@ def product_category(optimal_y):
 
 def citi_products(product_category):
     if product_category == 0: 
-        products = ["AUM Top Up", "Insurance IPB", "Mutual Fund Cross-Sell"]
+        products = ["LOP",  "Travel Insurance", "EPP"]
     elif product_category == 1: 
-        products = ["Bonds", "Life Insurance", "NBO AUM Top Up IPB"]
+        products = ["Retail Product Cross-Sell", "Money Market Fund: Local", "MGM Retail"]
     elif product_category == 2:
-        products = [1,2,3]
+        products = ["Money Market: Offshore", "Credit Card Cross-Sell", "Mortgage"]
     elif product_category == 3:
-        products = [1,2,3]
+        products = ["E Brokerage", "Bonds", "Government Bond Fund"]
     elif product_category == 4:
-        products = [1,2,3]
+        products = ["Fixed Income Fund", "MGM Cards", "Pay With Points", "PayAll"]
     elif product_category == 5:
-        products = [1,2,3]
+        products = ["Mixed Fund", "Foreign Investment Fund", "Segment Upgrade/Slideback", "AUM Top Up"]
     elif product_category == 6:
-        products = [1,2,3]
+        products = ["Multi Asset Class Funds", "Equity Fund", "Long Term Equity Fund", "Foreign Investment Fund"]
     elif product_category == 7:
-        products = [1,2,3]
+        products = ["Sectorial Fund", "FX", "CTP Cross-Sell"]
     elif product_category == 8:
-        products = [1,2,3]
+        products = ["Alterative Investment", "MF IPB", "CPC Cross-Sell", "Insurance IPB"]
     elif product_category == 9:
-        products = [1,2,3]
+        products = ["Very High Risk Investment", "CTG Cross-Sell", "NBO AUM", "Top Up IPB", "NBO MGM IPB"]
     return products
+
+citi_products = {
+    1: "AUM Top Up",
+    2: "Insurance IPB",
+    3: "Mutual Fund Cross-Sell",
+    4: "Bonds",
+    5: "AUM Top Up",
+    6: "Life Insurance",
+    7: "NBO AUM Top Up IPB",
+    7: "CPC Cross-Sell",
+    8: "LOP",
+    9: "NBO MGM IPB",
+    10: "Credit Card Cross-Sell",
+    11: "MF IPB",
+    12: "Pay With Points",
+    13: "CTG Cross-Sell",
+    14: "MGM Cards",
+    15: "PayAll",
+    16: "CTP Cross-Sell",
+    17: "MGM Retail",
+    18: "Retail Product Cross-Sell",
+    19: "E Brokerage",
+    20: "Mortgage",
+    21: "Segment Upgrade/Slideback",
+    22: "EPP",
+    23: "Multi Asset Class Funds",
+    24: "Travel Insurance",
+    25: "FX"
+}
