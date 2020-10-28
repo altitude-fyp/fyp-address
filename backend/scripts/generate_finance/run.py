@@ -12,6 +12,7 @@ def generate_finance():
     onemap_collection = db["onemap"]
 
     region_list = []
+    risk_aversion_list =[]
     utility_list = []
     optimaly_list = []
     risk_free_weight_list = []
@@ -25,11 +26,11 @@ def generate_finance():
 
         # Calculation for 1 region
         eleven_factors = calculate_eleven_factors(region_data)
-        # print("eleven_factors value: " + str(eleven_factors))
+        # print(str(region) + ": " + str(eleven_factors))
 
         # Calculate risk_aversion
         risk_aversion = risk_aversion_12(eleven_factors)
-        # print("risk_aversion value: " + str(risk_aversion))
+        # print(str(region) + ": " + str(risk_aversion))
 
     #     # Calculate utility value
         utility = calculate_utility(risk_aversion)
@@ -45,19 +46,23 @@ def generate_finance():
 
         # Product List
         products = citi_products(product_cat)
-        # print("cat:" + str(products))
+        # print(str(region) + ": " + str(products))
 
         region_list.append(region)
+        risk_aversion_list.append(risk_aversion) # Will be useful to show 
         utility_list.append(utility) # Not useful to show since the values are all weird cos of the data 
-        optimaly_list.append(optimal_y[0])
-        risk_free_weight_list.append(optimal_y[1])
-        product_category_list.append(product_cat)
-        citi_product_list.append(products)
+        optimaly_list.append(optimal_y[0]) # Show in the frontend in percentange 
+        risk_free_weight_list.append(optimal_y[1]) # Show in the frontend in percentage 
+        product_category_list.append(product_cat) # No need to show in frontend 
+        citi_product_list.append(products) # Show the list of citi products for the region 
 
-    #     break
+        # Things that we want to show on FE
+
+    #   break
 
     df = pd.DataFrame({
         "region": region_list,
+        "risk_aversion": risk_aversion_list,
         "utility": utility_list,
         "optimal_y": optimaly_list,
         "risk_free_weight": risk_free_weight_list,

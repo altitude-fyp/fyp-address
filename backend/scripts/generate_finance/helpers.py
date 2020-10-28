@@ -276,8 +276,8 @@ def risk_aversion_12(list_1):
 
     if A < 0:
         A = 0 
-    elif A > 5: 
-        A = 5 
+    elif A > 3: 
+        A = 3 
     return A  
 
 # Utility Value (13)
@@ -403,7 +403,7 @@ def citi_products(product_category):
         products = ["Very High Risk Investment", "CTG Cross-Sell", "NBO AUM", "Top Up IPB", "NBO MGM IPB"]
     return products
 
-citi_products = {
+citi_products_dict = {
     1: "AUM Top Up",
     2: "Insurance IPB",
     3: "Mutual Fund Cross-Sell",
