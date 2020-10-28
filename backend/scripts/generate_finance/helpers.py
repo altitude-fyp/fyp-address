@@ -288,6 +288,23 @@ def calculate_utility(a):
     u = e - (sf * sd**2 * a)
     return (u)
 
+# Optimal_y (14)
+# Returns you the optimal y and risk free weight
+# This point can be highlighted on the graph 
+def calculate_optimal_y (a): 
+    # Values here need to be the same as on top 
+    if a == 0:
+        return (0, 0)
+
+    p_e = 0.12
+    rf = 0.07
+    p_sd = 0.26
+    
+    optimal_y = (p_e - rf) / (a * p_sd**2)
+    risk_free_weight = 1 - optimal_y
+    
+    return (optimal_y, risk_free_weight)
+
 # Returns CAL x and y data points with slope value (SKIP FOR NOW)
 def cal (x = [0, 0.26], y = [0.07, 0.12]): 
     from scipy.stats import linregress
@@ -326,24 +343,7 @@ def utility_to_risky (a):
         utility_values.append(u)
     return(risky, utility_values)
 
-# Optimal_y (14)
-# Returns you the optimal y and risk free weight
-# This point can be highlighted on the graph 
-def calculate_optimal_y (a): 
-    # Values here need to be the same as on top 
-    if a == 0:
-        return (0, 0)
-
-    p_e = 0.12
-    rf = 0.07
-    p_sd = 0.26
-    
-    optimal_y = (p_e - rf) / (a * p_sd**2)
-    risk_free_weight = 1 - optimal_y
-    
-    return (optimal_y, risk_free_weight)
-
-# Indifference Curve based on the highest utility (Chart: 17)
+    # Indifference Curve based on the highest utility (Chart: 17)
 def indifference_curve (u, a): 
     # At standard deviation of 0, U = rf
     rf = 0.07
@@ -357,3 +357,48 @@ def indifference_curve (u, a):
         new_rate.append(rate)
     return (sd_list, new_rate)
 
+def product_category(optimal_y):
+    if optimal_y <= 0.10000:
+        category = 0
+    elif optimal_y <= 0.3410: 
+        category = 1
+    elif optimal_y <= 0.3620:
+        category = 2
+    elif optimal_y <= 0.3730:
+        category = 3
+    elif optimal_y <= 0.4030:
+        category = 4
+    elif optimal_y <= 0.4240:
+        category = 5
+    elif optimal_y <= 0.5860:
+        category = 6
+    elif optimal_y <= 0.8730:
+        category = 7
+    elif optimal_y <= 2.0000:
+        category = 8
+    else:
+        category = 9
+    return category
+
+def citi_products(product_category):
+    if product_category == 0: 
+        products = ["AUM Top Up", "Insurance IPB", "Mutual Fund Cross-Sell"]
+    elif product_category == 1: 
+        products = ["Bonds", "Life Insurance", "NBO AUM Top Up IPB"]
+    elif product_category == 2:
+        products = [1,2,3]
+    elif product_category == 3:
+        products = [1,2,3]
+    elif product_category == 4:
+        products = [1,2,3]
+    elif product_category == 5:
+        products = [1,2,3]
+    elif product_category == 6:
+        products = [1,2,3]
+    elif product_category == 7:
+        products = [1,2,3]
+    elif product_category == 8:
+        products = [1,2,3]
+    elif product_category == 9:
+        products = [1,2,3]
+    return products

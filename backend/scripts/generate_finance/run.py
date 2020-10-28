@@ -15,6 +15,9 @@ def generate_finance():
     utility_list = []
     optimaly_list = []
     risk_free_weight_list = []
+    product_category_list = []
+    citi_product_list = []
+
     # Get Data from Onemap (all regions)
     for i in onemap_collection.find():
         region = i["_id"]
@@ -36,10 +39,20 @@ def generate_finance():
         optimal_y = calculate_optimal_y(risk_aversion)
     #     # print("optimal_y value: " + str(optimal_y))
 
+        # Product Category
+        product_cat = product_category(optimal_y[0])
+        # print("cat:" + str(product_cat))
+
+        # Product List
+        products = citi_products(product_cat)
+        # print("cat:" + str(products))
+
         region_list.append(region)
         utility_list.append(utility)
         optimaly_list.append(optimal_y[0])
         risk_free_weight_list.append(optimal_y[1])
+        product_category_list.append(product_cat)
+        citi_product_list.append(products)
 
     #     break
 
@@ -47,7 +60,9 @@ def generate_finance():
         "region": region_list,
         "utility": utility_list,
         "optimal_y": optimaly_list,
-        "risk_free_weight": risk_free_weight_list
+        "risk_free_weight": risk_free_weight_list,
+        "product_category": product_category_list, 
+        "citi_products": citi_product_list
     })
     
     df.to_csv('finance.csv', index=False) 
