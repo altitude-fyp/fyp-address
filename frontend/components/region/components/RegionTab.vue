@@ -3,7 +3,7 @@
     <div v-if="chartData">
 
         <!-- title goes here -->
-        <h2 class="sectionTitle">Key Financial Indicators</h2>
+        <!-- <h2 class="sectionTitle">Key Financial Indicators</h2> -->
 
         <v-card class="mx-auto">
             <v-container>
@@ -22,12 +22,11 @@
                                 <!-- each line-chart component goes here -->
                                 <div class="charts" v-if="chart">
 
-                                    <line-chart :chartData=chart>
-                                    </line-chart>
+                                    <bar-chart :chartData=chart></bar-chart>
 
                                 </div>
                                 <br>
-                                <p class="chartsDescription">{{chart.description}}</p>
+                                <!-- <p class="chartsDescription">{{chart.description}}</p> -->
 
                             </v-col>
 
@@ -45,16 +44,16 @@
 
 <script>
 
-import LineChart from "@/components/analytics/lineChart.vue"
+import BarChart from "@/components/region/components/RegionBarChart.vue"
 
 export default {
 
-    name: "key-financial-indicators",
+    name: "region-tab",
 
     props: ["chartData"],
 
     components: {
-        "line-chart": LineChart
+        "bar-chart": BarChart
     },
 
     data() {
