@@ -44,6 +44,29 @@ def get_regions_chart_data(regions):
         data = onemap_chart_collection.find_one({"_id": region.lower()})["data"]
         combined_raw_data_list.append(data)
 
+    out = {"status": "error", "data": {}}
+
+    dd = defaultdict(list)
+    for d in combined_raw_data_list:
+        for key, value in d.items():
+            dd[key].append(value)
+            
+    if data:
+        combined_formated_data = format_chart_output(dd, regions)
+        
+        # Pre-define maps to show on frontend
+        glance_tab = ["Economic Status", "Population Age Group", "Type of Dwelling Household", "Household Monthly Income", "Industry", "Tenancy"]
+        economy_tab = ["Economic Status", "Household Monthly Income", "Income From Work", "Industry", "Occupation"]
+        society_tab = ["Population Age Group", "Ethnic Group", "Spoken At Home", "Marital Status", "Language Literate", "Religion"]
+        household_tab = ["Household Size", "Household Structure", "Type of Dwelling Household", "Tenancy", "Type of Dwelling Pop", "Education Attending"]
+        
+        out["status"] = "success"
+        out["data"]["At a glance"] = [chart_data for chart_data in combined_formated_data if chart_data["title"] in glance_tab]
+        out["data"]["Economy"] = [chart_data for chart_data in combined_formated_data if chart_data["title"] in economy_tab]
+        out["data"]["Society"] = [chart_data for chart_data in combined_formated_data if chart_data["title"] in society_tab]
+        out["data"]["Household"] = [chart_data for chart_data in combined_formated_data if chart_data["title"] in household_tab]
+    return out
+
 # temporary
 def get_region_polygon(region_name):
     db = get_database()
@@ -74,30 +97,29 @@ def get_region_polygons(region_names):
     
     return out
 
-# BANG PLS CHECK
-@app.get("/api/regions/{region_name}")
-def get_regions_data(region_name: str):
+def get_regions_data(regions):
+    """
+        Input: 1 region in Singapore
+        Output: Region data
+    """
+    db = get_database()
+    onemap_chart_collection = db["onemap"]
+    
+    if len(regions) > 1:
+        regions = regions.split(",")
+        combined_raw_data = {}
+        for region in regions:
+            data = onemap_chart_collection.find_one({"_id": region.lower()})["data"]
+            combined_raw_data[region] = data
+
+    combined_raw_data = onemap_chart_collection.find_one({"_id": region.lower()})["data"]
+
     out = {"status": "error", "data": {}}
 
-    dd = defaultdict(list)
-    for d in combined_raw_data_list:
-        for key, value in d.items():
-            dd[key].append(value)
-            
     if data:
-        combined_formated_data = format_chart_output(dd, regions)
-        
-        # Pre-define maps to show on frontend
-        glance_tab = ["Economic Status", "Population Age Group", "Type of Dwelling Household", "Household Monthly Income", "Industry", "Tenancy"]
-        economy_tab = ["Economic Status", "Household Monthly Income", "Income From Work", "Industry", "Occupation"]
-        society_tab = ["Population Age Group", "Ethnic Group", "Spoken At Home", "Marital Status", "Language Literate", "Religion"]
-        household_tab = ["Household Size", "Household Structure", "Type of Dwelling Household", "Tenancy", "Type of Dwelling Pop", "Education Attending"]
-        
         out["status"] = "success"
-        out["data"]["At a glance"] = [chart_data for chart_data in combined_formated_data if chart_data["title"] in glance_tab]
-        out["data"]["Economy"] = [chart_data for chart_data in combined_formated_data if chart_data["title"] in economy_tab]
-        out["data"]["Society"] = [chart_data for chart_data in combined_formated_data if chart_data["title"] in society_tab]
-        out["data"]["Household"] = [chart_data for chart_data in combined_formated_data if chart_data["title"] in household_tab]
+        out["data"] = combined_raw_data
+
     return out
 
 def format_chart_output(data_dict, regions_list):
