@@ -29,6 +29,6 @@ def get_npl_country_npl_features(countryname):
         distance, path = fastdtw(npl_data, indicator_data, dist=euclidean)
         similarity[indicator] = distance
 
-    sorted_similarity = sorted(similarity.items(), key=lambda kv: kv[1])[1:11]
+    sorted_similarity = dict(sorted(similarity.items(), key=lambda kv: kv[1])[1:11])
 
-    return [{"name":name, "score":score} for name,score in sorted_similarity]
+    return sorted_similarity
