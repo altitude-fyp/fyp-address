@@ -17,8 +17,8 @@ Input: nuthin
 Output: region level data for all regions in 1 country
 
 '''
-@app.get("/api/regions")
-def get_regions():
+@app.get("/api/regions/list")
+def get_region_list():
 
     db = get_database()
     onemap_collection = db["onemap"]
@@ -61,8 +61,6 @@ def get_region_polygon(region_name):
         "center": {"lat": lat, "lng": lng},
         "showInfoWindow": False
     }
-
-
 
 # TEMPORARY
 @app.get("/api/regions/polygons/{region_names}")
