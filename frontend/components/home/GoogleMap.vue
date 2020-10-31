@@ -31,9 +31,27 @@
 
       <GmapInfoWindow 
         v-if="infoWindowRegion"
-        :key=infoWindowRegion.name
-        :options="{content: getGmapInfoWindowContent(infoWindowRegion)}"
-        :position=infoWindowRegion.center />
+        :position=infoWindowRegion.center> 
+
+          <v-container align="center" justify="center">
+
+            <span class="font-weight-medium">
+              {{infoWindowRegionName}}
+            </span>
+
+            <br>
+
+            <div v-html="infoWindowRegionBody"/>
+
+            <br>
+
+            <v-btn block @click="goToRegion">
+              Go to {{infoWindowRegionName}}
+            </v-btn>
+
+          </v-container>
+
+      </GmapInfoWindow>
 
       <!-- marker clustering test goes here -->
       <!-- <GmapCluster>
@@ -107,23 +125,10 @@ export default {
       this.infoWindowRegion = this.regionPolygons[i]
     },
 
-    getGmapInfoWindowContent(region) {
-      let income = region.data["Income From Work"]
-      let incomeOver6k = "" + Math.round(income["6000+"] / Object.values(income).reduce((total,n) => total+n) * 100) + "%"
-      
-      let house = region.data["Type Of Dwelling Household"]
-      let hdb = Math.round( house["hdb"] / Object.values(house).reduce((total,n) => total+n ) * 100) + "%"
 
-      return `
-        <v-container align="center" justify="center">
-          <strong>${region.name.slice(0,1).toUpperCase() + region.name.slice(1)}</strong><br>
-          Income over 6k: ${incomeOver6k} <br>
-          Proportion living in HDB: ${hdb} <br>
-
-          TO BE CONTINUED
-
-        </v-container>`
-    },
+    goToRegion() {
+      // to be completed
+    }
 
   },
 
@@ -148,6 +153,27 @@ export default {
       if (this.coordinates.length==1 && this.coordinates[0].country == "Singapore") return 12
       if (this.coordinates.length == 1) return 6
       return 3
+    },
+
+
+    infoWindowRegionName() {
+      return this.infoWindowRegion.name.slice(0,1).toUpperCase() + this.infoWindowRegion.name.slice(1)
+    },
+
+
+    infoWindowRegionBody() {
+      let region = this.infoWindowRegion
+
+      let income = region.data["Income From Work"]
+      let incomeOver6k = "" + Math.round(income["6000+"] / Object.values(income).reduce((total,n) => total+n) * 100) + "%"
+      
+      let house = region.data["Type Of Dwelling Household"]
+      let hdb = Math.round( house["hdb"] / Object.values(house).reduce((total,n) => total+n ) * 100) + "%"
+
+      return `
+        Income over 6k: ${incomeOver6k} <br>
+        Proportion living in HDB: ${hdb} <br>
+      `
     }
 
 
