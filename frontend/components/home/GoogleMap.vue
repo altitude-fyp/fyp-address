@@ -50,7 +50,6 @@
 </template>
 
 <script>
-import func from '../../vue-temp/vue-editor-bridge';
 
 export default {
 
@@ -110,17 +109,21 @@ export default {
     },
 
     getGmapInfoWindowContent(region) {
-      // let income = region.data["Income From Work"]
-      // let incomeOver6k = 100
+      let income = region.data["Income From Work"]
+      let incomeOver6k = "" + Math.round(income["6000+"] / Object.values(income).reduce((total,n) => total+n) * 100) + "%"
       
-      // return `
-      //   <v-container>
-      //     <strong>${region.name.slice(0,1).toUpperCase() + region.name.slice(1)}</strong><br>
-      //     Income over 6k: <br>
+      let house = region.data["Type Of Dwelling Household"]
+      let hdb = Math.round( house["hdb"] / Object.values(house).reduce((total,n) => total+n ) * 100) + "%"
 
+      return `
+        <v-container align="center" justify="center">
+          <strong>${region.name.slice(0,1).toUpperCase() + region.name.slice(1)}</strong><br>
+          Income over 6k: ${incomeOver6k} <br>
+          Proportion living in HDB: ${hdb} <br>
 
-      //   </v-container>`
-      return "hello"
+          TO BE CONTINUED
+
+        </v-container>`
     },
 
   },
