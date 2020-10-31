@@ -57,7 +57,7 @@ def generate_finance():
         indifference_full = indifference_curve(risk_aversion)
 
         # Things that we want to show on FE
-        region_list.append(region)
+        region_list.append(region) # Region information
         risk_aversion_list.append(risk_aversion) # Will be useful to show 
         utility_list.append(utility) # Not useful to show since the values are all weird cos of the data 
         optimaly_list.append(optimal_y[0]) # Show in the frontend in percentange 
