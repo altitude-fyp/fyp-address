@@ -67,61 +67,6 @@ def get_regions_chart_data(regions):
         out["data"]["Household"] = [chart_data for chart_data in combined_formated_data if chart_data["title"] in household_tab]
     return out
 
-# temporary
-def get_region_polygon(region_name):
-    db = get_database()
-
-    out = db["onemap.polygons"].find_one({"_id": region_name})["data"]
-
-    polygon = [{"lat": i[1], "lng": i[0]} for i in json.loads(out)["coordinates"][0][0]]
-
-    lat = sum([coordinate["lat"] for coordinate in polygon])/len(polygon)
-    lng = sum([coordinate["lng"] for coordinate in polygon])/len(polygon)
-
-    return {
-        "name": region_name,
-        "polygon": polygon,
-        "center": {"lat": lat, "lng": lng},
-        "showInfoWindow": False
-    }
-
-# TEMPORARY
-@app.get("/api/regions/polygons/{region_names}")
-def get_region_polygons(region_names):
-    out = []
-    for name in region_names.split(","):
-        try:
-            out.append(get_region_polygon(name))
-        except:
-            pass
-    
-    return out
-
-def get_regions_data(regions):
-    """
-        Input: 1 region in Singapore
-        Output: Region data
-    """
-    db = get_database()
-    onemap_chart_collection = db["onemap"]
-    
-    if len(regions) > 1:
-        regions = regions.split(",")
-        combined_raw_data = {}
-        for region in regions:
-            data = onemap_chart_collection.find_one({"_id": region.lower()})["data"]
-            combined_raw_data[region] = data
-
-    combined_raw_data = onemap_chart_collection.find_one({"_id": region.lower()})["data"]
-
-    out = {"status": "error", "data": {}}
-
-    if data:
-        out["status"] = "success"
-        out["data"] = combined_raw_data
-
-    return out
-
 def format_chart_output(data_dict, regions_list):
     result = []
     for key, value in data_dict.items():
@@ -164,4 +109,39 @@ def get_regions_data(regions):
         out["data"] = combined_raw_data
 
     return out
+
+
+# GETS ALL VALID POLYGONS IN SINGAPORE
+@app.get("/api/regions/polygons")
+def get_region_polygons():
+
+    def clean(raw):
+        try:
+            return [{"lat":p[1], "lng":p[0]} for p in json.loads(raw)["coordinates"][0][0]]
+        except:
+            pass
+
+    db = get_database()
+    out = [o for o in db["onemap.summary"].find()]
+
+    # for o in out:
+    #     polygon, center = get_region_polygon(o["_id"])
+    #     o["name"] = o["_id"]
+    #     o["center"] = center
+    #     o["polygon"] = polygon
+    #     o["showInfoWindow"] = False
+        
+    polygons = {o["_id"]: clean(o["data"]) for o in db["onemap.polygons"].find()}
+
+    for o in out:
+        o["name"] = o["_id"]
+        o["showInfoWindow"] = False
+        o["polygon"] = polygons[o["_id"]]
+        o["center"] = {"lat": sum([i["lat"] for i in o["polygon"]])/len(o["polygon"]), "lng":sum([i["lng"] for i in o["polygon"]])/len(o["polygon"])}
+
+    return out
+
+
+
+
 

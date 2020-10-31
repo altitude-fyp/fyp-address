@@ -25,29 +25,28 @@
         <GmapPolygon
           :paths="region.polygon"
           :options="polygonOptions"
-          @click="toggleShowInfoWindow(i)" />
-      
-        <GmapInfoWindow 
-          v-if="region.showInfoWindow"
-          :key=region.name
-          :options="{
-            content: 'this is ' + region.name
-          }"
-          :position=region.center />
+          @click="setInfoWindowRegion(i)" />
         
       </div>
 
+      <GmapInfoWindow 
+        v-if="infoWindowRegion"
+        :key=infoWindowRegion.name
+        :options="{content: getGmapInfoWindowContent(infoWindowRegion)}"
+        :position=infoWindowRegion.center />
+
       <!-- marker clustering test goes here -->
-      <GmapCluster>
+      <!-- <GmapCluster>
         <GmapMarker 
           v-for="position in testMarkers"
           :key="position.lat + Math.random()"
           :position=position />
-      </GmapCluster>
+      </GmapCluster> -->
 
     </GmapMap>
 
   </div>
+
 </template>
 
 <script>
@@ -80,40 +79,52 @@ export default {
       },
 
       regionPolygons: [],
-    
-      testMarkers: null
+      infoWindowRegion: null,
 
     };
   },
 
 
   mounted() {
-    this.temp()
+    this.pullRegionPolygonData()
   },
 
 
   methods: {
 
-    temp() {
-      //this function is temporary and is to be integrated with region functions
+    pullRegionPolygonData() {
+      //this function gets polygon data from Singapore for all regions (with valid data)
 
-      let url = process.env.BACKEND + "/api/regions/polygons/paya lebar,changi,yishun,bishan,aljunied,newton,boon lay,jurong east"
+      let url = process.env.BACKEND + "/api/regions/polygons"
 
       this.$axios.get(url).then((response) => {
         this.regionPolygons = response.data
       })
 
-      url = process.env.BACKEND + "/api/regions/polygons/serangoon"
-      this.$axios.get(url).then((response) => {
-        this.testMarkers = response.data[0].polygon
-      })
     },
 
-
-    toggleShowInfoWindow(i) {
-      this.regionPolygons[i].showInfoWindow = !this.regionPolygons[i].showInfoWindow
+    setInfoWindowRegion(i) {
+      this.infoWindowRegion = this.regionPolygons[i]
     },
-   
+
+    getGmapInfoWindowContent(region) {
+      let income = region.data["Income From Work"]
+      let incomeOver6k = "" + Math.round(income["6000+"] / Object.values(income).reduce((total,n) => total+n) * 100) + "%"
+      
+      let house = region.data["Type Of Dwelling Household"]
+      let hdb = Math.round( house["hdb"] / Object.values(house).reduce((total,n) => total+n ) * 100) + "%"
+
+      return `
+        <v-container align="center" justify="center">
+          <strong>${region.name.slice(0,1).toUpperCase() + region.name.slice(1)}</strong><br>
+          Income over 6k: ${incomeOver6k} <br>
+          Proportion living in HDB: ${hdb} <br>
+
+          TO BE CONTINUED
+
+        </v-container>`
+    },
+
   },
 
 
