@@ -25,15 +25,15 @@
         <GmapPolygon
           :paths="region.polygon"
           :options="polygonOptions"
-          @click="toggleShowInfoWindow(i)" />
-      
-        <GmapInfoWindow 
-          v-if="region.showInfoWindow"
-          :key=region.name
-          :options="{content: getGmapInfoWindowContent(region)}"
-          :position=region.center />
+          @click="setInfoWindowRegion(i)" />
         
       </div>
+
+      <GmapInfoWindow 
+        v-if="infoWindowRegion"
+        :key=infoWindowRegion.name
+        :options="{content: getGmapInfoWindowContent(infoWindowRegion)}"
+        :position=infoWindowRegion.center />
 
       <!-- marker clustering test goes here -->
       <!-- <GmapCluster>
@@ -79,8 +79,7 @@ export default {
       },
 
       regionPolygons: [],
-    
-      testMarkers: null
+      infoWindowRegion: null,
 
     };
   },
@@ -104,8 +103,8 @@ export default {
 
     },
 
-    toggleShowInfoWindow(i) {
-      this.regionPolygons[i].showInfoWindow = !this.regionPolygons[i].showInfoWindow
+    setInfoWindowRegion(i) {
+      this.infoWindowRegion = this.regionPolygons[i]
     },
 
     getGmapInfoWindowContent(region) {
