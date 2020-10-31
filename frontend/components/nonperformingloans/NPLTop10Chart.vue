@@ -1,7 +1,7 @@
 <template>
     <div v-if="top10ChartData">    
-        <v-row v-for="chart in top10ChartData":key=chart.title>
-            <v-col>
+        <v-row>
+            <v-col v-for="chart in top10ChartData" cols="6" :key=chart.title>
                 <!-- title for each chart goes here -->
                 <div class="chartsTitle">
                     <h3>{{chart.title}}</h3>

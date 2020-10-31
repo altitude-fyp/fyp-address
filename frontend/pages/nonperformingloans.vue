@@ -7,28 +7,10 @@
       </v-parallax>
     <v-container style="margin-top:-50px; margin-bottom:-80px">
       <!-- Search Country -->
-      <v-row justify="center">
-          <v-col cols="11">
-          <v-autocomplete class="elevation-0"
-            v-model="value"
-            :items="items"
-            rounded
-            solo
-            label="Enter country name"
-          ></v-autocomplete>
-          </v-col>
-
-        <v-col cols="1">
-        <div style="margin-top:5px">
-        <v-btn
-          depressed
-          color="primary"
-        >
-          Search
-        </v-btn>
-        </div>
-        </v-col>
-      </v-row>
+      <npl-country-selection
+          :allCountries=allCountries
+          @submitSelectedCountriesEvent="updateSelectedCountries">
+      </npl-country-selection>
       
     </v-container>
     </div>
@@ -68,43 +50,6 @@
                   :top10ChartData=top10ChartData>
               </npl-top10-chart>
             </v-row>
-
-            <v-row>
-              <v-toolbar elevation="0">
-                <v-tabs
-                  v-model="tabs"
-                  
-                >
-                  <v-tabs-slider></v-tabs-slider>
-                  <v-tab
-                    href="#tab-1"
-                    class="primary--text"
-                  >
-                    <v-icon>mdi-phone</v-icon>
-                  </v-tab>
-
-                  <v-tab
-                    href="#tab-2"
-                    class="primary--text"
-                  >
-                    <v-icon>mdi-heart</v-icon>
-                  </v-tab>
-                </v-tabs>
-              </v-toolbar>
-
-              <v-tabs-items v-model="tabs">
-                <v-tab-item
-                  v-for="i in 2"
-                  :key="i"
-                  :value="'tab-' + i"
-                >
-                  <v-card flat>
-                    <v-card-text v-text="text"></v-card-text>
-                  </v-card>
-                </v-tab-item>
-              </v-tabs-items>
-            </v-row>
-
         </v-container>
     </div>
   </v-app>
@@ -116,17 +61,17 @@ import barChart from "@/components/analytics/barChart";
 import CountryStatistics from "@/components/analytics/CountryStatisticsAnalytics.vue"
 import NPLCountryChart from "@/components/nonperformingloans/NPLCountryChart.vue"
 import NPLTop10Chart from "@/components/nonperformingloans/NPLTop10Chart.vue"
+import CountrySelection from "@/components/nonperformingloans/CountrySelection.vue"
 
   export default {
     components: {
       "npl-country-chart": NPLCountryChart,
-      "npl-top10-chart": NPLTop10Chart
+      "npl-top10-chart": NPLTop10Chart,
+      "npl-country-selection": CountrySelection
     },
     data: () => ({
-      items: ['Angola', 'Australia', 'Canada', 'Chad', 'Comoros', 'Dominica', 'Equatorial Guinea', 'Estonia', 'Greece', 'Hong Kong', 'Luxembourg', 'Macao', 'Norway', 'Saint Kitts and Nevis', 'San Marino', 'Sweden', 'Switzerland', 'Tajikistan', 'Ukraine', 'United States'],
-      values: ['Angola', 'Australia', 'Canada', 'Chad', 'Comoros', 'Dominica', 'Equatorial Guinea', 'Estonia', 'Greece', 'Hong Kong', 'Luxembourg', 'Macao', 'Norway', 'Saint Kitts and Nevis', 'San Marino', 'Sweden', 'Switzerland', 'Tajikistan', 'Ukraine', 'United States'],
       value: null,
-      selectedCountries: ["Singapore"],
+      selectedCountry: ["Singapore"],
       countryStatistics: null,
       selectedCountryStatisticsFeatures: [
           "gdp nominal",
@@ -160,7 +105,7 @@ import NPLTop10Chart from "@/components/nonperformingloans/NPLTop10Chart.vue"
       getChartData() {
         // this function gets chart data and stores in this.chartData
         this.chartData = null
-        var url = process.env.BACKEND + "/api/analytics/npl_charts/" + this.selectedCountries
+        var url = process.env.BACKEND + "/api/analytics/npl_charts/" + this.selectedCountry
 
         this.$axios.get(url).then((response) => {
             this.chartData = response.data.charts
@@ -175,6 +120,12 @@ import NPLTop10Chart from "@/components/nonperformingloans/NPLTop10Chart.vue"
         this.$axios.get(url).then((response) => {
             this.top10ChartData = response.data.charts
         })
+      },
+
+      updateSelectedCountries(selectedCountry) {
+        //this function is called after user submits his selected countries from the country selection dialog
+        this.selectedCountry = selectedCountry
+        this.getEverything()
       },
   }
   }
