@@ -30,27 +30,27 @@
         <GmapInfoWindow 
           v-if="region.showInfoWindow"
           :key=region.name
-          :options="{
-            content: 'this is ' + region.name
-          }"
+          :options="{content: getGmapInfoWindowContent(region)}"
           :position=region.center />
         
       </div>
 
       <!-- marker clustering test goes here -->
-      <GmapCluster>
+      <!-- <GmapCluster>
         <GmapMarker 
           v-for="position in testMarkers"
           :key="position.lat + Math.random()"
           :position=position />
-      </GmapCluster>
+      </GmapCluster> -->
 
     </GmapMap>
 
   </div>
+
 </template>
 
 <script>
+import func from '../../vue-temp/vue-editor-bridge';
 
 export default {
 
@@ -88,32 +88,41 @@ export default {
 
 
   mounted() {
-    this.temp()
+    this.pullRegionPolygonData()
   },
 
 
   methods: {
 
-    temp() {
-      //this function is temporary and is to be integrated with region functions
+    pullRegionPolygonData() {
+      //this function gets polygon data from Singapore for all regions (with valid data)
 
-      let url = process.env.BACKEND + "/api/regions/polygons/paya lebar,changi,yishun,bishan,aljunied,newton,boon lay,jurong east"
+      let url = process.env.BACKEND + "/api/regions/polygons"
 
       this.$axios.get(url).then((response) => {
         this.regionPolygons = response.data
       })
 
-      url = process.env.BACKEND + "/api/regions/polygons/serangoon"
-      this.$axios.get(url).then((response) => {
-        this.testMarkers = response.data[0].polygon
-      })
     },
-
 
     toggleShowInfoWindow(i) {
       this.regionPolygons[i].showInfoWindow = !this.regionPolygons[i].showInfoWindow
     },
-   
+
+    getGmapInfoWindowContent(region) {
+      // let income = region.data["Income From Work"]
+      // let incomeOver6k = 100
+      
+      // return `
+      //   <v-container>
+      //     <strong>${region.name.slice(0,1).toUpperCase() + region.name.slice(1)}</strong><br>
+      //     Income over 6k: <br>
+
+
+      //   </v-container>`
+      return "hello"
+    },
+
   },
 
 
