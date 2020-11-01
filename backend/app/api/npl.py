@@ -121,7 +121,7 @@ def get_sorted_npl_data():
     npl_countries = []
 
     for i in db["aggregate.embeddings"].find():
-        if "Financial, Financial Soundness Indicators, Core Set, Deposit Takers, Asset Quality, Non-performing Loans to Total Gross Loans, Percent" in i["data"]:
+        if "Bank nonperforming loans to total gross loans (%)" in i["data"]:
             npl_countries.append(i["_id"])
     try:
         return {
