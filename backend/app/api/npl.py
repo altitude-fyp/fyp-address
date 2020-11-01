@@ -126,7 +126,7 @@ def get_sorted_npl_data():
     try:
         return {
             "status": "success",
-            "charts": npl_countries
+            "countries": npl_countries
         }
     
     except Exception as err:
