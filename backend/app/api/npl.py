@@ -107,6 +107,34 @@ def extrapolate(data, desired=[i for i in range(2000,2020)], lag=1):
     
     return {k:v for k,v in zip(desired, temp)}
 
+@app.get("/api/analytics/npl_countries/")
+def get_sorted_npl_data():
+    """
+    output: sorted countries by non performing loans
+    """
+    starttime = time()
+
+    db = get_database()
+
+    chart_collection = db["worldbank"]
+
+    npl_countries = []
+
+    for i in db["aggregate.embeddings"].find():
+        if "Bank nonperforming loans to total gross loans (%)" in i["data"]:
+            npl_countries.append(i["_id"])
+    try:
+        return {
+            "status": "success",
+            "countries": npl_countries
+        }
+    
+    except Exception as err:
+        return {
+            "status": "failure",
+            "error": str(err),
+        }
+
 @app.get("/api/analytics/sorted_npl_data/")
 def get_sorted_npl_data():
     """
@@ -143,8 +171,6 @@ def get_sorted_npl_data():
             "status": "failure",
             "error": str(err),
         }
-
-
 @app.get("/api/analytics/npl_country_features/")
 def get_sorted_npl_data(countryname):
     """
@@ -154,8 +180,7 @@ def get_sorted_npl_data(countryname):
 
     try:
         return {
-            "status": "success",
-            "items": get_npl_country_npl_features(countryname)
+            countryname: get_npl_country_npl_features(countryname)
         }
     
     except Exception as err:
