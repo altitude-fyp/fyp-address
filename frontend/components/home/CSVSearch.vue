@@ -1,107 +1,107 @@
 <template>
-    <!--fluid style="padding-top: 400px; padding-left: 240px; position:absolute; z-index: 1;"-->
-    <v-container >
-      <v-row>
-        <v-col cols="10">
-          <v-text-field
-            prepend-inner-icon="mdi-magnify"
-            placeholder="Enter an address in full only"
-            rounded
-            solo
-            v-on:keydown.enter="launchRadio = true"
-          >
-          </v-text-field>
-        </v-col>
+  <!--fluid style="padding-top: 400px; padding-left: 240px; position:absolute; z-index: 1;"-->
+  <v-container>
+    <v-row>
+      <!--Select US or Singapore button-->
+      <v-col cols="2" style="padding-top: 20px;">
+        <v-select
+          v-model="preselect"
+          :items="items"
+          menu-props="auto"
+          label="Country"
+          hide-details
+          prepend-icon="mdi-map"
+          outlined
+          dense
+        ></v-select>
+      </v-col>
 
-        <v-dialog persistent  v-model="launchRadio" max-width="600px">
-            <v-card>
-              <v-card-title>
-                <span class="headline">Select Type of Address Queried</span>
-              </v-card-title>
-              <v-card-text>
-                <v-container>
-                  <v-radio-group row v-model="choice" :mandatory="true">
-                    <v-radio label="Customer" value="customer"></v-radio>
-                    <v-radio label="Merchant" value="merchant"></v-radio>
-                  </v-radio-group>
-                </v-container>
-              </v-card-text>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="launchRadio = false">Close</v-btn>
-                <v-btn color="blue darken-1" text @click="launchRadio = false">Search</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
+      <!--Address Search Bar-->
+      <v-col cols="8">
+        <v-text-field
+          v-model="address"
+          prepend-inner-icon="mdi-magnify"
+          placeholder="Enter an address, hit 'Enter' to search"
+          v-on:keypress.enter="lookUpAddress"
+        >
+        </v-text-field>
+      </v-col>
+
+      <!--upload CSV button-->
+      <v-col cols="2" style="padding-top: 20px;">
+
+        <v-file-input
+          placeholder="Upload CSV"
+          v-model="csv"
+          prepend-icon="mdi-upload"
+          accept=".csv"
+          dense
+          outlined
+          @change="csvAccept" >
+
+        </v-file-input>
+
+      </v-col>
+    </v-row>
 
 
-
-
-
-        <v-col>
-          <v-dialog v-model="dialog" persistent max-width="600px">
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn
-                color="primary"
-                dark
-                v-bind="attrs"
-                v-on="on"
-                :loading = 'loading'
-                @click = 'loading = true'
-                height="47"
-              >
-                <v-icon>mdi-application-import</v-icon> Import CSV
-              </v-btn>
-            </template>
-            <v-card>
-              <v-card-title>
-                <span class="headline">Upload addresses in CSV</span>
-              </v-card-title>
-              <v-card-text>
-                <v-container>
-                  <v-file-input />
-                  <v-radio-group row v-model="radios" :mandatory="true">
-                    <v-radio label="Customer" value="customer"></v-radio>
-                    <v-radio label="Merchant" value="merchant"></v-radio>
-                  </v-radio-group>
-                </v-container>
-              </v-card-text>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="dialog = false, loading = false">Close</v-btn>
-                <v-btn color="blue darken-1" text @click="dialog = false, loading = false">Save</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-        </v-col>
-      </v-row>
-
-    </v-container>
+  </v-container>
 
 </template>
 
 <script>
+
+import Papa from 'papaparse'
+
 export default {
   name: "CSVSearch",
+  components: {
+    Papa,
+  },
   data() {
     return {
-      launchRadio: false,
-      loading: false,
-      radios: 'customer',
-      dialog: false,
-      choice: '',
-      csvChoice: 'Customer',
-      windowWidth: window.innerWidth,
+      preselect: 'Singapore',
+      address: '',
+      items: ['Singapore', 'USA'],
+      csv: null,
+      data: null,
     }
   },
-  mounted() {
-    window.onresize = () => {
-      this.windowWidth = window.innerWidth
+  methods: {
+    
+    lookUpAddress() {
+      /*console.log(this.preselect)
+      console.log(this.address)*/
+    },
+
+    csvAccept() {
+    
+      Papa.parse(this.csv, {
+        
+        delimiter: ",",
+        header: true,
+
+        complete: (results) => {
+          // this function is called when papaparse finishes parsing the CSV
+          // this function sends the CSV data to the backend
+
+          let url = process.env.BACKEND + "/api/address/csv/"
+          this.$axios.post(url, {"csvdata": url}).then((response) => {
+            console.log(response.data)
+          })
+
+        }
+
+      });
+
     }
+
   }
+
 }
 </script>
 
 <style scoped>
 
 </style>
+
