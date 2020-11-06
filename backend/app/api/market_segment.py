@@ -2,17 +2,20 @@ from app import app
 from mongodb_helper import *
 from collections import defaultdict
 from pydantic import BaseModel
-from typing import Dict
 import json
+from typing import Optional
 
+
+class Item(BaseModel):
+    chosen_categories : dict
 
 @app.post("/api/analytics/market_segment/{chosen_categories}")
-def get_market_segment(chosen_categories):
+def get_market_segment(item:Item):
     """
     input: takes in a dictionary of chosen features and respective categories
     output: top 5 regions with selected market segments
     """
-    chosen_categories = json.loads(str(chosen_categories))
+    chosen_categories = item.chosen_categories
 
     db = get_database()
 
@@ -60,7 +63,7 @@ def get_market_segment(chosen_categories):
         region_output['name'] = region
         region_output['value'] = []
         for chosen_category in chosen_categories:
-            region_output['value'].append({'name': chosen_categories[chosen_category], 'value': round(raw_features[chosen_categories[chosen_category]][region],2)})
+            region_output['value'].append({'name': chosen_category + ' - ' + chosen_categories[chosen_category], 'value': round(raw_features[chosen_categories[chosen_category]][region],2)})
         final_output.append(region_output)
 
     try:
