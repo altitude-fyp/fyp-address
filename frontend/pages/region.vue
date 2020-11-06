@@ -1,9 +1,24 @@
 <template>
   <v-app>
-    <google-map :coordinates="coordinates"/>
+    <!--    <google-map :coordinates="coordinates"/>-->
+    {{ selectedRegions }}
     <c-s-v-search/>
-    <MetadataPanel/>
-    <tabs/>
+    <v-row justify="center">
+      <v-btn
+        color="#004D8E"
+        class="white--text mb-2 sidebar"
+        depressed
+        @click=openRegionSelectionDialog>
+        Regions to Compare
+      </v-btn>
+      <region-selection-dialog
+        :showRegionSelectionDialog=showRegionSelectionDialog
+        @closeRegionSelectionDialogEvent="closeRegionSelectionDialog"
+        @submitSelectedRegionsEvent="updateSelectedRegions"
+      >
+      </region-selection-dialog>
+    </v-row>
+    <tabs :selected-regions="selectedRegions"/>
   </v-app>
 </template>
 
@@ -12,19 +27,48 @@ import GoogleMap from "@/components/home/GoogleMap";
 import CSVSearch from "@/components/home/CSVSearch";
 import tabs from "@/components/region/tabs";
 import MetadataPanel from "@/components/home/GoogleBottomSheet/components/MetadataPanel";
+import RegionSelectionDialog from "@/components/home/GoogleBottomSheet/components/RegionSelectionDialog";
 
 export default {
   name: "region",
-  components: {MetadataPanel, tabs, CSVSearch, GoogleMap},
-
+  components: {RegionSelectionDialog, MetadataPanel, tabs, CSVSearch, GoogleMap},
   data() {
     return {
-      coordinates: null
+      showRegionSelectionDialog: false,
+    }
+  },
+  asyncData({query: {regions}}) {
+    return {
+      coordinates: null,
+      selectedRegions: regions || [],
     }
   },
   methods: {
     showMarkers(coordinates) {
       this.coordinates = coordinates
+    },
+    /*getEverything() {
+      //this function renders everything based on this.selectedRegions
+      this.$axios.get(process.env.BACKEND + "/api/charts/regions/" + this.selectedRegions.join(','))
+        .then((response) => {
+          this.re = response.data
+          console.log(response)
+          // sends countriesMetadata, which contains lat lon data, to parent component
+        })*/
+    openRegionSelectionDialog() {
+      // this function is called when the user clicks on "region to compare"
+      //this function opens the country selection dialog
+      this.showRegionSelectionDialog = true
+    },
+
+    closeRegionSelectionDialog() {
+      //this function closes the region selection dialog
+      this.showRegionSelectionDialog = false
+    },
+    updateSelectedRegions(selectedRegions) {
+      //this function is called after user submits his selected countries from the country selection dialog
+      this.selectedRegions = selectedRegions
+      console.log(selectedRegions)
     },
   },
 }

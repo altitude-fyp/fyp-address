@@ -7,12 +7,14 @@
     >
       <v-tab
         v-for="item in items"
-        :key="item"
       >
-        <v-icon color="blue darken-3" style="padding-right: 8px;">{{item.icon}}</v-icon> {{ item.header }}
+        <v-icon color="blue darken-3" style="padding-right: 8px;">{{ item.icon }}</v-icon>
+        {{ item.header }}
 
       </v-tab>
     </v-tabs>
+
+    {{selectedRegions}}
 
     <v-tabs-items v-model="tab">
       <v-tab-item v-for="(value, name, index) in chartData" :key="index"><!--First Tab Content-->
@@ -24,7 +26,7 @@
 
         </v-card>
       </v-tab-item> <!--First Tab Content-->
-      </v-tab-item>
+      <!--      </v-tab-item>-->
     </v-tabs-items>
   </v-container>
 </template>
@@ -36,7 +38,7 @@ import RegionTab from "@/components/region/components/RegionTab.vue"
 export default {
 
   name: "tabs",
-
+  props: ["selectedRegions"],
   components: {
     "region-tab": RegionTab,
     chartData: null
@@ -45,7 +47,6 @@ export default {
   data() {
     return {
       tab: null,
-      selectedRegions: "ang mo kio,bishan",
       items: [
         {
           header: 'At a Glance',
@@ -70,25 +71,31 @@ export default {
         // }
       ]
     }
-  }, 
+  },
 
   mounted() {
-      this.getEverything()
-    },
+    this.getEverything()
+  },
 
   methods: {
     getEverything() {
-        this.getChartData()
-      },
-    
-    getChartData() {
+      this.getChartData(this.selectedRegions)
+    },
+
+    getChartData(selectedRegions) {
       // this function gets chart data and stores in this.chartData
       this.chartData = null
-      var url = process.env.BACKEND + "/api/charts/regions/" + this.selectedRegions
-
+      var url = process.env.BACKEND + "/api/charts/regions/" + selectedRegions.join(',')
       this.$axios.get(url).then((response) => {
         this.chartData = response.data.data
+        console.log(response)
       })
+    }
+  },
+  watch: {
+    selectedRegions: function (newRegion) {
+      console.log('n: ' + newRegion)
+      this.getChartData(newRegion)
     }
   }
 }
