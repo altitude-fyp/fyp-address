@@ -7,15 +7,26 @@ from typing import Optional
 
 
 class Item(BaseModel):
-    chosen_categories : dict
+    economic_status : Optional[str]
+    household_monthly_income_work : Optional[str]
+    income_from_work : Optional[str]
+    population_age_group: Optional[str]
 
-@app.post("/api/analytics/market_segment/{chosen_categories}")
+@app.post("/api/analytics/market_segment/")
 def get_market_segment(item:Item):
     """
     input: takes in a dictionary of chosen features and respective categories
     output: top 5 regions with selected market segments
     """
-    chosen_categories = item.chosen_categories
+    chosen_categories = {}
+    if item.economic_status:
+        chosen_categories['Economic Status'] = item.economic_status
+    if item.household_monthly_income_work:
+        chosen_categories['Household Monthly Income Work'] = item.household_monthly_income_work
+    if item.income_from_work:
+        chosen_categories['Income From Work'] = item.income_from_work
+    if item.population_age_group:
+        chosen_categories['Population Age Group'] = item.population_age_group
 
     db = get_database()
 
@@ -44,7 +55,7 @@ def get_market_segment(item:Item):
     
     for feature,categories in combined_features.items():
         for category in categories:
-            combined_features[feature][category] = list(dict(sorted(combined_features[feature][category].items(), key=lambda kv: kv[1], reverse = True)[1:10]).keys())
+            combined_features[feature][category] = list(dict(sorted(combined_features[feature][category].items(), key=lambda kv: kv[1], reverse = True)).keys())
 
     final_ranking = defaultdict(lambda: 0)
 
@@ -63,7 +74,8 @@ def get_market_segment(item:Item):
         region_output['name'] = region
         region_output['value'] = []
         for chosen_category in chosen_categories:
-            region_output['value'].append({'name': chosen_category + ' - ' + chosen_categories[chosen_category], 'value': round(raw_features[chosen_categories[chosen_category]][region],2)})
+            try: region_output['value'].append({'name': chosen_category + ' - ' + chosen_categories[chosen_category], 'value': round(raw_features[chosen_categories[chosen_category]][region],2)})
+            except: pass
         final_output.append(region_output)
 
     try:
