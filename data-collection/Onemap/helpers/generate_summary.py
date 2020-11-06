@@ -23,40 +23,40 @@ def generate_summary(data):
         try:
             economic_status = rdata.get("Economic Status", None)
             new["Economic Status"] = {
-                "employed": add_keys(economic_status, ["employed_female", "employed_male"]),
-                "unemployed": add_keys(economic_status, ["unemployed_female", "unemployed_male"]),
-                "inactive": add_keys(economic_status, ["inactive_female", "inactive_male"]),
+                "Employment Rate": add_keys(economic_status, ["employed_female", "employed_male"]),
+                "Unemployment Rate": add_keys(economic_status, ["unemployed_female", "unemployed_male"]),
+                "Inactive Rate": add_keys(economic_status, ["inactive_female", "inactive_male"]),
             }
             
             education_attending = rdata.get("Education Attending", None)
             new["Education Attending"] = {
-                "primary": add_keys(education_attending, ["pre_primary", "primary"]),
-                "secondary": add_keys(education_attending, ["secondary"]),
-                "tertiary": add_keys(education_attending, ["post_secondary", "polytechnic"]),
-                "university": add_keys(education_attending, ["university"]),
+                "Primary": add_keys(education_attending, ["pre_primary", "primary"]),
+                "Secondary": add_keys(education_attending, ["secondary"]),
+                "Tertiary": add_keys(education_attending, ["post_secondary", "polytechnic"]),
+                "University": add_keys(education_attending, ["university"]),
             }
 
             household_mongthly_income_from_work = rdata.get("Household Monthly Income Work", None)
             # below 5k, 5k to 10k, above 10k
             new["Household Monthly Income Work"] = {
-                "0-5000": add_keys(household_mongthly_income_from_work, ['below_sgd_1000', 'no_working_person', 'sgd_1000_to_1999', 'sgd_2000_to_2999', 'sgd_3000_to_3999', 'sgd_4000_to_4999']),
-                "5000-10000": add_keys(household_mongthly_income_from_work, ['sgd_5000_to_5999', 'sgd_6000_to_6999', 'sgd_7000_to_7999', 'sgd_8000_over', 'sgd_8000_to_8999', 'sgd_9000_to_9999']),
-                "10000+": add_keys(household_mongthly_income_from_work, ['sgd_10000_to_10999', 'sgd_11000_to_11999',  'sgd_12000_to_12999', 'sgd_13000_to_13999', 'sgd_14000_to_14999', 'sgd_15000_to_17499', 'sgd_17500_to_19999'])
+                "Low [0-5000]": add_keys(household_mongthly_income_from_work, ['below_sgd_1000', 'no_working_person', 'sgd_1000_to_1999', 'sgd_2000_to_2999', 'sgd_3000_to_3999', 'sgd_4000_to_4999']),
+                "Middle [5000-10000]": add_keys(household_mongthly_income_from_work, ['sgd_5000_to_5999', 'sgd_6000_to_6999', 'sgd_7000_to_7999', 'sgd_8000_over', 'sgd_8000_to_8999', 'sgd_9000_to_9999']),
+                "High [10000+]": add_keys(household_mongthly_income_from_work, ['sgd_10000_to_10999', 'sgd_11000_to_11999',  'sgd_12000_to_12999', 'sgd_13000_to_13999', 'sgd_14000_to_14999', 'sgd_15000_to_17499', 'sgd_17500_to_19999'])
             }
 
             household_size = rdata.get("Household Size", None)
             new["Household Size"] = {
-                "1-3": add_keys(household_size, ["person1", "person2", "person3"]),
-                "4-6": add_keys(household_size, ["person4", "person5", "person6"]),
-                "7+": add_keys(household_size, ["person7", "person_more_8"]),
+                "Small [1-3]": add_keys(household_size, ["person1", "person2", "person3"]),
+                "Medium [4-6]": add_keys(household_size, ["person4", "person5", "person6"]),
+                "High [7+]": add_keys(household_size, ["person7", "person_more_8"]),
             }
 
 
             income_from_work = rdata.get("Income From Work", None)
             new["Income From Work"] = {
-                "0-3000": add_keys(income_from_work, ['below_sgd_1000', 'sgd_1000_to_1499', 'sgd_1500_to_1999', 'sgd_2000_to_2499', 'sgd_2500_to_2999']),
-                "3000-6000": add_keys(income_from_work, ['sgd_3000_to_3999', 'sgd_4000_to_4999', 'sgd_5000_to_5999']),
-                "6000+": add_keys(income_from_work, ['sgd_6000_to_6999', 'sgd_7000_to_7999', 'sgd_8000_over'])
+                "Low [0-3000]": add_keys(income_from_work, ['below_sgd_1000', 'sgd_1000_to_1499', 'sgd_1500_to_1999', 'sgd_2000_to_2499', 'sgd_2500_to_2999']),
+                "Middle [3000-6000]": add_keys(income_from_work, ['sgd_3000_to_3999', 'sgd_4000_to_4999', 'sgd_5000_to_5999']),
+                "High [6000+]": add_keys(income_from_work, ['sgd_6000_to_6999', 'sgd_7000_to_7999', 'sgd_8000_over'])
             }
 
             population_age_group = rdata.get("Population Age Group", None)
@@ -69,18 +69,18 @@ def generate_summary(data):
                 
             type_of_dwelling_household = rdata.get("Type Of Dwelling Household", None)
             new["Type Of Dwelling Household"] = {
-                "hdb": type_of_dwelling_household["total_hdb"],
-                "condominiums_and_apartments": type_of_dwelling_household["condominiums_and_other_apartments"],
-                "landed": type_of_dwelling_household["landed_properties"],
-                "others": type_of_dwelling_household["others"]
+                "HDB": type_of_dwelling_household["total_hdb"],
+                "Condominiums and Apartments": type_of_dwelling_household["condominiums_and_other_apartments"],
+                "Landed": type_of_dwelling_household["landed_properties"],
+                "Others": type_of_dwelling_household["others"]
             }
 
             type_of_dwelling_pop = rdata.get("Type Of Dwelling Pop", None)
             new["Type Of Dwelling Pop"] = {
-                "hdb": type_of_dwelling_pop["total_hdb"],
-                "condominiums_and_apartments": type_of_dwelling_pop["condominiums_and_other_apartments"],
-                "landed": type_of_dwelling_pop["landed_properties"],
-                "others": type_of_dwelling_pop["others"]
+                "HDB": type_of_dwelling_household["total_hdb"],
+                "Condominiums and Apartments": type_of_dwelling_household["condominiums_and_other_apartments"],
+                "Landed": type_of_dwelling_household["landed_properties"],
+                "Others": type_of_dwelling_household["others"]
             }
 
             out.append({
