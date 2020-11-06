@@ -8,7 +8,7 @@ os.system("mkdir pickled")
 scripts = [
     "scripts/generate_constants/run.py",
     "scripts/generate_country_similarity_matrix/run.py",
-    "scripts/generate_npl_forecasting_model/preprocessing/run.py"
+    "scripts/generate_npl_forecasting_model/run.py",
 ]
 
 ex = "python3"

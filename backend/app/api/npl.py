@@ -171,8 +171,8 @@ def get_sorted_npl_data():
             "status": "failure",
             "error": str(err),
         }
-@app.get("/api/analytics/npl_country_features/")
-def get_sorted_npl_data(countryname):
+@app.get("/api/analytics/npl_country_features/{country_name}")
+def get_sorted_npl_data(country_name):
     """
     output: get top 10 features correlating to non performing loans
     """
@@ -180,7 +180,7 @@ def get_sorted_npl_data(countryname):
 
     try:
         return {
-            countryname: get_npl_country_npl_features(countryname)
+            country_name: get_npl_country_npl_features(country_name)
         }
     
     except Exception as err:

@@ -27,3 +27,4 @@ from app.api.email_notifications import *
 from app.api.analytics import *
 from app.api.npl import *
 from app.api.market_segment import *
+from app.api.onemap_region_summary import *
