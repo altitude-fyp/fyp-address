@@ -77,10 +77,10 @@ def generate_summary(data):
 
             type_of_dwelling_pop = rdata.get("Type Of Dwelling Pop", None)
             new["Type Of Dwelling Pop"] = {
-                "HDB": type_of_dwelling_household["total_hdb"],
-                "Condominiums and Apartments": type_of_dwelling_household["condominiums_and_other_apartments"],
-                "Landed": type_of_dwelling_household["landed_properties"],
-                "Others": type_of_dwelling_household["others"]
+                "HDB": type_of_dwelling_pop["total_hdb"],
+                "Condominiums and Apartments": type_of_dwelling_pop["condominiums_and_other_apartments"],
+                "Landed": type_of_dwelling_pop["landed_properties"],
+                "Others": type_of_dwelling_pop["others"]
             }
 
             out.append({
