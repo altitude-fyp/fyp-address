@@ -23,9 +23,9 @@ def generate_summary(data):
         try:
             economic_status = rdata.get("Economic Status", None)
             new["Economic Status"] = {
-                "Employment Rate": add_keys(economic_status, ["employed_female", "employed_male"]),
-                "Unemployment Rate": add_keys(economic_status, ["unemployed_female", "unemployed_male"]),
-                "Inactive Rate": add_keys(economic_status, ["inactive_female", "inactive_male"]),
+                "Employed": add_keys(economic_status, ["employed_female", "employed_male"]),
+                "Unemployed": add_keys(economic_status, ["unemployed_female", "unemployed_male"]),
+                "Inactive": add_keys(economic_status, ["inactive_female", "inactive_male"]),
             }
             
             education_attending = rdata.get("Education Attending", None)
