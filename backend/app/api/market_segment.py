@@ -60,7 +60,7 @@ def get_market_segment(chosen_categories):
         region_output['name'] = region
         region_output['value'] = []
         for chosen_category in chosen_categories:
-            region_output['value'].append({'name': chosen_category + ' - ' + chosen_categories[chosen_category], 'value': round(raw_features[chosen_categories[chosen_category]][region],2)})
+            region_output['value'].append({'name': chosen_categories[chosen_category], 'value': round(raw_features[chosen_categories[chosen_category]][region],2)})
         final_output.append(region_output)
 
     try:
