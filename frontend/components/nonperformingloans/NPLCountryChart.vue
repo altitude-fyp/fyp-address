@@ -1,25 +1,25 @@
 <template>
     <div v-if="chartData">    
-            <v-row>
-                <v-col v-for="chart in chartData":key=chart.title>
-                    <v-row>
-                        <v-col>
-                            <!-- title for each chart goes here -->
-                            <div class="chartsTitle">
-                                <h3>{{chart.title}}</h3>
-                            </div>
+        <v-row>
+            <v-col v-for="chart in chartData":key=chart.title>
+                <v-row>
+                    <v-col>
+                        <!-- title for each chart goes here -->
+                        <div class="chartsTitle">
+                            <h3>{{chart.title}}</h3>
+                        </div>
 
-                            <!-- each line-chart component goes here -->
-                            <div class="charts" v-if="chart">
-                                <line-chart :chartData=chart>
-                                </line-chart>
-                            </div>
-                            <br>
-                            <p class="chartsDescription">{{chart.description}}</p>
-                        </v-col>
-                    </v-row>
-                </v-col>
-            </v-row>
+                        <!-- each line-chart component goes here -->
+                        <div class="charts" v-if="chart">
+                            <line-chart :chartData=chart>
+                            </line-chart>
+                        </div>
+                        <br>
+                        <p class="chartsDescription">{{chart.description}}</p>
+                    </v-col>
+                </v-row>
+            </v-col>
+        </v-row>
     </div>
 </template>
 

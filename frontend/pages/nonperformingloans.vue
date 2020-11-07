@@ -6,50 +6,78 @@
         :src="require('../images/npl_bg.png')">
       </v-parallax>
     <v-container style="margin-top:-50px; margin-bottom:-80px">
+
       <!-- Search Country -->
       <npl-country-selection
-          :allCountries=allCountries
           @submitSelectedCountriesEvent="updateSelectedCountries">
       </npl-country-selection>
-      
+      <!-- Search Country -->
+    
     </v-container>
     </div>
-    <!-- Search Country -->
-    <div style="padding-top: 50px">
-        <v-container>
-            <v-row>
-                <img src="https://www.countryflags.io/sg/flat/64.png" style="height:40px;margin-right:10px;"/>
-                <h2 class="headerText">Singapore</h2>
 
-                <v-spacer></v-spacer>
-                <!-- Forecast -->
+    <div v-if="selectedCountry && countriesMetadata && countryStatistics" style="padding-top: 50px">
+        <v-container>
+
+            <!-- Country Statistics -->
+            <v-row v-if="countriesMetadata[selectedCountry] && countriesMetadata[selectedCountry]['flag']">
+              <img :src="countriesMetadata[selectedCountry]['flag']" style="height:40px;margin-right:10px;" contain/>
+              <h2 class="headerText">{{ selectedCountry}}</h2>
+
+              <v-spacer></v-spacer>
+
+                <div v-if="forecastValue === 0">
+                  <img :src="require('../images/down_arrow.png')" style="height:20px;margin-top:10px;margin-right:15px"/>
+                </div>
+
+                <div v-else>
                   <img :src="require('../images/up_arrow.png')" style="height:20px;margin-top:10px;margin-right:15px"/>
-                  <span style="margin-top:10px;font-weight:700">2021 Forecast</span>
-                
+                </div>
+
+                <span style="margin-top:8px;font-weight:700">2021 Forecast</span>
             </v-row>
+
+            <br/>
+
+            <v-row>
+              <div class="top10FeaturesText">
+                <h3>Top 10 Features</h3>
+              </div>
+            </v-row> 
 
             <v-row v-for="i in 2" :key=i>
               <v-col v-for="j in 5" cols="2.4" :key=j>
-                <span class="featureName">Feature Name</span><br/>
-                <span class="similarityScore">Similarity Score</span>
+
+                <v-row>
+                  <v-col v-if="selectedFeatures[j-1 + (i-1)*4]">
+                    <div align="center">
+                      <span class="featureName">{{ selectedFeatures[j-1 + (i-1)*4] }}</span><br/><br/>
+                      <span class="similarityScore">{{formatValue(countryStatistics[selectedCountry][selectedFeatures[ j-1 + (i-1)*4 ]])}}</span>
+                    </div>
+                  </v-col>
+                </v-row>
+                
               </v-col>
             </v-row>
+             <!-- Country Statistics -->
 
-              <npl-country-chart
-                  :chartData=chartData>
-              </npl-country-chart>
+            <!-- Country NPL Chart -->
+            <npl-country-chart
+                :chartData=chartData>
+            </npl-country-chart>
+            <!-- Country NPL Chart -->
 
             <br/><v-divider></v-divider><br/>
 
+            <!-- Top & Bottom 10 -->
             <v-row>
               <h2 class="headerText">Top 10 & Bottom 10 Countries</h2>
             </v-row>
+            <npl-top10-chart
+                :top10ChartData=top10ChartData>
+            </npl-top10-chart>
+            <!-- Top & Bottom 10 -->
 
-            <v-row>
-              <npl-top10-chart
-                  :top10ChartData=top10ChartData>
-              </npl-top10-chart>
-            </v-row>
         </v-container>
     </div>
   </v-app>
@@ -58,7 +86,6 @@
 <script>
 import lineChart from "@/components/analytics/lineChart";
 import barChart from "@/components/analytics/barChart";
-import CountryStatistics from "@/components/analytics/CountryStatisticsAnalytics.vue"
 import NPLCountryChart from "@/components/nonperformingloans/NPLCountryChart.vue"
 import NPLTop10Chart from "@/components/nonperformingloans/NPLTop10Chart.vue"
 import CountrySelection from "@/components/nonperformingloans/CountrySelection.vue"
@@ -67,27 +94,28 @@ import CountrySelection from "@/components/nonperformingloans/CountrySelection.v
     components: {
       "npl-country-chart": NPLCountryChart,
       "npl-top10-chart": NPLTop10Chart,
-      "npl-country-selection": CountrySelection
+      "npl-country-selection": CountrySelection,
     },
     data: () => ({
       value: null,
-      selectedCountry: ["Singapore"],
+      selectedCountry: "Singapore",
       countryStatistics: null,
-      selectedCountryStatisticsFeatures: [
-          "gdp nominal",
-          "unemployment rate",
-          "Financial Development Index",
-          "population density",
-          "literacy rate",
-          "life expectacy (overall)",
-          "gini",
-          "Consumer Price Index, All items",
-      ],
       chartData: null,
       top10ChartData: null,
-      tabs: null,
-      panel: [0, 0],
-      text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+      forecastValue: 1,
+      countriesMetadata: null,
+      selectedFeatures: [
+          "Official exchange rate (LCU per US$, period average)",
+          "Employment in agriculture, male (% of male employment) (modeled ILO estimate)",
+          "Mortality rate, neonatal (per 1,000 live births)",
+          "Ores and metals exports (% of merchandise exports)",
+          "Fertility rate, total (births per woman)",
+          "PPP conversion factor, GDP (LCU per international $)",
+          "Contributing family workers, female (% of female employment) (modeled ILO estimate)",
+          "Time required to start a business (days)",
+          "Time required to start a business, female (days)",
+          "Time required to start a business, male (days)",
+      ],
     }),
 
     mounted() {
@@ -97,9 +125,21 @@ import CountrySelection from "@/components/nonperformingloans/CountrySelection.v
   methods: {
 
       getEverything() {
+        this.getCountriesMetadata()
         this.getChartData()
         this.getTop10Chart()
+        this.getCountryStatistics()
       },
+
+      getCountriesMetadata() {
+            // get flag, lat, lon, country code of each country in countries
+            this.countriesMetadata = null
+            var url = process.env.BACKEND + "/api/countries/metadata/" + this.selectedCountry
+
+            this.$axios.get(url).then((response) => {
+                this.countriesMetadata = response.data
+            })
+        },
 
       //Bank nonperforming loans to total gross loans chart
       getChartData() {
@@ -122,10 +162,42 @@ import CountrySelection from "@/components/nonperformingloans/CountrySelection.v
         })
       },
 
+      getCountryStatistics() {
+          // get statistics from aggregate.countries
+          this.countryStatistics = null
+          var url = process.env.BACKEND + "/api/analytics/npl_country_features/?countryname=" + this.selectedCountry
+
+          this.$axios.get(url).then((response) => {
+              this.countryStatistics = response.data
+          })
+      },
+
+      getCountryForecast() {
+          // get country forecast
+          this.countryForecast = null
+          var url = process.env.BACKEND + "/api/analytics/npl_forecast"
+
+          this.$axios.get(url).then((response) => {
+              this.countryStatistics = response.data
+          })
+      },
+
       updateSelectedCountries(selectedCountry) {
         //this function is called after user submits his selected countries from the country selection dialog
         this.selectedCountry = selectedCountry
         this.getEverything()
+      },
+
+      formatValue(num) {
+          return Math.abs(Number(num)) >= 1.0e+9
+
+          ? (Math.abs(Number(num)) / 1.0e+9).toFixed(2) + " billion"
+
+          : Math.abs(Number(num)) >= 1.0e+6
+
+          ? (Math.abs(Number(num)) / 1.0e+6).toFixed(2) + " million"
+
+          : +(Math.round(num + "e+4")  + "e-4");
       },
   }
   }
@@ -137,31 +209,16 @@ import CountrySelection from "@/components/nonperformingloans/CountrySelection.v
     background-color: #f5f5f5;
   }
 
-  .v-expansion-panel::before {
-   box-shadow: none !important;
-  }
-
-  .v-expansion-panel-header {
-   padding:0;
-   margin-top:20px;
-   margin-bottom:20px;
-  }
-
-  .v-expansion-panel-content >>> .v-expansion-panel-content__wrap {
-    padding:0 15px 0 0;
-    margin-bottom:25px;
-  }
-
   .featureName{
     color:#454545 !important;
-    font-weight:700;
-    font-size:16px;
+    font-size:14px;
     padding:16px;
   }
 
   .similarityScore{
-    color:#454545 !important;
-    font-size:14px;
+    color:#215085 !important;
+    font-weight:700;
+    font-size:20px;
     padding:16px;
   }
 
@@ -196,7 +253,14 @@ import CountrySelection from "@/components/nonperformingloans/CountrySelection.v
 
   .headerText {
     color:#215085;
+    margin-bottom:5px;
+  }
+
+  .top10FeaturesText {
+    color:#d29a42;
     margin-bottom:10px;
+    text-align:center;
+    margin:0 auto;
   }
 
 </style>

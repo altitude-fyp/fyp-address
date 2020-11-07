@@ -47,7 +47,7 @@ export default {
 
         getAllCountries() {
             //this function gets all countries from backend in alphabetical order
-            var url = process.env.BACKEND + "/api/countries/list"
+            var url = process.env.BACKEND + "/api/analytics/npl_countries"
 
             this.$axios.get(url).then((response) => {
                 this.allCountries = response.data.countries
