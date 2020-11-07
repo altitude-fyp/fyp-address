@@ -12,6 +12,10 @@
         {{ item.header }}
 
       </v-tab>
+
+      <v-tab>
+        Recommended Products
+      </v-tab>
     </v-tabs>
 
     {{selectedRegions}}
@@ -26,7 +30,9 @@
 
         </v-card>
       </v-tab-item> <!--First Tab Content-->
-      <!--      </v-tab-item>-->
+
+      Test
+
     </v-tabs-items>
   </v-container>
 </template>
@@ -34,6 +40,7 @@
 <script>
 
 import RegionTab from "@/components/region/components/RegionTab.vue"
+import ProductsTab from "@/components/region/components/ProductsTab.vue"
 
 export default {
 
@@ -41,6 +48,7 @@ export default {
   props: ["selectedRegions"],
   components: {
     "region-tab": RegionTab,
+    "region-products-tab": ProductsTab,
     chartData: null
   },
 
@@ -80,6 +88,7 @@ export default {
   methods: {
     getEverything() {
       this.getChartData(this.selectedRegions)
+      this.getProductsChartData()
     },
 
     getChartData(selectedRegions) {
@@ -90,7 +99,17 @@ export default {
         this.chartData = response.data.data
         console.log(response)
       })
-    }
+    },
+
+    getProductsChartData() {
+      // this function gets chart data and stores in this.productsChartData
+      this.productsChartData = null
+      var url = "https://api.npoint.io/9edddfe434c5405df5dd"
+
+      this.$axios.get(url).then((response) => {
+          this.productsChartData = response.data.data
+      })
+    },
   },
   watch: {
     selectedRegions: function (newRegion) {
