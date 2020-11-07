@@ -9,26 +9,22 @@
             <v-container>
             
                 <v-row>
-                    <v-col v-for="chart in productsChartData" cols=6 :key=chart.title>
-
+                     <v-col>
                         <v-row>
-                            
                             <v-col>
                                 <!-- title for each chart goes here -->
                                 <div class="chartsTitle">
-                                    <h3>{{chart.title}}</h3>
+                                    <h3>{{productsChartData.graph_1.title}}</h3>
                                 </div>
 
                                 <!-- each line-chart component goes here -->
-                                <div class="charts" v-if="chart">
-                                    <line-chart :productsChartData=chart></line-chart>
+                                <div class="charts">
+                                    <line-chart :productsChartData=productsChartData>
+                                    </line-chart>
                                 </div>
                                 <br>
-
                             </v-col>
-
                         </v-row>
-                    
                     </v-col>
                 </v-row>
 

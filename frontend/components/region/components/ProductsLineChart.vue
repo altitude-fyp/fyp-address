@@ -20,23 +20,21 @@ export default {
     renderLineChart: function() {
       let colour_code = ["#2d4059", "#ea5455", "#f07b3f", "#ffd460"]
       let datasets_arr = []
-      let size_arr = JSON.parse(JSON.stringify(this.productsChartData["graph_1"].regions)).length
+      let size_arr = JSON.parse(JSON.stringify(this.productsChartData.graph_1.regions)).length
 
       for (let i=0; i < size_arr; i++) {
         datasets_arr.push({
             fill: false,
-            label: JSON.parse(JSON.stringify(this.productsChartData["graph_1"].regions))[i],
+            label: JSON.parse(JSON.stringify(this.productsChartData.graph_1.regions))[i],
             backgroundColor: colour_code[i],
             borderColor: colour_code[i],
             borderWidth: 1,
-            data: JSON.parse(JSON.stringify(this.productsChartData["graph_1"].y-axis[0]))[i]
+            data: JSON.parse(JSON.stringify(this.productsChartData.graph_1.y-axis))[i]
         })
       }
 
-      // console.log(datasets_arr)
-
       let obj = {
-          labels: JSON.parse(JSON.stringify(this.productsChartData["graph_1"].x-axis)),
+          labels: JSON.parse(JSON.stringify(this.productsChartData.graph_1.x-axis)),
           datasets: datasets_arr
         }
       this.renderChart(obj)
@@ -46,7 +44,7 @@ export default {
 
   // Watch prop change to re-render chart
   watch: {
-    chartdata: function() {
+    productsChartData: function() {
       this.renderLineChart();
     }
   }

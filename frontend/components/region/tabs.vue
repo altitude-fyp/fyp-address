@@ -32,7 +32,7 @@
       </v-tab-item> <!--First Tab Content-->
 
       Test
-
+      <region-products-tab :productsChartData=productsChartData></region-products-tab>
     </v-tabs-items>
   </v-container>
 </template>
@@ -49,7 +49,8 @@ export default {
   components: {
     "region-tab": RegionTab,
     "region-products-tab": ProductsTab,
-    chartData: null
+    chartData: null,
+    productsChartData: null
   },
 
   data() {
