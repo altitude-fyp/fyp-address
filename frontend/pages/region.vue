@@ -1,9 +1,9 @@
 <template>
   <v-app>
 
-    <!-- <region-map />
+    <region-map />
     <c-s-v-search/>
-    <MetadataPanel/> -->
+    <MetadataPanel/>
     <tabs :selectedRegions=selectedRegions />
     
   </v-app>
