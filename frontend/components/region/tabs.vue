@@ -1,32 +1,41 @@
 <template>
+
   <v-container>
-    <v-tabs
-      v-model="tab"
-      background-color="transparent"
-      fixed-tabs
-    >
-      <v-tab
-        v-for="item in items"
-        :key="item"
-      >
-        <v-icon color="blue darken-3" style="padding-right: 8px;">{{item.icon}}</v-icon> {{ item.header }}
+    
+    <div v-if=chartData>
+      <v-tabs
+        v-model=tab
+        background-color="transparent"
+        fixed-tabs>
 
-      </v-tab>
-    </v-tabs>
+        <!-- tabs go here -->
+        <v-tab v-for="(item,i) in items"
+          :key=i
+          mandatory>
 
-    <v-tabs-items v-model="tab">
-      <v-tab-item v-for="(value, name, index) in chartData" :key="index"><!--First Tab Content-->
-        <v-card
-          flat
-        >
+          <v-icon color="blue darken-3" style="padding-right: 8px;">{{item.icon}}</v-icon> {{ item.header }}
 
-          <region-tab :chartData=value></region-tab>
+        </v-tab>
 
-        </v-card>
-      </v-tab-item> <!--First Tab Content-->
-      </v-tab-item>
-    </v-tabs-items>
+      </v-tabs>
+
+      <!-- v tab items go here -->
+      <v-tabs-items v-model=tab>
+
+        <v-tab-item v-for="(value, key) in chartData" :key=key>
+          
+          <!--First Tab Content-->
+          <v-card flat>
+            <region-tab :chartData=value />
+          </v-card>
+
+        </v-tab-item> <!--First Tab Content-->
+
+      </v-tabs-items>
+    </div>
+
   </v-container>
+
 </template>
 
 <script>
@@ -37,18 +46,22 @@ export default {
 
   name: "tabs",
 
+  props: ["selectedRegions"],
+
   components: {
     "region-tab": RegionTab,
-    chartData: null
   },
 
   data() {
     return {
-      tab: null,
-      selectedRegions: "ang mo kio,bishan",
+
+      tab: 0,
+      tabItem: 0,
+      chartData: null,
+
       items: [
         {
-          header: 'At a Glance',
+          header: 'At a glance',
           icon: 'mdi-magnify-scan'
         },
         {
