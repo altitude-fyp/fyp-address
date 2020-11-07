@@ -3,7 +3,6 @@
 
     <region-map />
     <c-s-v-search/>
-    <MetadataPanel/>
     <tabs :selectedRegions=selectedRegions />
     
   </v-app>

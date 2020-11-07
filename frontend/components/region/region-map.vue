@@ -19,7 +19,8 @@
 
             <GmapInfoWindow 
                 v-if="infoWindowRegion"
-                :position=infoWindowRegion.center> 
+                :position=infoWindowRegion.center
+                @closeclick="infoWindowRegion=null"> 
 
                 <v-container align="center" justify="center">
 
@@ -50,7 +51,6 @@
 
 
         </GmapMap>
-
 
     </div>
 </template>
