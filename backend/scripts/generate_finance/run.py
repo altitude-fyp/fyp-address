@@ -87,7 +87,7 @@ def generate_finance():
         "graph_2_y": expected_returns_graph_2
     })
     
-    df.to_csv('finance.csv', index=False) 
+    df.to_csv('scripts/generate_finance/finance.csv', index=False) 
 
 def calculate_eleven_factors(region_data):
     # Calculate list of eleven factors
