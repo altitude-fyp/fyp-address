@@ -103,6 +103,12 @@ export default {
         this.chartData = response.data.data
       })
     }
+  },
+
+  watch: {
+    selectedRegions: function (n,o) {
+      this.getEverything()
+    }
   }
 }
 </script>

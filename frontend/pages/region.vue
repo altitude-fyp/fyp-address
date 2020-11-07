@@ -1,8 +1,12 @@
 <template>
   <v-app>
 
-    <region-map />
+    <region-map 
+      @regionSelectedOnMap=updateRegion
+      />
+
     <c-s-v-search/>
+    
     <tabs :selectedRegions=selectedRegions />
     
   </v-app>
@@ -38,6 +42,10 @@ export default {
 
 
   methods: {
+
+    updateRegion(region) {
+      this.selectedRegions = region
+    }
 
   },
 
