@@ -116,7 +116,7 @@ def get_sorted_npl_data():
 
     db = get_database()
 
-    chart_collection = db["worldbank"]
+    # chart_collection = db["worldbank"]
 
     npl_countries = []
 
