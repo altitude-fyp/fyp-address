@@ -12,27 +12,21 @@
         {{ item.header }}
 
       </v-tab>
-
-      <v-tab>
-        Recommended Products
-      </v-tab>
     </v-tabs>
 
-    {{selectedRegions}}
-
-    <v-tabs-items v-model="tab">
+    <v-tabs-items v-model="tab" v-if="selectedRegions && productsChartData">
       <v-tab-item v-for="(value, name, index) in chartData" :key="index"><!--First Tab Content-->
         <v-card
           flat
         >
-
           <region-tab :chartData=value></region-tab>
-
         </v-card>
       </v-tab-item> <!--First Tab Content-->
 
       <!--Product Charts-->
-      <region-products-tab :productsChartData=productsChartData></region-products-tab>
+      <v-tab-item>
+        <region-products-tab :productsChartData=productsChartData></region-products-tab>
+      </v-tab-item>
 
     </v-tabs-items>
   </v-container>
@@ -73,12 +67,11 @@ export default {
         {
           header: 'Household',
           icon: 'mdi-home'
+        },
+        {
+          header: 'Citi Products',
+          icon: 'mdi-cash-multiple'
         }
-        // ,
-        // {
-        //   header: 'Investment',
-        //   icon: 'mdi-cash-multiple'
-        // }
       ]
     }
   },
@@ -110,6 +103,7 @@ export default {
 
       this.$axios.get(url).then((response) => {
           this.productsChartData = response.data.data
+          console.log(response.data.data)
       })
     },
   },

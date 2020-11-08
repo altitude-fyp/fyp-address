@@ -12,11 +12,9 @@
                                 {{ region.region }}
                             </div>
 
-                            <ul v-for="regionProducts in region.products" :key=regionProducts class="recommendedProductList">
+                            <ul v-for="regionProducts in region.products" :key=regionProducts>
                                 <li v-for="regionProduct in regionProducts" :key=regionProduct>
-
                                     {{ regionProduct }}
-                                   
                                 </li>
                             </ul>
                         </v-col>
@@ -34,12 +32,9 @@
                     <v-col>
                         <!-- Title of 1st Graph -->
                         <div class="chartsTitle">
-                            <h3>{{productsChartData.graph_1.title}}</h3>
-                        </div>
-
-                        <div class="charts">
-                            
-                        </div>
+                            <h3>{{productsChartData.graph_1.title}}</h3><br/>
+                            <indifference-line-chart :productsChartData=productsChartData></indifference-line-chart>
+                        </div><br/>
                     </v-col>
 
                     <!-- 2nd Graph -->
@@ -50,7 +45,7 @@
                         </div>
 
                         <div class="charts">
-                            
+                            <utility-line-chart :productsChartData=productsChartData></utility-line-chart>
                         </div>   
                     </v-col>
                 </v-row>
@@ -64,7 +59,8 @@
 
 <script>
 
-import LineChart from "@/components/region/components/ProductsLineChart.vue"
+import IndifferenceLineChart from "@/components/region/components/ProductsIndifferenceChart.vue"
+import UtilityLineChart from "@/components/region/components/ProductsUtilityChart.vue"
 
 export default {
 
@@ -73,7 +69,8 @@ export default {
     props: ["productsChartData"],
 
     components: {
-        "line-chart": LineChart
+        "indifference-line-chart": IndifferenceLineChart,
+        "utility-line-chart": UtilityLineChart
     },
 
     data() {
