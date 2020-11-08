@@ -1,13 +1,21 @@
 <template>
   <v-app>
-    <!--<google-map :coordinates="coordinates"/>-->
     <!--    Here is just a padding because Region to Compare button is getting blocked-->
     <div style="margin-top:50px"></div>
 
-    [[ POLYGON MAP WILL COME HERE ]]
+    <!-- region maps go here -->
+    <region-map 
+      @regionSelectedOnMap=updateSelectedRegions
+      />
+
+    <!-- search bar goes here -->
+    <c-s-v-search/>
+
+    SELECTED REGIONS: {{selectedRegions}}
 
 <!--    Select Regions to Compare Button-->
     <v-row justify="center">
+
       <v-btn
         color="#004D8E"
         class="white--text mb-2 sidebar"
@@ -33,7 +41,8 @@
 </template>
 
 <script>
-import GoogleMap from "@/components/home/GoogleMap";
+
+import RegionMap from "@/components/region/region-map";
 import CSVSearch from "@/components/home/CSVSearch";
 import tabs from "@/components/region/tabs";
 import MetadataPanel from "@/components/home/GoogleBottomSheet/components/MetadataPanel";
@@ -41,19 +50,34 @@ import RegionSelectionDialog from "@/components/home/GoogleBottomSheet/component
 import MarketSegmentation from "@/components/region/marketSegmentation";
 
 export default {
+
   name: "region",
-  components: {MarketSegmentation, RegionSelectionDialog, MetadataPanel, tabs, CSVSearch, GoogleMap},
+  
+  components: {
+    MarketSegmentation,
+    RegionSelectionDialog,
+    MetadataPanel,
+    tabs,
+    CSVSearch, 
+    "region-map": RegionMap
+  },
+
   data() {
+
     return {
       showRegionSelectionDialog: false,
     }
   },
+
   asyncData({query: {regions}}) {
     return {
       coordinates: null,
       selectedRegions: regions || [],
     }
+
   },
+
+
   methods: {
     showMarkers(coordinates) {
       this.coordinates = coordinates
@@ -76,15 +100,15 @@ export default {
       //this function closes the region selection dialog
       this.showRegionSelectionDialog = false
     },
+
     updateSelectedRegions(selectedRegions) {
       //this function is called after user submits his selected countries from the country selection dialog
-      this.selectedRegions = selectedRegions
       console.log(selectedRegions)
+      this.selectedRegions = selectedRegions
     },
+
   },
+
+
 }
 </script>
-
-<style scoped>
-
-</style>

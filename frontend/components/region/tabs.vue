@@ -1,41 +1,48 @@
 <template>
+
   <v-container>
 
+    <!-- v-tabs goes here -->
     <v-tabs
       v-model="tab"
       background-color="transparent"
-      fixed-tabs
-    >
+      fixed-tabs >
+
+      <!-- for loop for v-tab goes here -->
       <v-tab
-        v-for="item in items"
-      >
+        v-for="(item,i) in items" :key=i >
+
         <v-icon color="blue darken-3" style="padding-right: 8px;">{{ item.icon }}</v-icon>
         {{ item.header }}
 
       </v-tab>
     </v-tabs>
 
-    <!--   Will only load the tab when we have collected the data, resolve the empty 'At A Glance'-->
-    <div v-if="isLoaded">
-      <v-tabs-items v-model="tab">
+    <!-- v-tab-items goes here -->
+    <v-tabs-items v-model="tab" v-if="selectedRegions && productsChartData">
+      <v-tab-item v-for="(value, name, index) in chartData" :key="index"><!--First Tab Content-->
+        <v-card
+          flat
+        >
+          <region-tab :chartData=value></region-tab>
+        </v-card>
+      </v-tab-item> <!--First Tab Content-->
 
-        <v-tab-item v-for="(value, name, index) in chartData" :key="index"><!--First Tab Content-->
-          <v-card
-            flat
-          >
-            <region-tab :chartData=value></region-tab>
-          </v-card>
-        </v-tab-item> <!--First Tab Content-->
+      <!--Product Charts-->
+      <v-tab-item>
+        <region-products-tab :productsChartData=productsChartData></region-products-tab>
+      </v-tab-item>
 
-        <!--      </v-tab-item>-->
-      </v-tabs-items>
-    </div>
+    </v-tabs-items>
+
   </v-container>
+
 </template>
 
 <script>
 
 import RegionTab from "@/components/region/components/RegionTab.vue"
+import ProductsTab from "@/components/region/components/ProductsTab.vue"
 
 export default {
 
@@ -43,16 +50,20 @@ export default {
   props: ["selectedRegions"],
   components: {
     "region-tab": RegionTab,
-    chartData: null,
+    "region-products-tab": ProductsTab,
   },
 
   data() {
     return {
-      tab: null,
-      isLoaded: false,
+
+      tab: 0,
+      tabItem: 0,
+      chartData: null,
+      productsChartData: null,
+
       items: [
         {
-          header: 'At a Glance',
+          header: 'At a glance',
           icon: 'mdi-magnify-scan'
         },
         {
@@ -66,12 +77,11 @@ export default {
         {
           header: 'Household',
           icon: 'mdi-home'
+        },
+        {
+          header: 'Citi Products',
+          icon: 'mdi-cash-multiple'
         }
-        // ,
-        // {
-        //   header: 'Investment',
-        //   icon: 'mdi-cash-multiple'
-        // }
       ]
     }
   },
@@ -83,6 +93,7 @@ export default {
   methods: {
     getEverything() {
       this.getChartData(this.selectedRegions)
+      this.getProductsChartData()
     },
     getChartData(selectedRegions) {
       // this function gets chart data and stores in this.chartData
@@ -94,11 +105,22 @@ export default {
 
       })
     },
+
+    getProductsChartData() {
+      // this function gets chart data and stores in this.productsChartData
+      this.productsChartData = null
+      var url = "https://api.npoint.io/9edddfe434c5405df5dd"
+
+      this.$axios.get(url).then((response) => {
+          this.productsChartData = response.data.data
+          console.log(response.data.data)
+      })
+    },
   },
+
   watch: {
-    selectedRegions: function (newRegion) {
-      console.log('n: ' + newRegion)
-      this.getChartData(newRegion)
+    selectedRegions: function (n,o) {
+      this.getEverything()
     }
   }
 }
