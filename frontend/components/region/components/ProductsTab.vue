@@ -6,14 +6,14 @@
             <v-container>
                 <h4>Recommended Financial Products</h4>
                 <v-row>
-                    <div v-for="region in productsChartData.products" :key="region.region">
+                    <div v-for="(region,i) in productsChartData.products" :key=i>
                         <v-col style="margin-right:50px">
                             <div class="productRegionName">
                                 {{ region.region }}
                             </div>
 
-                            <ul v-for="regionProducts in region.products" :key=regionProducts>
-                                <li v-for="regionProduct in regionProducts" :key=regionProduct>
+                            <ul v-for="(regionProducts,j) in region.products" :key=j>
+                                <li v-for="(regionProduct,k) in regionProducts" :key=k>
                                     {{ regionProduct }}
                                 </li>
                             </ul>

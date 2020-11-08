@@ -103,7 +103,7 @@ export default {
         },
 
         goToRegion() {
-            this.$emit("regionSelectedOnMap", this.infoWindowRegion.name)
+            this.$emit("regionSelectedOnMap", [this.infoWindowRegion.name])
         }
 
     },

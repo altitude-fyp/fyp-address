@@ -1,11 +1,14 @@
 <template>
 
   <v-container>
+
+    <!-- v-tabs goes here -->
     <v-tabs
       v-model="tab"
       background-color="transparent"
-      fixed-tabs
-    >
+      fixed-tabs >
+
+      <!-- for loop for v-tab goes here -->
       <v-tab
         v-for="(item,i) in items" :key=i >
 
@@ -15,6 +18,7 @@
       </v-tab>
     </v-tabs>
 
+    <!-- v-tab-items goes here -->
     <v-tabs-items v-model="tab" v-if="selectedRegions && productsChartData">
       <v-tab-item v-for="(value, name, index) in chartData" :key="index"><!--First Tab Content-->
         <v-card
@@ -30,38 +34,6 @@
       </v-tab-item>
 
     </v-tabs-items>
-    
-    <div v-if=chartData>
-      <v-tabs
-        v-model=tab
-        background-color="transparent"
-        fixed-tabs>
-
-        <!-- tabs go here -->
-        <v-tab v-for="(item,i) in items"
-          :key=i
-          mandatory>
-
-          <v-icon color="blue darken-3" style="padding-right: 8px;">{{item.icon}}</v-icon> {{ item.header }}
-
-        </v-tab>
-
-      </v-tabs>
-
-      <!-- v tab items go here -->
-      <v-tabs-items v-model=tab>
-
-        <v-tab-item v-for="(value, key) in chartData" :key=key>
-          
-          <!--First Tab Content-->
-          <v-card flat>
-            <region-tab :chartData=value />
-          </v-card>
-
-        </v-tab-item> <!--First Tab Content-->
-
-      </v-tabs-items>
-    </div>
 
   </v-container>
 
@@ -79,8 +51,6 @@ export default {
   components: {
     "region-tab": RegionTab,
     "region-products-tab": ProductsTab,
-    chartData: null,
-    productsChartData: null
   },
 
   data() {
@@ -89,6 +59,7 @@ export default {
       tab: 0,
       tabItem: 0,
       chartData: null,
+      productsChartData: null,
 
       items: [
         {
@@ -145,12 +116,6 @@ export default {
           console.log(response.data.data)
       })
     },
-  },
-  watch: {
-    selectedRegions: function (newRegion) {
-      console.log('n: ' + newRegion)
-      this.getChartData(newRegion)
-    }
   },
 
   watch: {

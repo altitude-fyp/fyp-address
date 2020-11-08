@@ -3,11 +3,13 @@
 
     <!-- region maps go here -->
     <region-map 
-      @regionSelectedOnMap=updateRegion
+      @regionSelectedOnMap=updateSelectedRegions
       />
 
     <!-- search bar goes here -->
     <c-s-v-search/>
+
+    SELECTED REGIONS: {{selectedRegions}}
 
     <!-- region selection dialog goes here -->
     <v-row justify="center">
@@ -59,6 +61,7 @@ export default {
       showRegionSelectionDialog: false,
     }
   },
+
   asyncData({query: {regions}}) {
     return {
       coordinates: null,
@@ -90,15 +93,12 @@ export default {
       //this function closes the region selection dialog
       this.showRegionSelectionDialog = false
     },
+
     updateSelectedRegions(selectedRegions) {
       //this function is called after user submits his selected countries from the country selection dialog
-      this.selectedRegions = selectedRegions
       console.log(selectedRegions)
+      this.selectedRegions = selectedRegions
     },
-
-    updateRegion(region) {
-      this.selectedRegions = region
-    }
 
   },
 
