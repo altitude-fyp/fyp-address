@@ -2,29 +2,56 @@
 
     <div v-if="productsChartData">
 
-        <!-- title goes here -->
-        <!-- <h2 class="sectionTitle">Key Financial Indicators</h2> -->
-
-        <v-card class="mx-auto">
+        <v-card flat class="mx-auto">
             <v-container>
+                <h4>Recommended Financial Products</h4>
+                <v-row>
+                    <div v-for="region in productsChartData.products" :key="region.region">
+                        <v-col style="margin-right:50px">
+                            <div class="productRegionName">
+                                {{ region.region }}
+                            </div>
+
+                            <ul v-for="regionProducts in region.products" :key=regionProducts class="recommendedProductList">
+                                <li v-for="regionProduct in regionProducts" :key=regionProduct>
+
+                                    {{ regionProduct }}
+                                   
+                                </li>
+                            </ul>
+                        </v-col>
+                    </div>
+                </v-row>
+
+                <br/>
+
+                <v-divider></v-divider>
+
+                <br/>
             
                 <v-row>
-                     <v-col>
-                        <v-row>
-                            <v-col>
-                                <!-- title for each chart goes here -->
-                                <div class="chartsTitle">
-                                    <h3>{{productsChartData.graph_1.title}}</h3>
-                                </div>
+                    <!-- 1st Graph -->
+                    <v-col>
+                        <!-- Title of 1st Graph -->
+                        <div class="chartsTitle">
+                            <h3>{{productsChartData.graph_1.title}}</h3>
+                        </div>
 
-                                <!-- each line-chart component goes here -->
-                                <div class="charts">
-                                    <line-chart :productsChartData=productsChartData>
-                                    </line-chart>
-                                </div>
-                                <br>
-                            </v-col>
-                        </v-row>
+                        <div class="charts">
+                            
+                        </div>
+                    </v-col>
+
+                    <!-- 2nd Graph -->
+                    <v-col>
+                        <!-- Title of 2nd Graph -->
+                        <div class="chartsTitle">
+                            <h3>{{productsChartData.graph_2.title}}</h3>
+                        </div>
+
+                        <div class="charts">
+                            
+                        </div>   
                     </v-col>
                 </v-row>
 
@@ -74,6 +101,18 @@ export default {
 .charts {
     padding-left:10px;
     padding-right:10px;
+}
+
+.productRegionName {
+    font-size:20px;
+    font-weight:700;
+    text-transform:capitalize;
+    color:#215085;
+    margin-bottom:10px;
+}
+
+.recommendedProductList {
+    list-style-image: url('https://i.imgur.com/4TrN1dY.png');
 }
 
 </style>

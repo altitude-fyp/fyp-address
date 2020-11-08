@@ -31,8 +31,9 @@
         </v-card>
       </v-tab-item> <!--First Tab Content-->
 
-      Test
+      <!--Product Charts-->
       <region-products-tab :productsChartData=productsChartData></region-products-tab>
+
     </v-tabs-items>
   </v-container>
 </template>
