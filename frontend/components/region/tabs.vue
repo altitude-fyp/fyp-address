@@ -1,5 +1,6 @@
 <template>
   <v-container>
+
     <v-tabs
       v-model="tab"
       background-color="transparent"
@@ -14,20 +15,21 @@
       </v-tab>
     </v-tabs>
 
-    {{selectedRegions}}
+    <!--   Will only load the tab when we have collected the data, resolve the empty 'At A Glance'-->
+    <div v-if="isLoaded">
+      <v-tabs-items v-model="tab">
 
-    <v-tabs-items v-model="tab">
-      <v-tab-item v-for="(value, name, index) in chartData" :key="index"><!--First Tab Content-->
-        <v-card
-          flat
-        >
+        <v-tab-item v-for="(value, name, index) in chartData" :key="index"><!--First Tab Content-->
+          <v-card
+            flat
+          >
+            <region-tab :chartData=value></region-tab>
+          </v-card>
+        </v-tab-item> <!--First Tab Content-->
 
-          <region-tab :chartData=value></region-tab>
-
-        </v-card>
-      </v-tab-item> <!--First Tab Content-->
-      <!--      </v-tab-item>-->
-    </v-tabs-items>
+        <!--      </v-tab-item>-->
+      </v-tabs-items>
+    </div>
   </v-container>
 </template>
 
@@ -41,12 +43,13 @@ export default {
   props: ["selectedRegions"],
   components: {
     "region-tab": RegionTab,
-    chartData: null
+    chartData: null,
   },
 
   data() {
     return {
       tab: null,
+      isLoaded: false,
       items: [
         {
           header: 'At a Glance',
@@ -81,16 +84,16 @@ export default {
     getEverything() {
       this.getChartData(this.selectedRegions)
     },
-
     getChartData(selectedRegions) {
       // this function gets chart data and stores in this.chartData
       this.chartData = null
       var url = process.env.BACKEND + "/api/charts/regions/" + selectedRegions.join(',')
       this.$axios.get(url).then((response) => {
         this.chartData = response.data.data
-        console.log(response)
+        this.isLoaded = true
+
       })
-    }
+    },
   },
   watch: {
     selectedRegions: function (newRegion) {

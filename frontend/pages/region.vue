@@ -1,24 +1,34 @@
 <template>
   <v-app>
-    <!--    <google-map :coordinates="coordinates"/>-->
-    {{ selectedRegions }}
-    <c-s-v-search/>
+    <!--<google-map :coordinates="coordinates"/>-->
+    <!--    Here is just a padding because Region to Compare button is getting blocked-->
+    <div style="margin-top:50px"></div>
+
+    [[ POLYGON MAP WILL COME HERE ]]
+
+<!--    Select Regions to Compare Button-->
     <v-row justify="center">
       <v-btn
         color="#004D8E"
         class="white--text mb-2 sidebar"
         depressed
+        rounded
         @click=openRegionSelectionDialog>
         Regions to Compare
       </v-btn>
+
       <region-selection-dialog
         :showRegionSelectionDialog=showRegionSelectionDialog
         @closeRegionSelectionDialogEvent="closeRegionSelectionDialog"
         @submitSelectedRegionsEvent="updateSelectedRegions"
       >
       </region-selection-dialog>
+
     </v-row>
+
+    <!--    Select Regions to Compare Modal-->
     <tabs :selected-regions="selectedRegions"/>
+    <MarketSegmentation/>
   </v-app>
 </template>
 
@@ -28,10 +38,11 @@ import CSVSearch from "@/components/home/CSVSearch";
 import tabs from "@/components/region/tabs";
 import MetadataPanel from "@/components/home/GoogleBottomSheet/components/MetadataPanel";
 import RegionSelectionDialog from "@/components/home/GoogleBottomSheet/components/RegionSelectionDialog";
+import MarketSegmentation from "@/components/region/marketSegmentation";
 
 export default {
   name: "region",
-  components: {RegionSelectionDialog, MetadataPanel, tabs, CSVSearch, GoogleMap},
+  components: {MarketSegmentation, RegionSelectionDialog, MetadataPanel, tabs, CSVSearch, GoogleMap},
   data() {
     return {
       showRegionSelectionDialog: false,

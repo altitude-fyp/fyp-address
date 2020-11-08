@@ -35,18 +35,6 @@
 
           </v-row>
 
-        <!-- Regions to compare button-->
-        <v-row justify="center">
-
-          <v-btn
-            color="#004D8E"
-            class="white--text mb-2 sidebar"
-            depressed
-            @click=emitRegion>
-            Regions to Compare
-          </v-btn>
-
-        </v-row>
 
 
         <!-- download csv button -->
@@ -99,11 +87,7 @@ export default {
       //this function emits an event to the parent component to handle
       this.$emit("selectCountriesButtonClicked")
     },
-    emitRegion() {
-      //this function is called when "countries to compare" button is clicked
-      //this function emits an event to the parent component to handle
-      this.$emit("selectRegionsButtonClicked")
-    },
+
 
   }
 

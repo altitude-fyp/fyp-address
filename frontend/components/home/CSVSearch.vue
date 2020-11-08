@@ -1,7 +1,7 @@
 <template>
   <!--fluid style="padding-top: 400px; padding-left: 240px; position:absolute; z-index: 1;"-->
   <v-container>
-    <v-row>
+    <v-row style="margin-bottom: -20px">
       <!--Select US or Singapore button-->
       <v-col cols="2" style="padding-top: 20px;">
         <v-select
@@ -37,10 +37,24 @@
           accept=".csv"
           dense
           outlined
-          @change="csvAccept" >
+          @change="csvAccept">
 
         </v-file-input>
 
+      </v-col>
+    </v-row>
+
+    <!-- Switch to Region View -->
+    <v-row style="margin-bottom: -50px">
+      <v-col align="right">
+      <v-btn
+        outlined
+        color="#004D8E"
+        @click="$router.push({name: 'region'})"
+      >
+        <v-icon left>mdi-eye</v-icon>
+        Switch to Region View
+      </v-btn>
       </v-col>
     </v-row>
 
@@ -68,16 +82,16 @@ export default {
     }
   },
   methods: {
-    
+
     lookUpAddress() {
       /*console.log(this.preselect)
       console.log(this.address)*/
     },
 
     csvAccept() {
-    
+
       Papa.parse(this.csv, {
-        
+
         delimiter: ",",
         header: true,
 
