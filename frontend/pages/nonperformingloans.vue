@@ -5,61 +5,57 @@
         height="320"
         :src="require('../images/npl_bg.png')">
       </v-parallax>
-    <v-container style="margin-top:-50px; margin-bottom:-80px">
 
-      <!-- Search Country -->
-      <npl-country-selection
-          @submitSelectedCountriesEvent="updateSelectedCountries">
-      </npl-country-selection>
-      <!-- Search Country -->
-    
-    </v-container>
+      <v-container style="margin-top:-50px; margin-bottom:-80px">
+
+        <!-- Search Country -->
+        <npl-country-selection
+            @submitSelectedCountriesEvent="updateSelectedCountries">
+        </npl-country-selection>
+        <!-- Search Country -->
+      
+      </v-container>
     </div>
 
     <div v-if="selectedCountry && countriesMetadata && countryStatistics" style="padding-top: 50px">
         <v-container>
 
-            <!-- Country Statistics -->
             <v-row v-if="countriesMetadata[selectedCountry] && countriesMetadata[selectedCountry]['flag']">
               <img :src="countriesMetadata[selectedCountry]['flag']" style="height:40px;margin-right:10px;" contain/>
               <h2 class="headerText">{{ selectedCountry}}</h2>
 
               <v-spacer></v-spacer>
 
-                <div v-if="forecastValue === 0">
-                  <img :src="require('../images/down_arrow.png')" style="height:20px;margin-top:10px;margin-right:15px"/>
+                <!-- Country Forecast -->
+                <div v-if="countryForecast[selectedCountry] === 0">
+                  <img :src="require('../images/down_arrow.png')" class="forecastArrow"/>
                 </div>
 
                 <div v-else>
-                  <img :src="require('../images/up_arrow.png')" style="height:20px;margin-top:10px;margin-right:15px"/>
+                  <img :src="require('../images/up_arrow.png')" class="forecastArrow"/>
                 </div>
 
                 <span style="margin-top:8px;font-weight:700">2021 Forecast</span>
+                <!-- Country Forecast -->
             </v-row>
 
             <br/>
 
+            <!-- Top 10 Features -->
             <v-row>
               <div class="top10FeaturesText">
                 <h3>Top 10 Features</h3>
               </div>
-            </v-row> 
-
-            <v-row v-for="i in 2" :key=i>
-              <v-col v-for="j in 5" cols="2.4" :key=j>
-
-                <v-row>
-                  <v-col v-if="selectedFeatures[j-1 + (i-1)*4]">
-                    <div align="center">
-                      <span class="featureName">{{ selectedFeatures[j-1 + (i-1)*4] }}</span><br/><br/>
-                      <span class="similarityScore">{{formatValue(countryStatistics[selectedCountry][selectedFeatures[ j-1 + (i-1)*4 ]])}}</span>
-                    </div>
-                  </v-col>
-                </v-row>
-                
-              </v-col>
             </v-row>
-             <!-- Country Statistics -->
+            <v-row v-for="i in 2" :key=i>
+                <v-col v-for="feature in countryStatistics[selectedCountry].slice((i-1)*5,5*(i))" :key="feature.name">
+                  <div align="center">
+                    <span class="featureName">{{feature.name}}</span> <br/>
+                    <span class="similarityScore">{{formatValue(feature.score)}}</span>
+                  </div>
+                </v-col>
+            </v-row>
+            <!-- Top 10 Features -->
 
             <!-- Country NPL Chart -->
             <npl-country-chart
@@ -104,18 +100,7 @@ import CountrySelection from "@/components/nonperformingloans/CountrySelection.v
       top10ChartData: null,
       forecastValue: 1,
       countriesMetadata: null,
-      selectedFeatures: [
-          "Official exchange rate (LCU per US$, period average)",
-          "Employment in agriculture, male (% of male employment) (modeled ILO estimate)",
-          "Mortality rate, neonatal (per 1,000 live births)",
-          "Ores and metals exports (% of merchandise exports)",
-          "Fertility rate, total (births per woman)",
-          "PPP conversion factor, GDP (LCU per international $)",
-          "Contributing family workers, female (% of female employment) (modeled ILO estimate)",
-          "Time required to start a business (days)",
-          "Time required to start a business, female (days)",
-          "Time required to start a business, male (days)",
-      ],
+      selectedFeatures: [],
     }),
 
     mounted() {
@@ -129,6 +114,7 @@ import CountrySelection from "@/components/nonperformingloans/CountrySelection.v
         this.getChartData()
         this.getTop10Chart()
         this.getCountryStatistics()
+        this.getCountryForecast()
       },
 
       getCountriesMetadata() {
@@ -165,7 +151,7 @@ import CountrySelection from "@/components/nonperformingloans/CountrySelection.v
       getCountryStatistics() {
           // get statistics from aggregate.countries
           this.countryStatistics = null
-          var url = process.env.BACKEND + "/api/analytics/npl_country_features/?countryname=" + this.selectedCountry
+          var url = process.env.BACKEND + "/api/analytics/npl_country_features/" + this.selectedCountry
 
           this.$axios.get(url).then((response) => {
               this.countryStatistics = response.data
@@ -178,7 +164,7 @@ import CountrySelection from "@/components/nonperformingloans/CountrySelection.v
           var url = process.env.BACKEND + "/api/analytics/npl_forecast"
 
           this.$axios.get(url).then((response) => {
-              this.countryStatistics = response.data
+              this.countryForecast = response.data
           })
       },
 
@@ -261,6 +247,12 @@ import CountrySelection from "@/components/nonperformingloans/CountrySelection.v
     margin-bottom:10px;
     text-align:center;
     margin:0 auto;
+  }
+
+  .forecastArrow {
+    height:20px;
+    margin-top:10px;
+    margin-right:15px
   }
 
 </style>
