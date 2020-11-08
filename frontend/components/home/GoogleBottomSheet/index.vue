@@ -57,6 +57,7 @@
     <region-selection-dialog
       :showRegionSelectionDialog=showRegionSelectionDialog
       @closeRegionSelectionDialogEvent="closeRegionSelectionDialog"
+      @submitSelectedRegionsEvent="updateSelectedRegions"
     >
     </region-selection-dialog>
 
@@ -171,6 +172,11 @@ export default {
     closeRegionSelectionDialog() {
       //this function closes the region selection dialog
       this.showRegionSelectionDialog = false
+    },
+    updateSelectedRegions(selectedRegions) {
+      //this function is called after user submits his selected countries from the country selection dialog
+      this.selectedRegions = selectedRegions
+      this.$router.push({path: '/region', query: {regions: selectedRegions}})
     },
 
     getCSVData() {

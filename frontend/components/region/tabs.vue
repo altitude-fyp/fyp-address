@@ -7,24 +7,27 @@
     >
       <v-tab
         v-for="item in items"
-        :key="item"
       >
-        <v-icon color="blue darken-3" style="padding-right: 8px;">{{item.icon}}</v-icon> {{ item.header }}
+        <v-icon color="blue darken-3" style="padding-right: 8px;">{{ item.icon }}</v-icon>
+        {{ item.header }}
 
       </v-tab>
     </v-tabs>
 
-    <v-tabs-items v-model="tab">
+    <v-tabs-items v-model="tab" v-if="selectedRegions && productsChartData">
       <v-tab-item v-for="(value, name, index) in chartData" :key="index"><!--First Tab Content-->
         <v-card
           flat
         >
-
           <region-tab :chartData=value></region-tab>
-
         </v-card>
       </v-tab-item> <!--First Tab Content-->
+
+      <!--Product Charts-->
+      <v-tab-item>
+        <region-products-tab :productsChartData=productsChartData></region-products-tab>
       </v-tab-item>
+
     </v-tabs-items>
   </v-container>
 </template>
@@ -32,20 +35,22 @@
 <script>
 
 import RegionTab from "@/components/region/components/RegionTab.vue"
+import ProductsTab from "@/components/region/components/ProductsTab.vue"
 
 export default {
 
   name: "tabs",
-
+  props: ["selectedRegions"],
   components: {
     "region-tab": RegionTab,
-    chartData: null
+    "region-products-tab": ProductsTab,
+    chartData: null,
+    productsChartData: null
   },
 
   data() {
     return {
       tab: null,
-      selectedRegions: "ang mo kio,bishan",
       items: [
         {
           header: 'At a Glance',
@@ -62,33 +67,50 @@ export default {
         {
           header: 'Household',
           icon: 'mdi-home'
+        },
+        {
+          header: 'Citi Products',
+          icon: 'mdi-cash-multiple'
         }
-        // ,
-        // {
-        //   header: 'Investment',
-        //   icon: 'mdi-cash-multiple'
-        // }
       ]
     }
-  }, 
+  },
 
   mounted() {
-      this.getEverything()
-    },
+    this.getEverything()
+  },
 
   methods: {
     getEverything() {
-        this.getChartData()
-      },
-    
-    getChartData() {
+      this.getChartData(this.selectedRegions)
+      this.getProductsChartData()
+    },
+
+    getChartData(selectedRegions) {
       // this function gets chart data and stores in this.chartData
       this.chartData = null
-      var url = process.env.BACKEND + "/api/charts/regions/" + this.selectedRegions
-
+      var url = process.env.BACKEND + "/api/charts/regions/" + selectedRegions.join(',')
       this.$axios.get(url).then((response) => {
         this.chartData = response.data.data
+        console.log(response)
       })
+    },
+
+    getProductsChartData() {
+      // this function gets chart data and stores in this.productsChartData
+      this.productsChartData = null
+      var url = "https://api.npoint.io/9edddfe434c5405df5dd"
+
+      this.$axios.get(url).then((response) => {
+          this.productsChartData = response.data.data
+          console.log(response.data.data)
+      })
+    },
+  },
+  watch: {
+    selectedRegions: function (newRegion) {
+      console.log('n: ' + newRegion)
+      this.getChartData(newRegion)
     }
   }
 }
