@@ -1,9 +1,17 @@
 <template>
   <v-app>
-    <!--    <google-map :coordinates="coordinates"/>-->
-    {{ selectedRegions }}
+
+    <!-- region maps go here -->
+    <region-map 
+      @regionSelectedOnMap=updateRegion
+      />
+
+    <!-- search bar goes here -->
     <c-s-v-search/>
+
+    <!-- region selection dialog goes here -->
     <v-row justify="center">
+
       <v-btn
         color="#004D8E"
         class="white--text mb-2 sidebar"
@@ -11,28 +19,42 @@
         @click=openRegionSelectionDialog>
         Regions to Compare
       </v-btn>
+
       <region-selection-dialog
         :showRegionSelectionDialog=showRegionSelectionDialog
         @closeRegionSelectionDialogEvent="closeRegionSelectionDialog"
-        @submitSelectedRegionsEvent="updateSelectedRegions"
-      >
-      </region-selection-dialog>
+        @submitSelectedRegionsEvent="updateSelectedRegions" />
+
     </v-row>
+
+    <!-- tabs go here -->
     <tabs :selected-regions="selectedRegions"/>
+
   </v-app>
 </template>
 
 <script>
-import GoogleMap from "@/components/home/GoogleMap";
+
+import RegionMap from "@/components/region/region-map";
 import CSVSearch from "@/components/home/CSVSearch";
 import tabs from "@/components/region/tabs";
 import MetadataPanel from "@/components/home/GoogleBottomSheet/components/MetadataPanel";
 import RegionSelectionDialog from "@/components/home/GoogleBottomSheet/components/RegionSelectionDialog";
 
 export default {
+
   name: "region",
-  components: {RegionSelectionDialog, MetadataPanel, tabs, CSVSearch, GoogleMap},
+  
+  components: {
+    RegionSelectionDialog,
+    MetadataPanel,
+    tabs,
+    CSVSearch, 
+    "region-map": RegionMap
+  },
+
   data() {
+
     return {
       showRegionSelectionDialog: false,
     }
@@ -42,7 +64,10 @@ export default {
       coordinates: null,
       selectedRegions: regions || [],
     }
+
   },
+
+
   methods: {
     showMarkers(coordinates) {
       this.coordinates = coordinates
@@ -70,10 +95,13 @@ export default {
       this.selectedRegions = selectedRegions
       console.log(selectedRegions)
     },
+
+    updateRegion(region) {
+      this.selectedRegions = region
+    }
+
   },
+
+
 }
 </script>
-
-<style scoped>
-
-</style>

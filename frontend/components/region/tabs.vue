@@ -1,4 +1,5 @@
 <template>
+
   <v-container>
     <v-tabs
       v-model="tab"
@@ -6,8 +7,8 @@
       fixed-tabs
     >
       <v-tab
-        v-for="item in items"
-      >
+        v-for="(item,i) in items" :key=i >
+
         <v-icon color="blue darken-3" style="padding-right: 8px;">{{ item.icon }}</v-icon>
         {{ item.header }}
 
@@ -29,7 +30,41 @@
       </v-tab-item>
 
     </v-tabs-items>
+    
+    <div v-if=chartData>
+      <v-tabs
+        v-model=tab
+        background-color="transparent"
+        fixed-tabs>
+
+        <!-- tabs go here -->
+        <v-tab v-for="(item,i) in items"
+          :key=i
+          mandatory>
+
+          <v-icon color="blue darken-3" style="padding-right: 8px;">{{item.icon}}</v-icon> {{ item.header }}
+
+        </v-tab>
+
+      </v-tabs>
+
+      <!-- v tab items go here -->
+      <v-tabs-items v-model=tab>
+
+        <v-tab-item v-for="(value, key) in chartData" :key=key>
+          
+          <!--First Tab Content-->
+          <v-card flat>
+            <region-tab :chartData=value />
+          </v-card>
+
+        </v-tab-item> <!--First Tab Content-->
+
+      </v-tabs-items>
+    </div>
+
   </v-container>
+
 </template>
 
 <script>
@@ -50,10 +85,14 @@ export default {
 
   data() {
     return {
-      tab: null,
+
+      tab: 0,
+      tabItem: 0,
+      chartData: null,
+
       items: [
         {
-          header: 'At a Glance',
+          header: 'At a glance',
           icon: 'mdi-magnify-scan'
         },
         {
@@ -111,6 +150,12 @@ export default {
     selectedRegions: function (newRegion) {
       console.log('n: ' + newRegion)
       this.getChartData(newRegion)
+    }
+  },
+
+  watch: {
+    selectedRegions: function (n,o) {
+      this.getEverything()
     }
   }
 }
