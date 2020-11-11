@@ -6,13 +6,15 @@
     <v-tabs
       v-model="tab"
       background-color="transparent"
-      fixed-tabs >
+      color="#D9261C"
+      fixed-tabs
+      hide-slider>
 
       <!-- for loop for v-tab goes here -->
       <v-tab
         v-for="(item,i) in items" :key=i >
 
-        <v-icon color="blue darken-3" style="padding-right: 8px;">{{ item.icon }}</v-icon>
+        <v-icon color="#D9261C" style="padding-right: 8px;">{{ item.icon }}</v-icon>
         {{ item.header }}
 
       </v-tab>
@@ -127,5 +129,12 @@ export default {
 </script>
 
 <style scoped>
+.productRegionName {
+  font-size:20px;
+  font-weight:700;
+  text-transform:capitalize;
+  color:#215085;
+  margin-bottom:10px;
+}
 
 </style>

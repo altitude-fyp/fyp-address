@@ -3,7 +3,7 @@
 
   <div v-if="selectedCountries && countriesMetadata">
 
-      <v-card class="mx-auto" outlined>
+      <v-card class="mx-auto" outlined style="padding-bottom: 20px;">
 
           <!-- for loop: displays country name and flag image -->
           <div v-for="cname in selectedCountries" :key=cname>
@@ -29,6 +29,7 @@
                   color="#004D8E"
                   class="white--text mb-2 sidebar"
                   depressed
+                  width="250"
                   @click=emitCountry>
                   Countries to Compare
               </v-btn>
@@ -46,6 +47,7 @@
                       outlined
                       color="#004D8E"
                       class="mb-2 sidebar"
+                      width="250"
                       depressed>
 
                       <v-icon style="margin-right:5px">

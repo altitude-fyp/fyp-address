@@ -1,78 +1,144 @@
 <template>
   <v-container>
     <!--     HEADER -->
+    <!--      Market Segmentation header -->
     <v-row>
-      <!--      Market Segmentation header -->
-      <v-col cols="5">
-        <h1>
+      <v-col>
+        <h2 style="color: #D9261C">
           <v-icon>mdi-filter
           </v-icon>
           Market Segmentation
-        </h1>
+        </h2>
       </v-col>
+    </v-row>
+    <!--      Filter in place box -->
+    <v-row>
+      <v-col>
+        <v-card flat>
+          <div v-if="panel.every(item => item === 0)">
+            <v-card-title>
+              No Filters Selected
+            </v-card-title>
+          </div>
+          <div v-else>
+            <v-card-title>
+              The following filters are in place :
+            </v-card-title>
+            <v-card-subtitle>
+              <!--              Filter in place for Economic Status-->
+              <div v-if="panel[0] !== 0 && panel[0] !== 'None' ">
+                Economic Status : {{ panel[0] }}
+              </div>
 
-      <!--      Reset All Filter Button -->
-      <v-col style="margin-top:15px; margin-left:-50px">
-        <v-btn
-          outlined
-          color="#004D8E"
-          class="mb-2"
-          depressed
-          small
-          @click="none">
-          Reset all filter
-        </v-btn>
+              <div v-if="!content[1]['sliderDisable']">
+                Household Monthly Income Work : {{ content[1]['ticksLabels'][panel[1]] }}
+              </div>
+
+              <div v-if="!content[2]['sliderDisable']">
+                Income From Work : {{ content[2]['ticksLabels'][panel[2]] }}
+              </div>
+
+              <!--              Filter in place for Population Age Group-->
+              <div v-if="panel[3] !== 0 && panel[0] !== 'None' ">
+                Population Age Group : {{ panel[3] }}
+              </div>
+            </v-card-subtitle>
+          </div>
+          <!--      Reset All Filter Button -->
+          <v-card-actions>
+            <v-row justify="end">
+              <v-btn
+                outlined
+                color="#D9261C"
+                depressed
+                small
+                @click="none">
+                Reset all filter
+              </v-btn>
+            </v-row>
+          </v-card-actions>
+        </v-card>
       </v-col>
     </v-row>
 
     <!--     PANELS -->
-    <v-expansion-panels multiple>
-      <v-expansion-panel
-        v-for="(item,i) in items"
-        :key="i">
+    <div
+      v-for="(item,i) in items"
+      :key="i">
 
-        <v-expansion-panel-header><h3>{{ item }}</h3></v-expansion-panel-header>
+      <v-card-title><h4>{{ item }}</h4></v-card-title>
 
-        <!--        Content of the expansion-->
-        <v-expansion-panel-content>
-          <!-- For Economic Status and Population Age Group it will be a single checkbox-->
-          <div v-if="!content[i]['slider']" v-for="j in content[i]['ticksLabels']" :key="j">
-            <v-checkbox
-              v-model="panel[i]"
-              :label="j"
-              :value="j"
-            ></v-checkbox>
-          </div>
+      <!--        Content of the expansion-->
+      <v-card style="padding: 50px;">
+        <!-- For Economic Status and Population Age Group it will be a single radio-->
+        <div v-if="!content[i]['slider']">
+          <v-radio-group
+            v-model="panel[i]">
 
-          <!--           For Income related, it will be a slider-->
-          <div v-if="content[i]['slider']">
-            <v-slider
-              v-model="panel[i]"
-              :tick-labels="content[i]['ticksLabels']"
-              :max="content[i]['max']"
-              step="1"
-              ticks="always"
-              tick-size="6"
-              thumb-size="24"
-            ></v-slider>
-          </div>
+            <v-row justify="space-around">
+              <!--              Population Age Group-->
+              <div v-if="content[i]['ticksLabels'].length > 3" v-for="j in content[i]['ticksLabels']" :key="j">
+                <v-col>
+                  <v-radio
+                    :key="j"
+                    :label="j"
+                    :value="j"
+                  ></v-radio>
+                </v-col>
+              </div>
+            </v-row>
 
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-    </v-expansion-panels>
+            <!--              Economic status-->
+            <div v-if="content[i]['ticksLabels'].length < 4" v-for="j in content[i]['ticksLabels']" :key="j">
+              <v-row style="padding: 5px;">
+                <v-radio
+                  :key="j"
+                  :label="j"
+                  :value="j"
+                ></v-radio>
+              </v-row>
+            </div>
+          </v-radio-group>
+        </div>
 
+
+        <!--           For Income related, it will be a slider-->
+        <div v-if="content[i]['slider']">
+          <v-checkbox
+            v-model="content[i]['sliderDisable']"
+            :label="`Do not filter by ${item.toString()}`"
+          ></v-checkbox>
+          <v-slider
+            v-model="panel[i]"
+            :tick-labels="content[i]['ticksLabels']"
+            :max="content[i]['max']"
+            :disabled="content[i]['sliderDisable']"
+            step="1"
+            color="#D9261C"
+            ticks="always"
+            tick-size="6"
+            thumb-size="24"
+          ></v-slider>
+        </div>
+
+      </v-card>
+    </div>
+
+
+    <!--    Filter Data Submit Button-->
     <v-row>
       <v-col align="center"
              justify="center">
-      <v-btn
-        color="#004D8E"
-        outlined
-        class="mb-2"
-        block
-        depressed
-        @click="none">
-        Filter Data
-      </v-btn>
+        <v-btn
+          color="#D9261C"
+          outlined
+          class="mb-2"
+          block
+          large
+          depressed
+          @click="none">
+          Filter Data
+        </v-btn>
       </v-col>
     </v-row>
   </v-container>
@@ -90,6 +156,7 @@ export default {
           max: 1,
           slider: false,
           ticksLabels: [
+            'None',
             'Unemployed',
             'Employed',
           ],
@@ -97,6 +164,7 @@ export default {
         {
           max: 2,
           slider: true,
+          sliderDisable: true,
           ticksLabels: [
             'Low Income',
             'Middle Income',
@@ -106,6 +174,7 @@ export default {
         {
           max: 2,
           slider: true,
+          sliderDisable: true,
           ticksLabels: [
             'Low Income',
             'Middle Income',
@@ -116,6 +185,7 @@ export default {
           max: 5,
           slider: false,
           ticksLabels: [
+            'None',
             '20-30',
             '30-40',
             '40-50',

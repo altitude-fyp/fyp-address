@@ -50,7 +50,8 @@
       <v-btn
         outlined
         color="#004D8E"
-        @click="$router.push({name: 'region'})"
+        width="240"
+        @click="$router.push({path: '/region', query: {regions: ['Bishan']}})"
       >
         <v-icon left>mdi-eye</v-icon>
         Switch to Region View

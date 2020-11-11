@@ -9,11 +9,10 @@
           :selectedCountries=selectedCountries
           :countriesMetadata=countriesMetadata
           :CSVData=CSVData
-          @selectCountriesButtonClicked=openCountrySelectionDialog
-          @selectRegionsButtonClicked=openRegionSelectionDialog>
+          @selectCountriesButtonClicked=openCountrySelectionDialog>
         </metadata-panel>
 
-        <v-divider></v-divider>
+
 
         <feature-selection-panel
           :selectableFeatures=selectableFeatures
@@ -54,12 +53,6 @@
       @submitSelectedCountriesEvent="updateSelectedCountries">
     </country-selection-dialog>
 
-    <region-selection-dialog
-      :showRegionSelectionDialog=showRegionSelectionDialog
-      @closeRegionSelectionDialogEvent="closeRegionSelectionDialog"
-      @submitSelectedRegionsEvent="updateSelectedRegions"
-    >
-    </region-selection-dialog>
 
   </v-container>
 </template>
@@ -72,13 +65,11 @@ import FeatureSelectionPanel from "@/components/home/GoogleBottomSheet/component
 import CountryStatistics from "@/components/home/GoogleBottomSheet/components/CountryStatistics.vue"
 import KeyFinancialIndicators from "@/components/home/GoogleBottomSheet/components/KeyFinancialIndicators.vue"
 import Top3SimilarCountries from "@/components/home/GoogleBottomSheet/components/Top3SimilarCountries.vue"
-import RegionSelectionDialog from "@/components/home/GoogleBottomSheet/components/RegionSelectionDialog";
 
 
 export default {
 
   components: {
-    RegionSelectionDialog,
     "metadata-panel": MetadataPanel,
     "country-selection-dialog": CountrySelectionDialog,
     "feature-selection-panel": FeatureSelectionPanel,
@@ -163,21 +154,21 @@ export default {
       this.getEverything()
     },
 
-    openRegionSelectionDialog() {
-      // this function is called when the user clicks on "region to compare"
-      //this function opens the country selection dialog
-      this.showRegionSelectionDialog = true
-    },
-
-    closeRegionSelectionDialog() {
-      //this function closes the region selection dialog
-      this.showRegionSelectionDialog = false
-    },
-    updateSelectedRegions(selectedRegions) {
-      //this function is called after user submits his selected countries from the country selection dialog
-      this.selectedRegions = selectedRegions
-      this.$router.push({path: '/region', query: {regions: selectedRegions}})
-    },
+    // openRegionSelectionDialog() {
+    //   // this function is called when the user clicks on "region to compare"
+    //   //this function opens the country selection dialog
+    //   this.showRegionSelectionDialog = true
+    // },
+    //
+    // closeRegionSelectionDialog() {
+    //   //this function closes the region selection dialog
+    //   this.showRegionSelectionDialog = false
+    // },
+    // updateSelectedRegions(selectedRegions) {
+    //   //this function is called after user submits his selected countries from the country selection dialog
+    //   this.selectedRegions = selectedRegions
+    //   this.$router.push({path: '/region', query: {regions: selectedRegions}})
+    // },
 
     getCSVData() {
       // this functions retrieves country data in a format to convert into csv

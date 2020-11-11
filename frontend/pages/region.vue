@@ -1,49 +1,95 @@
 <template>
   <v-app>
-    <!--    Here is just a padding because Region to Compare button is getting blocked-->
-    <div style="margin-top:50px"></div>
-
     <!-- region maps go here -->
-    <region-map 
+    <region-map
       @regionSelectedOnMap=updateSelectedRegions
-      />
+    />
 
-    <!-- search bar goes here -->
-    <c-s-v-search/>
+    <v-row style="padding-left: 80px; padding-right: 80px; padding-top: 20px;">
+      <!--    Select Regions to Compare Button-->
+      <v-col>
+        <v-btn
+          color="#D9261C"
+          class="white--text mb-2 sidebar"
+          depressed
+          width="240"
+          @click=openRegionSelectionDialog>
+          Regions to Compare
+        </v-btn>
 
-    SELECTED REGIONS: {{selectedRegions}}
-
-<!--    Select Regions to Compare Button-->
-    <v-row justify="center">
-
-      <v-btn
-        color="#004D8E"
-        class="white--text mb-2 sidebar"
-        depressed
-        rounded
-        @click=openRegionSelectionDialog>
-        Regions to Compare
-      </v-btn>
-
-      <region-selection-dialog
-        :showRegionSelectionDialog=showRegionSelectionDialog
-        @closeRegionSelectionDialogEvent="closeRegionSelectionDialog"
-        @submitSelectedRegionsEvent="updateSelectedRegions"
-      >
-      </region-selection-dialog>
-
+        <region-selection-dialog
+          :showRegionSelectionDialog=showRegionSelectionDialog
+          @closeRegionSelectionDialogEvent="closeRegionSelectionDialog"
+          @submitSelectedRegionsEvent="updateSelectedRegions"
+        >
+        </region-selection-dialog>
+      </v-col>
+      <!--    Switch to Country View-->
+      <v-col align="right">
+        <v-btn
+          outlined
+          color="#D9261C"
+          width="240"
+          @click="$router.push({path: '/'})"
+        >
+          <v-icon left>mdi-eye</v-icon>
+          Switch to Country View
+        </v-btn>
+      </v-col>
     </v-row>
 
-    <!--    Select Regions to Compare Modal-->
-    <tabs :selected-regions="selectedRegions"/>
-    <MarketSegmentation/>
+
+    <!--    Selected Regions List-->
+    <h4 style="padding-left: 80px;">
+      Selected Regions
+    </h4>
+    <v-row style="padding-left: 100px; padding-right:80px;">
+      <div v-for="item in selectedRegions">
+        <v-col>
+          <div class="productRegionName">
+            {{ item }}
+          </div>
+        </v-col>
+      </div>
+    </v-row>
+
+
+    <v-tabs
+      color="#D9261C"
+      dense>
+      <v-row justify="center">
+        <v-tab>
+            Region Information
+        </v-tab>
+        <v-tab>
+
+            Market Segmentation
+        </v-tab>
+      </v-row>
+      <!--Documentation for #REST APIs goes here-->
+
+      <v-tab-item>
+
+        <!--    Select Regions to Compare Modal-->
+        <tabs :selected-regions="selectedRegions"/>
+
+      </v-tab-item>
+      <!--Documentation for #Explore the APIs goes here-->
+      <v-tab-item>
+
+        <MarketSegmentation/>
+
+      </v-tab-item>
+
+    </v-tabs>
+
+
   </v-app>
 </template>
 
 <script>
 
 import RegionMap from "@/components/region/region-map";
-import CSVSearch from "@/components/home/CSVSearch";
 import tabs from "@/components/region/tabs";
 import MetadataPanel from "@/components/home/GoogleBottomSheet/components/MetadataPanel";
 import RegionSelectionDialog from "@/components/home/GoogleBottomSheet/components/RegionSelectionDialog";
@@ -52,13 +98,11 @@ import MarketSegmentation from "@/components/region/marketSegmentation";
 export default {
 
   name: "region",
-  
   components: {
     MarketSegmentation,
     RegionSelectionDialog,
     MetadataPanel,
     tabs,
-    CSVSearch, 
     "region-map": RegionMap
   },
 
@@ -112,3 +156,14 @@ export default {
 
 }
 </script>
+
+<style scoped>
+.productRegionName {
+  font-size: 20px;
+  font-weight: 500;
+  text-transform: capitalize;
+  color: #215085;
+  margin-bottom: 10px;
+}
+
+</style>
