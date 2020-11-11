@@ -12,7 +12,7 @@
 
                 <GmapPolygon
                 :paths="region.polygon"
-                :options="polygonOptions"
+                :options="getPolygonOptions(region)"
                 @click="setInfoWindowRegion(i)" />
                 
             </div>
@@ -59,6 +59,8 @@
 
 export default {
 
+    props: ["selectedRegions"],
+
     data() {
         return {
 
@@ -72,14 +74,6 @@ export default {
                 rotateControl: false,
                 fullscreenControl: false,
                 disableDefaultUi: false
-            },
-
-            polygonOptions: {
-                strokeColor: "#FF0000",
-                strokeOpacity: 0.8,
-                strokeWeight: 2,
-                fillColor: "#FF0000",
-                fillOpacity: 0.35,
             },
 
             regionPolygons: [],
@@ -104,7 +98,27 @@ export default {
 
         goToRegion() {
             this.$emit("regionSelectedOnMap", [this.infoWindowRegion.name])
-        }
+        },
+
+
+        getPolygonOptions(region) {
+
+            let color = "#0000CC"
+
+            if (region.undocumented) color = "#000000"
+
+            if (this.selectedRegions.includes(region.name)) {
+                color = "#FF0000"
+            }
+
+            return {
+                strokeColor: color,
+                strokeOpacity: 1,
+                strokeWeight: 2,
+                fillColor: color,
+                fillOpacity: 0.35,
+            }
+        },
 
     },
 
@@ -116,20 +130,28 @@ export default {
 
 
         infoWindowRegionBody() {
-            let region = this.infoWindowRegion
-
-            let income = region.data["Income From Work"]
-            let incomeOver6k = "" + Math.round(income["6000+"] / Object.values(income).reduce((total,n) => total+n) * 100) + "%"
             
-            let house = region.data["Type Of Dwelling Household"]
-            let hdb = Math.round( house["hdb"] / Object.values(house).reduce((total,n) => total+n ) * 100) + "%"
+            try {
+                let region = this.infoWindowRegion
 
-            return `
-                Income over 6k: ${incomeOver6k} <br>
-                Proportion living in HDB: ${hdb} <br>
-            `
-        }
+                let income = region.data["Income From Work"]
+                let incomeOver6k = "" + Math.round(income["6000+"] / Object.values(income).reduce((total,n) => total+n) * 100) + "%"
+                
+                let house = region.data["Type Of Dwelling Household"]
+                let hdb = Math.round( house["hdb"] / Object.values(house).reduce((total,n) => total+n ) * 100) + "%"
 
+                return `
+                    Income over 6k: ${incomeOver6k} <br>
+                    Proportion living in HDB: ${hdb} <br>
+                `
+            }
+
+            catch {
+                return `
+                    Data not available!
+                `
+            }
+        },
 
     }
 

@@ -4,7 +4,8 @@
     <div style="margin-top:50px"></div>
 
     <!-- region maps go here -->
-    <region-map 
+    <region-map
+      :selectedRegions=selectedRegions
       @regionSelectedOnMap=updateSelectedRegions
       />
 
@@ -65,6 +66,7 @@ export default {
   data() {
 
     return {
+      selectedRegions: [],
       showRegionSelectionDialog: false,
     }
   },
