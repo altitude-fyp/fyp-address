@@ -67,12 +67,7 @@ def get_individual_address_data(item:Item):
 
 @app.post("/api/address/csv")
 def get_address_csv_data(item:Addresses):
-    # addresses = item.addresses
-
-    addresses = [
-        ["SINGAPORE", "380105"],
-        ["SINGAPORE", "534051"]
-    ]
+    addresses = item.addresses
 
     # Region  
     postal_code_list = []
@@ -93,7 +88,7 @@ def get_address_csv_data(item:Addresses):
         if country not in country_data:
             # Get country data
             country_data[country] = get_country_statistics_(country)[country]
-        
+
         if postal_code not in postal_code_list:
             postal_code_list.append(postal_code)
 
@@ -114,7 +109,7 @@ def get_address_csv_data(item:Addresses):
                 if region_name not in region_data:
                     region_data[region_name.title()] = get_regions_data(region_name)["data"]
 
-    result = {
+    return {
         "summary": {
             "valid": {
                 "total": len(addresses) - len(fail_data),
@@ -129,5 +124,3 @@ def get_address_csv_data(item:Addresses):
         "region_data": region_data,
         "country_data": country_data
     }
-
-    return result
