@@ -73,6 +73,7 @@ def format_chart_output(data_dict, countries_list):
             result.append(obj)
     return result
 
+# THIS IS FOR MAIN API
 def get_chart_data_for_api(country_name):
     db = get_database()
     chart_collection = db["worldbank"]
