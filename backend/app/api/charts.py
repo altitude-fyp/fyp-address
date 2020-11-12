@@ -56,10 +56,14 @@ def format_chart_output(data_dict, countries_list):
     result = []
     for key, value in data_dict.items():
         if key in GRAPH_SHOWN:
-            obj = {"title": "", "description": "", "countries": [], "years": [], "value": []}
-            obj["title"] = key
-            obj["description"] = GRAPH_SHOWN[key]
-            obj["countries"] = countries_list
+            obj = {
+                "years": [],
+                "value": [],
+                "title": key,
+                "description": GRAPH_SHOWN[key],
+                "countries": countries_list,
+            }
+
             for country in value:
                 country = extrapolate(country)
                 year_list = []
@@ -71,7 +75,7 @@ def format_chart_output(data_dict, countries_list):
                 obj["years"] = year_list
                 obj["value"].append(value_list)
             result.append(obj)
-            
+
     return result
 
 def extrapolate(data, desired=[i for i in range(2000,2020)], lag=1):
@@ -111,3 +115,19 @@ def extrapolate(data, desired=[i for i in range(2000,2020)], lag=1):
     temp = backward + list(data.values()) + forward
     
     return {k:v for k,v in zip(desired, temp)}
+
+# THIS IS FOR MAIN API OUTPUT
+def get_country_chart_data_for_api(country_name):
+    db = get_database()
+    chart_collection = db["aggregate.charts"]
+    data = chart_collection.find_one({"_id": country_name})["data"]
+
+    for key, value in data.items():
+        if key in GRAPH_SHOWN:
+            obj = {
+                "title": key,
+                "description": GRAPH_SHOWN[key],
+                "data": value
+            }
+
+    return obj
