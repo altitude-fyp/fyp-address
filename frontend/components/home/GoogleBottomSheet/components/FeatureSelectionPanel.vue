@@ -4,28 +4,27 @@
         <v-card v-if=selectableFeatures>
 
             <v-row style="padding-top: 8px;" justify="center">
-                
+
                 <!-- Button to clear selections goes here -->
                 <v-btn outlined
                     color="#004D8E"
                     class="mb-2"
                     depressed
                     @click=clearFilter()>
-                    
                     Clear Filter
                 </v-btn>
 
-            </v-row> 
+            </v-row>
 
             <div class="filtersSection">
                 <div v-for="category in selectableFeatures" :key=category.cateegory>
 
                     <div class="filtersSectionTag"> {{ category["category"] }} </div>
 
-                    <div v-for="feature in category.features" :key=feature> 
+                    <div v-for="feature in category.features" :key=feature>
                         <v-list-item>
-                            
-                                <v-checkbox 
+
+                                <v-checkbox
                                     color="primary"
                                     :label=capitalize(feature)
                                     :value=feature
@@ -87,7 +86,7 @@ export default {
 </script>
 
 <style>
-    
+
 .filtersSectionTag {
     color:#333333 !important;
     font-weight:700;

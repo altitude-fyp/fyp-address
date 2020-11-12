@@ -122,6 +122,7 @@ export default {
     dialog: Boolean,
     access: String,
     countries: Array,
+    regions: Array,
   },
   data() {
     return {
@@ -138,11 +139,12 @@ export default {
     this.$axios.$get(process.env.BACKEND + `/api/countries`)
       .then((country) => {
         this.country = country // Put inside an object
+        console.log(country)
       })
-    this.$axios.$get(process.env.BACKEND + `/api/regions`)
+    this.$axios.$get(process.env.BACKEND + `/api/regions/list`)
       .then((region) => {
         this.region = region // Put inside an object
-      })
+      }).error(e => {console.log(e)})
   },
 
   methods: {

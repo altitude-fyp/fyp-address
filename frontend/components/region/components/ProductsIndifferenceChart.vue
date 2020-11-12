@@ -1,3 +1,4 @@
+
 <script>
 import { Line } from 'vue-chartjs'
 
@@ -7,7 +8,7 @@ export default {
   
   extends: Line,
   
-  props: ["chartData"],
+  props: ["productsChartData"],
 
   // First time load chart
   mounted() {
@@ -17,38 +18,33 @@ export default {
   methods: {
 
     renderLineChart: function() {
+
       let colour_code = ["#2d4059", "#ea5455", "#f07b3f", "#ffd460"]
       let datasets_arr = []
-      let size_arr = JSON.parse(JSON.stringify(this.chartData.countries)).length
-
+      let size_arr = JSON.parse(JSON.stringify(this.productsChartData.graph_1.regions)).length
+      
       for (let i=0; i < size_arr; i++) {
         datasets_arr.push({
             fill: false,
-            label: JSON.parse(JSON.stringify(this.chartData.countries))[i],
+            label: JSON.parse(JSON.stringify(this.productsChartData.graph_1.regions))[i],
             backgroundColor: colour_code[i],
             borderColor: colour_code[i],
             borderWidth: 1,
-            data: JSON.parse(JSON.stringify(this.chartData.value))[i]
+            data: JSON.parse(JSON.stringify(this.productsChartData.graph_1["y-axis"]))[i]
         })
       }
 
-      // console.log(datasets_arr)
-
       let obj = {
-          labels: JSON.parse(JSON.stringify(this.chartData.years)),
+          labels: JSON.parse(JSON.stringify(this.productsChartData.graph_1["x-axis"])),
           datasets: datasets_arr
         }
-      let options = {
-          maintainAspectRatio:false
-        }
-      this.renderChart(obj, options)
+      this.renderChart(obj)
     }
   },
 
-
   // Watch prop change to re-render chart
   watch: {
-    chartdata: function() {
+    productsChartData: function() {
       this.renderLineChart();
     }
   }

@@ -34,7 +34,7 @@
               <!-- the cool autocomplete thing is here -->
               <v-autocomplete
                 v-model="selectedRegions"
-                :items="allRegion"
+                :items="allRegions"
                 chips multiple rounded filled clearable deletable-chips
                 :disable=disableRegionSearch>
               </v-autocomplete>
@@ -97,10 +97,14 @@ export default {
 
   data() {
     return {
-      allRegion: null,
+      allRegions: null,
       selectedRegions: []
     }
   },
+  mounted() {
+    this.getAllRegions()
+  },
+
   methods: {
 
     closeRegionSelectionDialog() {
@@ -119,7 +123,14 @@ export default {
       //this function passes selectedCountries to the parent component
       this.$emit("submitSelectedRegionsEvent", this.selectedRegions)
       this.closeRegionSelectionDialog()
-    }
+    },
+    getAllRegions() {
+      //this function gets all countries from backend in alphabetical order
+      var url = process.env.BACKEND + "/api/regions/list"
+      this.$axios.get(url).then((response) => {
+        this.allRegions = response.data.data
+      })
+    },
 
   },
 

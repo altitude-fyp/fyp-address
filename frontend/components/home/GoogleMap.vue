@@ -19,48 +19,6 @@
 
       </div>
 
-      <!-- temp: polygon goes here -->
-      <div v-for="[i,region] in Object.entries(regionPolygons)" :key=i>
-
-        <GmapPolygon
-          :paths="region.polygon"
-          :options="polygonOptions"
-          @click="setInfoWindowRegion(i)" />
-        
-      </div>
-
-      <GmapInfoWindow 
-        v-if="infoWindowRegion"
-        :position=infoWindowRegion.center> 
-
-          <v-container align="center" justify="center">
-
-            <span class="font-weight-medium">
-              {{infoWindowRegionName}}
-            </span>
-
-            <br>
-
-            <div v-html="infoWindowRegionBody"/>
-
-            <br>
-
-            <v-btn block @click="goToRegion">
-              Go to {{infoWindowRegionName}}
-            </v-btn>
-
-          </v-container>
-
-      </GmapInfoWindow>
-
-      <!-- marker clustering test goes here -->
-      <!-- <GmapCluster>
-        <GmapMarker 
-          v-for="position in testMarkers"
-          :key="position.lat + Math.random()"
-          :position=position />
-      </GmapCluster> -->
-
     </GmapMap>
 
   </div>
@@ -88,47 +46,10 @@ export default {
         disableDefaultUi: false
       },
 
-      polygonOptions: {
-        strokeColor: "#FF0000",
-        strokeOpacity: 0.8,
-        strokeWeight: 2,
-        fillColor: "#FF0000",
-        fillOpacity: 0.35,
-      },
-
-      regionPolygons: [],
-      infoWindowRegion: null,
-
     };
   },
 
-
-  mounted() {
-    this.pullRegionPolygonData()
-  },
-
-
   methods: {
-
-    pullRegionPolygonData() {
-      //this function gets polygon data from Singapore for all regions (with valid data)
-
-      let url = process.env.BACKEND + "/api/regions/polygons"
-
-      this.$axios.get(url).then((response) => {
-        this.regionPolygons = response.data
-      })
-
-    },
-
-    setInfoWindowRegion(i) {
-      this.infoWindowRegion = this.regionPolygons[i]
-    },
-
-
-    goToRegion() {
-      // to be completed
-    }
 
   },
 
@@ -154,28 +75,6 @@ export default {
       if (this.coordinates.length == 1) return 6
       return 3
     },
-
-
-    infoWindowRegionName() {
-      return this.infoWindowRegion.name.slice(0,1).toUpperCase() + this.infoWindowRegion.name.slice(1)
-    },
-
-
-    infoWindowRegionBody() {
-      let region = this.infoWindowRegion
-
-      let income = region.data["Income From Work"]
-      let incomeOver6k = "" + Math.round(income["6000+"] / Object.values(income).reduce((total,n) => total+n) * 100) + "%"
-      
-      let house = region.data["Type Of Dwelling Household"]
-      let hdb = Math.round( house["hdb"] / Object.values(house).reduce((total,n) => total+n ) * 100) + "%"
-
-      return `
-        Income over 6k: ${incomeOver6k} <br>
-        Proportion living in HDB: ${hdb} <br>
-      `
-    }
-
 
   }
 };
