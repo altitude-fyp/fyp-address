@@ -38,7 +38,7 @@ def get_individual_address_data(item:Item):
 
     # Call Onemap API to get detailed address
     onemap_result = search_onemap_api(address)
-    return onemap_result
+
     # Validation
     if onemap_result["found"] == 0:
         return {"status": "error", "data": "Address is invalid. Please enter another address."}
@@ -68,6 +68,11 @@ def get_individual_address_data(item:Item):
 @app.post("/api/address/csv")
 def get_address_csv_data(item:Addresses):
     addresses = item.addresses
+
+    # addresses = [
+    #     ["SINGAPORE", "380105"],
+    #     ["SINGAPORE", "534051"]
+    # ]
 
     # Region  
     postal_code_list = []
@@ -109,7 +114,7 @@ def get_address_csv_data(item:Addresses):
                 if region_name not in region_data:
                     region_data[region_name.title()] = get_regions_data(region_name)["data"]
 
-    return {
+    result = {
         "summary": {
             "valid": {
                 "total": len(addresses) - len(fail_data),
@@ -124,3 +129,5 @@ def get_address_csv_data(item:Addresses):
         "region_data": region_data,
         "country_data": country_data
     }
+
+    return result
