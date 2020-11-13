@@ -60,23 +60,38 @@ def get_individual_address_data(item:Item):
     # Find out property type
     property_type = check_property_type(onemap_address)
 
-    result["data"]["house_type"] = property_type
-    result["data"]["region"] = region_name
-    result["data"]["country"] = country
-    result["data"]["onemap_address"] = onemap_address
-    result["data"]["region_data"] = region_data
-    result["data"]["country_data"] = country_data
-
-    return result
+    return {
+        "summary": {
+            "property_type": property_type,
+            "region_found": region_name,
+            "country_found": country,
+        },
+        "analytics_result": {
+            "top_3_similar_countries": { country: get_top_countries_for_api(country) },
+            "npl_features": { country: get_sorted_npl_data_by_country(country)[country] }
+        },
+        "npl_analytics": {
+            "npl_forecast": get_npl_forecast(),
+            "npl_charts": get_sorted_npl_data_for_api(),
+            "npl_graph": { country: get_chart_data_for_api(country) }
+        },   
+        "region_data": region_data,
+        "region_summary_data": { region_name: onemap_region_summary_by_region(region_name.lower())["data"] }, 
+        "country_data": country_data,
+        "country_chart_data" : { country: get_country_chart_data_for_api(country) }
+    }
 
 @app.post("/api/address/csv")
 def get_address_csv_data(item:Addresses):
     addresses = item.addresses
 
-    addresses = [
-        ["SINGAPORE", "380105"],
-        ["SINGAPORE", "534051"]
-    ]
+    # addresses = [
+    #     ["SINGAPORE", "380105"],
+    #     ["SINGAPORE", "534051"]
+    # ]
+
+    # Property type
+    property_type_list = []
 
     # Region  
     postal_code_list = []
@@ -120,10 +135,17 @@ def get_address_csv_data(item:Addresses):
                 if region_name not in region_data:
                     region_data[region_name.title()] = get_regions_data(region_name)["data"]
 
+                # Find out property type
+                property_type = check_property_type(onemap_address)
+
+                if property_type not in property_type_list:
+                    property_type_list.append(property_type)
+
     return {
         "summary": {
             "valid": {
                 "total": len(addresses) - len(fail_data),
+                "housing_type": property_type,
                 "region_found": list(region_data.keys()),
                 "country_found": list(country_data.keys()),
             },
