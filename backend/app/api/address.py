@@ -108,8 +108,8 @@ def get_address_csv_data(item:Addresses):
     for address in addresses:
         isAddressFound = True
 
-        country = address[0].title()
-        postal_code = address[1]
+        country = address["addr_cntry_txt"].title()
+        postal_code = address["addr_postal_cde"]
 
         if country not in country_data:
             # Get country data
