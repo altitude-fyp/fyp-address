@@ -6,7 +6,7 @@ def onemap_region_summary():
     db = get_database()
 
     regions = [i for i in db["onemap.summary"].find()]
-    out = []
+    out = {}
 
     for region in regions:
         
@@ -67,9 +67,7 @@ def onemap_region_summary():
 
         data["Population Age Group"] = psum
 
-        out.append({
-            region["_id"]: data
-        })
+        out[region["_id"]] = data
 
     return out
 
@@ -78,7 +76,7 @@ def onemap_region_summary_by_region(region):
     db = get_database()
 
     region = db["onemap.summary"].find_one({"_id": region})
-         
+
     data = {}
 
     # EMPLOYMENT 
