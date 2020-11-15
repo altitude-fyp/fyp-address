@@ -15,7 +15,7 @@
 
                         <v-row>
                             <v-col v-if="selectedFeatures[ j-1 + (i-1)*4 ]">
-                                
+
                                 <!-- title of feature goes here -->
                                 <v-card-subtitle class="featuresTitle">
                                     {{ capitalize( selectedFeatures[ j-1 + (i-1)*4 ] ) }}
@@ -45,7 +45,7 @@
                         </v-row>
 
                     </v-col>
-                </v-row>   
+                </v-row>
                 <!-- End of top 8 features -->
 
                 <!-- Next 8 features-->
@@ -56,7 +56,7 @@
 
                             <v-row>
                                 <v-col v-if="selectedFeatures[ j-1 + (i-1)*4 + 8]">
-                                    
+
                                     <!-- title of feature goes here -->
                                     <v-card-subtitle class="featuresTitle">
                                         {{ capitalize( selectedFeatures[ j-1 + (i-1)*4 +8] ) }}
@@ -90,8 +90,8 @@
 
                 </div>
                 <!-- End of next 8 features -->
-        
-        
+
+
             </v-container>
         </v-card>
 
@@ -133,7 +133,7 @@ export default {
 </script>
 
 <style>
-    
+
 .featuresTitle{
     color:#215085 !important;
     font-weight:700;

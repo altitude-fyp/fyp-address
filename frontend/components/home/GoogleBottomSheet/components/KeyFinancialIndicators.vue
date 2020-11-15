@@ -7,12 +7,12 @@
 
         <v-card class="mx-auto">
             <v-container>
-            
+
                 <v-row>
                     <v-col v-for="chart in chartData" cols=6 :key=chart.title>
 
                         <v-row>
-                            
+
                             <v-col>
                                 <!-- title for each chart goes here -->
                                 <div class="chartsTitle">
@@ -32,7 +32,7 @@
                             </v-col>
 
                         </v-row>
-                    
+
                     </v-col>
                 </v-row>
 
@@ -65,8 +65,11 @@ export default {
 
 </script>
 
-<style>
-    
+<style scoped>
+.sectionTitle {
+  margin-bottom:10px;
+  padding-left: 15px;
+}
 .chartsTitle{
     color:#d29a42;
     margin-bottom:10px;

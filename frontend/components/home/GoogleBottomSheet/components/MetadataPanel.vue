@@ -3,7 +3,7 @@
 
   <div v-if="selectedCountries && countriesMetadata">
 
-      <v-card class="mx-auto" outlined>
+      <v-card class="mx-auto" outlined style="padding-bottom: 20px;">
 
           <!-- for loop: displays country name and flag image -->
           <div v-for="cname in selectedCountries" :key=cname>
@@ -29,24 +29,13 @@
                   color="#004D8E"
                   class="white--text mb-2 sidebar"
                   depressed
+                  width="250"
                   @click=emitCountry>
                   Countries to Compare
               </v-btn>
 
           </v-row>
 
-        <!-- Regions to compare button-->
-        <v-row justify="center">
-
-          <v-btn
-            color="#004D8E"
-            class="white--text mb-2 sidebar"
-            depressed
-            @click=emitRegion>
-            Regions to Compare
-          </v-btn>
-
-        </v-row>
 
 
         <!-- download csv button -->
@@ -58,6 +47,7 @@
                       outlined
                       color="#004D8E"
                       class="mb-2 sidebar"
+                      width="250"
                       depressed>
 
                       <v-icon style="margin-right:5px">
@@ -99,11 +89,7 @@ export default {
       //this function emits an event to the parent component to handle
       this.$emit("selectCountriesButtonClicked")
     },
-    emitRegion() {
-      //this function is called when "countries to compare" button is clicked
-      //this function emits an event to the parent component to handle
-      this.$emit("selectRegionsButtonClicked")
-    },
+
 
   }
 
