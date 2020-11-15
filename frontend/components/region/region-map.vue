@@ -7,47 +7,50 @@
             :zoom="11.8"
             style="min-width:100%; min-height: 600px;">
 
-            <!-- temp: polygon goes here -->
-            <div v-for="[i,region] in Object.entries(regionPolygons)" :key=i>
 
-                <GmapPolygon
-                    v-if="selectedRegions"
-                    :paths="region.polygon"
-                    :options="{
-                        strokeColor: color(i),
-                        strokeOpacity: 1,
-                        strokeWeight: 2,
-                        fillColor: color(i),
-                        fillOpacity: 0.35,
-                    }"
-                    @click="setInfoWindowRegion(i)" />
-                
+            <div v-if="!marketSegmentation">
+                <!-- temp: polygon goes here -->
+                <div v-for="[i,region] in Object.entries(regionPolygons)" :key=i>
+
+                    <GmapPolygon
+                        v-if="selectedRegions"
+                        :paths="region.polygon"
+                        :options="{
+                            strokeColor: color(i),
+                            strokeOpacity: 1,
+                            strokeWeight: 2,
+                            fillColor: color(i),
+                            fillOpacity: 0.35,
+                        }"
+                        @click="setInfoWindowRegion(i)" />
+                    
+                </div>
+
+                <GmapInfoWindow 
+                    v-if="infoWindowRegion"
+                    :position=infoWindowRegion.center
+                    @closeclick="infoWindowRegion=null"> 
+
+                    <v-container align="center" justify="center">
+
+                        <span class="font-weight-medium">
+                            {{infoWindowRegionName}}
+                        </span>
+
+                        <br>
+
+                        <div v-html="infoWindowRegionBody"/>
+
+                        <br>
+
+                        <v-btn block @click="goToRegion">
+                            Go to {{infoWindowRegionName}}
+                        </v-btn>
+
+                    </v-container>
+
+                </GmapInfoWindow>
             </div>
-
-            <GmapInfoWindow 
-                v-if="infoWindowRegion"
-                :position=infoWindowRegion.center
-                @closeclick="infoWindowRegion=null"> 
-
-                <v-container align="center" justify="center">
-
-                    <span class="font-weight-medium">
-                        {{infoWindowRegionName}}
-                    </span>
-
-                    <br>
-
-                    <div v-html="infoWindowRegionBody"/>
-
-                    <br>
-
-                    <v-btn block @click="goToRegion">
-                        Go to {{infoWindowRegionName}}
-                    </v-btn>
-
-                </v-container>
-
-            </GmapInfoWindow>
 
             <!-- <GmapCluster>
                 <GmapMarker 
@@ -59,6 +62,10 @@
 
         </GmapMap>
 
+        <div v-for="(region,i) in marketSegmentationRegions" :key=i>
+            {{region}}
+        </div>
+
     </div>
 </template>
 
@@ -66,7 +73,7 @@
 
 export default {
 
-    props: ["selectedRegions"],
+    props: ["selectedRegions", "marketSegmentation", "marketSegmentationRegions"],
 
     data() {
         return {

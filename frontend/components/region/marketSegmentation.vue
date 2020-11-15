@@ -52,7 +52,7 @@
                 color="#D9261C"
                 depressed
                 small
-                @click="none">
+                @click=resetAllFilters>
                 Reset all filter
               </v-btn>
             </v-row>
@@ -61,14 +61,14 @@
       </v-col>
     </v-row>
 
-    <!--     PANELS -->
+    <!-- PANELS -->
     <div
       v-for="(item,i) in items"
       :key="i">
 
       <v-card-title><h4>{{ item }}</h4></v-card-title>
 
-      <!--        Content of the expansion-->
+      <!-- Content of the expansion-->
       <v-card style="padding: 50px;">
         <!-- For Economic Status and Population Age Group it will be a single radio-->
         <div v-if="!content[i]['slider']">
@@ -77,32 +77,36 @@
 
             <v-row justify="space-around">
               <!-- Population Age Group-->
-              <div v-if="content[i]['ticksLabels'].length > 3" v-for="j in content[i]['ticksLabels']" :key="j">
-                <v-col>
+              <div v-if="content[i]['ticksLabels'].length > 3" >
+                <div v-for="j in content[i]['ticksLabels']" :key="j">
+                  <v-col>
+                    <v-radio
+                      :key="j"
+                      :label="j"
+                      :value="j"
+                    ></v-radio>
+                  </v-col>
+                </div>
+              </div>
+            </v-row>
+
+            <!-- Economic status-->
+            <div v-if="content[i]['ticksLabels'].length < 4" >
+              <div v-for="j in content[i]['ticksLabels']" :key="j">
+                <v-row style="padding: 5px;">
                   <v-radio
                     :key="j"
                     :label="j"
                     :value="j"
                   ></v-radio>
-                </v-col>
+                </v-row>
               </div>
-            </v-row>
-
-            <!--              Economic status-->
-            <div v-if="content[i]['ticksLabels'].length < 4" v-for="j in content[i]['ticksLabels']" :key="j">
-              <v-row style="padding: 5px;">
-                <v-radio
-                  :key="j"
-                  :label="j"
-                  :value="j"
-                ></v-radio>
-              </v-row>
             </div>
           </v-radio-group>
         </div>
 
 
-        <!--           For Income related, it will be a slider-->
+        <!-- For Income related, it will be a slider-->
         <div v-if="content[i]['slider']">
           <v-checkbox
             v-model="content[i]['sliderDisable']"
@@ -124,7 +128,6 @@
       </v-card>
     </div>
 
-
     <!--    Filter Data Submit Button-->
     <v-row>
       <v-col align="center"
@@ -136,7 +139,7 @@
           block
           large
           depressed
-          @click="none">
+          @click="send2backend">
           Filter Data
         </v-btn>
       </v-col>
@@ -166,9 +169,9 @@ export default {
           slider: true,
           sliderDisable: true,
           ticksLabels: [
-            'Low Income',
-            'Middle Income',
-            'High Income',
+            'Low [0-5000]',
+            'Middle [5000-10000]',
+            'High [10000+]',
           ]
         },
         {
@@ -176,9 +179,9 @@ export default {
           slider: true,
           sliderDisable: true,
           ticksLabels: [
-            'Low Income',
-            'Middle Income',
-            'High Income',
+            'Low [0-3000]',
+            'Middle [3000-6000]',
+            'High [6000+]',
           ]
         },
         {
@@ -194,16 +197,56 @@ export default {
             '70-80'
           ]
         }],
+
     }
   },
   methods: {
     // Reset the panel
-    none() {
+
+    send2backend() {
+
+      let url = process.env.BACKEND + "/api/analytics/market_segment/"
+
+      this.$axios.post(url, this.computedPanel).then(response => {
+        if (response.data.status == "success") this.$emit("filteredRegionsDataReceived", response.data.regions)
+      })
+      
+      this.resetAllFilters()
+    },
+
+    resetAllFilters() {
       // panel will hold the values to be sent to backend and retrieved
       // Example of sending format : this.panel = [ "Employed", 1, 2, "40-50" ]
       this.panel = [0, 0, 0, 0]
     },
   },
+
+  computed: {
+
+    computedPanel() {
+
+      let hhi = ["Low [0-5000]", "Middle [5000-10000]", "High [10000+]"][this.panel[1]]
+      let i = ["Low [0-3000]", "Middle [3000-6000]", "High [6000+]"][this.panel[2]]
+
+      if (this.content[1].sliderDisable) hhi = ""
+      if (this.content[2].sliderDisable) i = ""
+
+      let econ = this.panel[0]
+      if (econ == 0) econ=""
+
+      let pag = this.panel[3]
+      if (pag == 0) pag=""
+
+      return {
+        economic_status: econ,
+        household_monthly_income_work : hhi,
+        income_from_work : i,
+        population_age_group: pag,
+
+      }
+    }
+
+  }
 }
 
 </script>

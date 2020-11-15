@@ -2,6 +2,8 @@
   <v-app>
     <!-- region maps go here -->
     <region-map
+      :marketSegmentation="tabIndex == 1"
+      :marketSegmentationRegions=marketSegmentationRegions
       :selectedRegions=selectedRegions
       @regionSelectedOnMap=updateSelectedRegions
     />
@@ -54,8 +56,8 @@
       </div>
     </v-row>
 
-
     <v-tabs
+      v-model=tabIndex
       color="#D9261C"
       dense>
       <v-row justify="center">
@@ -78,7 +80,9 @@
       <!--Documentation for #Explore the APIs goes here-->
       <v-tab-item>
 
-        <MarketSegmentation/>
+        <MarketSegmentation
+          @filteredRegionsDataReceived=handleFilteredRegionsDataReceived
+          />
 
       </v-tab-item>
 
@@ -109,8 +113,11 @@ export default {
 
   data() {
     return {
+      tabIndex:1, // 0 if region information, 1 if market segmentation
       selectedRegions: ["bishan"],
       showRegionSelectionDialog: false,
+
+      marketSegmentationRegions: null,
     }
   },
 
@@ -151,6 +158,14 @@ export default {
       console.log("SELECTED REGIONS:", this.selectedRegions, selectedRegions)
       this.selectedRegions = selectedRegions.map(r => r.toLowerCase())
     },
+
+
+
+
+
+    handleFilteredRegionsDataReceived(data) {
+      this.marketSegmentationRegions = data
+    }
 
   },
 
