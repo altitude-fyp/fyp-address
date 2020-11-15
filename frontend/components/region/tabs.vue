@@ -26,6 +26,15 @@
         <v-card
           flat
         >
+
+        <br/>
+
+        <!-- OneMap Summary Data -->
+        <div v-if="index === 0">
+          
+          <onemap-summary :onemapSummaryData=onemapSummaryData></onemap-summary>
+        </div>
+
           <region-tab :chartData=value></region-tab>
         </v-card>
       </v-tab-item> <!--First Tab Content-->
@@ -45,6 +54,7 @@
 
 import RegionTab from "@/components/region/components/RegionTab.vue"
 import ProductsTab from "@/components/region/components/ProductsTab.vue"
+import OneMapSummary from "@/components/region/components/OneMapSummary.vue"
 
 export default {
 
@@ -53,6 +63,7 @@ export default {
   components: {
     "region-tab": RegionTab,
     "region-products-tab": ProductsTab,
+    "onemap-summary": OneMapSummary,
   },
 
   data() {
@@ -62,6 +73,7 @@ export default {
       tabItem: 0,
       chartData: null,
       productsChartData: null,
+
 
       items: [
         {
@@ -96,7 +108,9 @@ export default {
     getEverything() {
       this.getChartData(this.selectedRegions)
       this.getProductsChartData()
+      this.getOneMapSummaryData(this.selectedRegions)
     },
+
     getChartData(selectedRegions) {
       // this function gets chart data and stores in this.chartData
       this.chartData = null
@@ -104,7 +118,6 @@ export default {
       this.$axios.get(url).then((response) => {
         this.chartData = response.data.data
         this.isLoaded = true
-
       })
     },
 
@@ -115,7 +128,18 @@ export default {
 
       this.$axios.get(url).then((response) => {
           this.productsChartData = response.data.data
-          console.log(response.data.data)
+      })
+    },
+
+    getOneMapSummaryData(selectedRegions) {
+      // this function gets the OneMap summary data for the region
+      this.onemapSummaryData = null
+      console.log(selectedRegions)
+      var url = process.env.BACKEND + "/api/onemap_region_summary/" + selectedRegions[0].toLowerCase()
+
+      this.$axios.get(url).then((response) => {
+          this.onemapSummaryData = response.data.data
+          this.isLoaded = true
       })
     },
   },

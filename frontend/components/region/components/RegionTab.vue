@@ -9,6 +9,7 @@
             <v-container>
             
                 <v-row>
+                    
                     <v-col v-for="chart in chartData" cols=6 :key=chart.title>
 
                         <v-row>
