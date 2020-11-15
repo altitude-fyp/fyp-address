@@ -52,6 +52,23 @@
                 </GmapInfoWindow>
             </div>
 
+            <div v-else>
+
+                <div v-for="(msregion,i) in marketSegmentationRegions" :key=i>
+                    <GmapPolygon
+                        :paths="regionPolygonsMap[msregion.name]"
+                        :options="{
+                            strokeColor: '#FF0000',
+                            strokeOpacity: 1,
+                            strokeWeight: 2,
+                            fillColor: '#FF0000',
+                            fillOpacity: 0.5 - (i/20),
+                        }"
+                        />
+                </div>
+
+            </div>
+
             <!-- <GmapCluster>
                 <GmapMarker 
                 v-for="position in testMarkers"
@@ -65,6 +82,8 @@
         <div v-for="(region,i) in marketSegmentationRegions" :key=i>
             {{region}}
         </div>
+
+        <br><br>
 
     </div>
 </template>
@@ -91,6 +110,7 @@ export default {
             },
 
             regionPolygons: [],
+            regionPolygonsMap: {},
             infoWindowRegion: null,
 
         }
@@ -107,6 +127,13 @@ export default {
 
             this.$axios.get(url).then((response) => {
                 this.regionPolygons = response.data
+                
+                let map = {}
+                for (let i=0; i<this.regionPolygons.length; i++) {
+                    map[this.regionPolygons[i]["_id"]] = this.regionPolygons[i]["polygon"]
+                }
+                this.regionPolygonsMap = map
+
             })
         },
 
