@@ -105,8 +105,8 @@ export default {
 
     updateSelectedRegions(selectedRegions) {
       //this function is called after user submits his selected countries from the country selection dialog
-      console.log(selectedRegions)
-      this.selectedRegions = selectedRegions
+      console.log("SELECTED REGIONS:", this.selectedRegions, selectedRegions)
+      this.selectedRegions = selectedRegions.map(r => r.toLowerCase())
     },
 
   },
