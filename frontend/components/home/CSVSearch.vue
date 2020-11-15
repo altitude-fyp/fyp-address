@@ -101,8 +101,8 @@ export default {
           // this function sends the CSV data to the backend
           let url = process.env.BACKEND + "/api/address/csv/"
           this.$axios.post(url, {"addresses": results.data}).then((response) => {
-            console.log(response)
-            this.router.push({name: 'analytics', params: {data: response}})
+            localStorage.setItem("result", response["data"])
+            window.href.location(window.location.origin + "/analytics")
           })
         }
       });
