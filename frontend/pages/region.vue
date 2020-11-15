@@ -108,20 +108,19 @@ export default {
   },
 
   data() {
-
     return {
-      selectedRegions: [],
+      selectedRegions: ["bishan"],
       showRegionSelectionDialog: false,
     }
   },
 
-  asyncData({query: {regions}}) {
-    return {
-      coordinates: null,
-      selectedRegions: regions || [],
-    }
+  // asyncData({query: {regions}}) {
+  //   return {
+  //     coordinates: null,
+  //     selectedRegions: regions || [],
+  //   }
 
-  },
+  // },
 
 
   methods: {
