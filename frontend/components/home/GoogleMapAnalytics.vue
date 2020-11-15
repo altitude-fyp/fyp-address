@@ -39,27 +39,11 @@ export default {
     };
   },
   mounted() {
-    this.geolocate();
+
   },
 
   methods: {
-    addMarker(event) {
-      console.log(this.coordinates)
-      const marker = {
-        lat: event.latLng.lat(),
-        lng: event.latLng.lng()
-      };
-      this.markers.push({position: marker});
-    },
 
-    geolocate: function () {
-      navigator.geolocation.getCurrentPosition(position => {
-        this.center = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        };
-      });
-    },
 
   },
 };
