@@ -52,10 +52,14 @@ def format_chart_output(data_dict, countries_list):
     result = []
     for key, value in data_dict.items():
         if key in GRAPH_SHOWN:
-            obj = {"title": "", "description": "", "countries": [], "years": [], "value": []}
-            obj["title"] = key
-            obj["description"] = GRAPH_SHOWN[key]
-            obj["countries"] = countries_list
+            obj = {
+                "years": [],
+                "value": [],
+                "title": key,
+                "description": GRAPH_SHOWN[key],
+                "countries": countries_list,
+            }
+
             for country in value:
                 country = extrapolate(country)
                 year_list = []
@@ -68,6 +72,22 @@ def format_chart_output(data_dict, countries_list):
                 obj["value"].append(value_list)
             result.append(obj)
     return result
+
+# THIS IS FOR MAIN API
+def get_chart_data_for_api(country_name):
+    db = get_database()
+    chart_collection = db["worldbank"]
+    data = chart_collection.find_one({"_id": country_name})["data"]
+
+    for key, value in data.items():
+        if key in GRAPH_SHOWN:
+            obj = {
+                "title": key,
+                "description": GRAPH_SHOWN[key],
+                "data": value
+            }
+
+    return obj
 
 def extrapolate(data, desired=[i for i in range(2000,2020)], lag=1):
     
@@ -108,7 +128,7 @@ def extrapolate(data, desired=[i for i in range(2000,2020)], lag=1):
     return {k:v for k,v in zip(desired, temp)}
 
 @app.get("/api/analytics/npl_countries/")
-def get_sorted_npl_data():
+def get_npl_countries():
     """
     output: sorted countries by non performing loans
     """
@@ -171,8 +191,9 @@ def get_sorted_npl_data():
             "status": "failure",
             "error": str(err),
         }
+
 @app.get("/api/analytics/npl_country_features/{country_name}")
-def get_sorted_npl_data(country_name):
+def get_sorted_npl_data_by_country(country_name):
     """
     output: get top 10 features correlating to non performing loans
     """
@@ -190,3 +211,34 @@ def get_sorted_npl_data(country_name):
         }
 
 
+# THE STUFF BELOW IS FOR OUR MAIN API OUTPUT
+
+def get_sorted_npl_data_for_api():
+    """
+    output: sorted countries by non performing loans
+    """
+    starttime = time()
+
+    db = get_database()
+
+    chart_collection = db["worldbank"]
+
+    npl_data = {}
+
+    for i in db["aggregate.embeddings"].find():
+        if "Financial, Financial Soundness Indicators, Core Set, Deposit Takers, Asset Quality, Non-performing Loans to Total Gross Loans, Percent" in i["data"]:
+            npl_data[i["_id"]] = i["data"]["Financial, Financial Soundness Indicators, Core Set, Deposit Takers, Asset Quality, Non-performing Loans to Total Gross Loans, Percent"]
+
+    top_10_sorted_npl_data = dict(sorted(npl_data.items(), key=lambda kv: kv[1])[:10])
+    bottom_10_sorted_npl_data = dict(sorted(npl_data.items(), key=lambda kv: kv[1])[-10:])
+
+    charts = []
+        
+    charts.append({"title": "Top 10 Countries for Non-Performing Loans" , "description": "The top 10 countries with the best non-performing loans performance.", "data": top_10_sorted_npl_data})
+    charts.append({"title": "Bottom 10 Countries for Non-Performing Loans" , "description": "The bottom 10 countries with the worst non-performing loans performance.", "data": bottom_10_sorted_npl_data})
+
+    try:
+        return charts
+    
+    except Exception as err:
+        return str(err)

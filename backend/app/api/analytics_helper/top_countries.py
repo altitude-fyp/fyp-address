@@ -53,3 +53,8 @@ def get_top_countries(countryname):
     cossim_matrix = pickle.load(open("pickled/country_similarity_matrix.sav", "rb"))
     top3 = cossim_matrix[countryname][:3]
     return [{"name":name, "score":score, "flag":constants.COUNTRIES[name]["flag"]} for name,score in top3]
+
+def get_top_countries_for_api(countryname):
+    cossim_matrix = pickle.load(open("pickled/country_similarity_matrix.sav", "rb"))
+    top3 = cossim_matrix[countryname][:3]
+    return [{ name:score } for name,score in top3]

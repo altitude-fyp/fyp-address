@@ -4,6 +4,10 @@ from .api_helper.common import *
 from pydantic import BaseModel
 from .countries import *
 from .regions import *
+from .analytics import *
+from .npl import *
+from .charts import *
+from .onemap_region_summary import *
 from typing import List
 import pickle
 
@@ -56,14 +60,26 @@ def get_individual_address_data(item:Item):
     # Find out property type
     property_type = check_property_type(onemap_address)
 
-    result["data"]["house_type"] = property_type
-    result["data"]["region"] = region_name
-    result["data"]["country"] = country
-    result["data"]["onemap_address"] = onemap_address
-    result["data"]["region_data"] = region_data
-    result["data"]["country_data"] = country_data
-
-    return result
+    return {
+        "summary": {
+            "property_type": property_type,
+            "region_found": region_name,
+            "country_found": country,
+        },
+        "analytics_result": {
+            "top_3_similar_countries": { country: get_top_countries_for_api(country) },
+            "npl_features": { country: get_sorted_npl_data_by_country(country)[country] }
+        },
+        "npl_analytics": {
+            "npl_forecast": get_npl_forecast(),
+            "npl_charts": get_sorted_npl_data_for_api(),
+            "npl_graph": { country: get_chart_data_for_api(country) }
+        },   
+        "region_data": region_data,
+        "region_summary_data": { region_name: onemap_region_summary_by_region(region_name.lower())["data"] }, 
+        "country_data": country_data,
+        "country_chart_data" : { country: get_country_chart_data_for_api(country) }
+    }
 
 @app.post("/api/address/csv")
 def get_address_csv_data(item:Addresses):
@@ -73,6 +89,9 @@ def get_address_csv_data(item:Addresses):
     #     ["SINGAPORE", "380105"],
     #     ["SINGAPORE", "534051"]
     # ]
+
+    # Property type
+    property_type_list = []
 
     # Region  
     postal_code_list = []
@@ -84,11 +103,13 @@ def get_address_csv_data(item:Addresses):
     # Fail records
     fail_data = []
 
+    # Analytics result
+
     for address in addresses:
         isAddressFound = True
 
-        country = address[0].title()
-        postal_code = address[1]
+        country = address["addr_cntry_txt"].title()
+        postal_code = address["addr_postal_cde"]
 
         if country not in country_data:
             # Get country data
@@ -114,10 +135,17 @@ def get_address_csv_data(item:Addresses):
                 if region_name not in region_data:
                     region_data[region_name.title()] = get_regions_data(region_name)["data"]
 
-    result = {
+                # Find out property type
+                property_type = check_property_type(onemap_address)
+
+                if property_type not in property_type_list:
+                    property_type_list.append(property_type)
+
+    return {
         "summary": {
             "valid": {
                 "total": len(addresses) - len(fail_data),
+                "housing_type": property_type,
                 "region_found": list(region_data.keys()),
                 "country_found": list(country_data.keys()),
             },
@@ -126,8 +154,17 @@ def get_address_csv_data(item:Addresses):
                 "invalid_data": fail_data,
             },
         },
+        "analytics_result": {
+            "top_3_similar_countries": { country: get_top_countries_for_api(country) for country in country_data },
+            "npl_features": { country: get_sorted_npl_data_by_country(country)[country] for country in country_data }
+        },
+        "npl_analytics": {
+            "npl_forecast": get_npl_forecast(),
+            "npl_charts": get_sorted_npl_data_for_api(),
+            "npl_graph": { country: get_chart_data_for_api(country) for country in country_data }
+        },   
         "region_data": region_data,
-        "country_data": country_data
+        "region_summary_data": { region: onemap_region_summary_by_region(region.lower())["data"] for region in region_data }, 
+        "country_data": country_data,
+        "country_chart_data" : { country: get_country_chart_data_for_api(country) for country in country_data }
     }
-
-    return result
