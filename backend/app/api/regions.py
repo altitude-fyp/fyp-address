@@ -122,22 +122,31 @@ def get_region_polygons():
             pass
 
     db = get_database()
-    out = [o for o in db["onemap.summary"].find()]
 
-    # for o in out:
-    #     polygon, center = get_region_polygon(o["_id"])
-    #     o["name"] = o["_id"]
-    #     o["center"] = center
-    #     o["polygon"] = polygon
-    #     o["showInfoWindow"] = False
+    summary = {o["_id"]: o for o in db["onemap.summary"].find()}
         
     polygons = {o["_id"]: clean(o["data"]) for o in db["onemap.polygons"].find()}
 
-    for o in out:
-        o["name"] = o["_id"]
-        o["showInfoWindow"] = False
-        o["polygon"] = polygons[o["_id"]]
-        o["center"] = {"lat": sum([i["lat"] for i in o["polygon"]])/len(o["polygon"]), "lng":sum([i["lng"] for i in o["polygon"]])/len(o["polygon"])}
+    out = []
+
+    for _id, polygon in polygons.items():
+
+        try:        
+            if _id in summary:
+                o = summary[_id]
+            else:
+                o = {"_id":_id, "undocumented": True}
+
+            o["name"] = o["_id"]
+            o["showInfoWindow"] = False
+            o["polygon"] = polygons[o["_id"]]
+            o["center"] = {
+                "lat": sum([i["lat"] for i in o["polygon"]])/len(o["polygon"]),
+                "lng":sum([i["lng"] for i in o["polygon"]])/len(o["polygon"])
+            }
+
+            out.append(o)
+        except:pass
 
     return out
 
