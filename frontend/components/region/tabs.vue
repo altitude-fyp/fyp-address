@@ -30,9 +30,8 @@
         <br/>
 
         <!-- OneMap Summary Data -->
-        <div v-if="index === 0">
-          
-          <onemap-summary :onemapSummaryData=onemapSummaryData></onemap-summary>
+        <div v-if="index === 0 && onemapSummaryData && selectedRegions">
+          <onemap-summary :onemapSummaryData=onemapSummaryData :selectedRegions="selectedRegions"></onemap-summary>
         </div>
 
           <region-tab :chartData=value></region-tab>
@@ -107,8 +106,8 @@ export default {
   methods: {
     getEverything() {
       this.getChartData(this.selectedRegions)
-      this.getProductsChartData()
-      this.getOneMapSummaryData(this.selectedRegions)
+      this.getProductsChartData(this.selectedRegions)
+      this.getOneMapSummaryData()
     },
 
     getChartData(selectedRegions) {
@@ -121,24 +120,23 @@ export default {
       })
     },
 
-    getProductsChartData() {
+    getProductsChartData(selectedRegions) {
       // this function gets chart data and stores in this.productsChartData
       this.productsChartData = null
-      var url = "https://api.npoint.io/9edddfe434c5405df5dd"
-
+      var selectedRegions = selectedRegions.map(region => region.toLowerCase());
+      var url = process.env.BACKEND + "/api/finance/" + selectedRegions.join(',')
       this.$axios.get(url).then((response) => {
           this.productsChartData = response.data.data
       })
     },
 
-    getOneMapSummaryData(selectedRegions) {
+    getOneMapSummaryData() {
       // this function gets the OneMap summary data for the region
       this.onemapSummaryData = null
-      console.log(selectedRegions)
-      var url = process.env.BACKEND + "/api/onemap_region_summary/" + selectedRegions[0].toLowerCase()
+      var url = process.env.BACKEND + "/api/regions/summary"
 
       this.$axios.get(url).then((response) => {
-          this.onemapSummaryData = response.data.data
+          this.onemapSummaryData = response.data
           this.isLoaded = true
       })
     },

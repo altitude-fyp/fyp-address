@@ -3,26 +3,26 @@
     <div v-if="productsChartData">
 
         <v-card flat class="mx-auto">
-            <v-container>
-                <h4>Recommended Financial Products</h4>
-                <v-row>
+            <v-container style="text-align:center">
+
+                <!-- Recommended Financial Products -->
+                <h4 class="tabSubtitle">Recommended Financial Products</h4>
+                <v-row align="center" justify="center">
+                    <v-col>
                     <div v-for="(region,i) in productsChartData.products" :key=i>
-                        <v-col style="margin-right:50px">
-                            <div class="productRegionName">
-                                {{ region.region }}
-                            </div>
+                        <div class="productRegionName">
+                            {{ region.region }}
+                        </div>
 
-                            <ul v-for="(regionProducts,j) in region.products" :key=j>
-                                <li v-for="(regionProduct,k) in regionProducts" :key=k>
-                                    {{ regionProduct }}
-                                </li>
-                            </ul>
-                        </v-col>
+                        <div v-for="(regionProducts,j) in region.products" :key=j>
+                            <span style="margin-left:20px; margin-right:20px;" v-for="(regionProduct,k) in regionProducts" :key=k>
+                                {{ regionProduct }}
+                            </span>
+                        </div><br/><br/>
                     </div>
+                    </v-col>
                 </v-row>
-
-                <br/>
-
+            
                 <v-divider></v-divider>
 
                 <br/>
@@ -110,6 +110,11 @@ export default {
 
 .recommendedProductList {
     list-style-image: url('https://i.imgur.com/4TrN1dY.png');
+}
+
+.tabSubtitle {
+    margin-top:15px;
+    margin-bottom:10px;
 }
 
 </style>
