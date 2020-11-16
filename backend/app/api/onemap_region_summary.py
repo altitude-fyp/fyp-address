@@ -9,11 +9,11 @@ def onemap_region_summary():
 
     regions = [i for i in db["onemap.summary"].find()]
     out = {}
+    average = {}
 
     for region in regions:
         
         data = {}
-        average = {}
         # EMPLOYMENT 
         try: 
             econ = region["data"]["Economic Status"]
@@ -22,7 +22,6 @@ def onemap_region_summary():
 
         except: 
             data["Employment"] = {}
-
 
         # Highest % of Household Monthly Income Work
         try:
@@ -37,104 +36,59 @@ def onemap_region_summary():
         except:
             hhisum = {}
 
+
         data["Household Monthly Income Work"] = hhisum
 
         # Highest % of Income From Work 
         try: 
             income = region["data"]["Income From Work"]
             total = sum(income.values())
-
+            average["Income From Work"]["Total"] += total     
             isum = {}
-            isum["Percentage Low Income [0-5000]"] = round(income["Low [0-3000]"]*100 / total, 1)
-            isum["Percentage Middle Income [5000-10000]"] = round(income["Middle [3000-6000]"]*100 / total, 1)
+            isum["Percentage Low Income [0-3000]"] = round(income["Low [0-3000]"]*100 / total, 1)
+            average["Income From Work"]["Percentage Low Income [0-3000]"] += income["Low [0-3000]"]
+            isum["Percentage Middle Income [3000-6000]"] = round(income["Middle [3000-6000]"]*100 / total, 1)
+            average["Income From Work"]["Percentage Middle Income [3000-6000]"] += income["Middle [3000-6000]"]
             isum["Percentage High Income [10000+]"] = round(income["High [6000+]"]*100 / total, 1)
+            average["Income From Work"]["Percentage High Income [10000+]"] += income["High [6000+]"]
 
         except:
-            isum = {}
+            isum = {"Percentage Low Income [0-3000]":round(income["Low [0-3000]"]*100 / total, 1), "Percentage Middle Income [3000-6000]":round(income["Middle [3000-6000]"]*100 / total, 1), "Percentage High Income [10000+]":round(income["High [6000+]"]*100 / total, 1)}
+            average["Income From Work"] = {"Total":0, "Percentage Low Income [0-3000]":0, "Percentage Middle Income [3000-6000]":0, "Percentage High Income [10000+]":0}
+            
 
         data["Income From Work"] = isum
-
 
         # Highest % of Population Age Group
         try:
             pag = region["data"]["Population Age Group"]
             total = sum(pag.values())
+            average["Population Age Group"]["Total"] += total
 
             psum = {}
             psum["Percentage 19 and below"] = round(pag["0-19"]*100 / total, 1)
+            average["Population Age Group"]["Percentage 19 and below"] += pag["0-19"]
             psum["Percentage 20-59"] = round((pag["20-39"] + pag["40-59"])*100/ total, 1)
+            average["Population Age Group"]["Percentage 20-59"] += (pag["20-39"] + pag["40-59"])
             psum["Percentage 60 and above"] = round(pag["60+"]*100 / total, 1)
+            average["Population Age Group"]["Percentage 60 and above"] += pag["60+"]
 
         except:
-            psum = {}
+            psum = {"Percentage 19 and below":round(pag["0-19"]*100 / total, 1), "Percentage 20-59":round((pag["20-39"] + pag["40-59"])*100/ total, 1), "Percentage 60 and above":round(pag["60+"]*100 / total, 1)}
+            average["Population Age Group"] = {"Total":0, "Percentage 19 and below":0, "Percentage 20-59":0, "Percentage 60 and above":0}
 
         data["Population Age Group"] = psum
+        
 
         out[region["_id"]] = data
 
-    average = {}
-    
-    average["Income From Work"] = {"Percentage Low Income [0-5000]": {'Total': 0, 'Count': 0 }, "Percentage Middle Income [5000-10000]": {'Total': 0, 'Count': 0 }, "Percentage High Income [10000+]": {'Total': 0, 'Count': 0 }}
-    average["Population Age Group"] = {"Percentage 19 and below": {'Total': 0, 'Count': 0 }, "Percentage 20-59": {'Total': 0, 'Count': 0 }, "Percentage 60 and above": {'Total': 0, 'Count': 0 }}
-
-
-    for region in out:
-        # Highest % of Income From Work 
-        try:
-            income = out[region]["Income From Work"]
-
-            try: 
-                average["Income From Work"]["Percentage Low Income [0-5000]"]['Total'] += income["Percentage Low Income [0-5000]"]
-                average["Income From Work"]["Percentage Low Income [0-5000]"]['Count'] += 1
-
-            except:
-                pass
-
-            try: 
-                average["Income From Work"]["Percentage Middle Income [5000-10000]"]['Total'] += income["Percentage Middle Income [5000-10000]"]
-                average["Income From Work"]["Percentage Middle Income [5000-10000]"]['Count'] += 1
-
-            except:
-                pass
-
-            try:
-                average["Income From Work"]["Percentage High Income [10000+]"]['Total'] += income["Percentage High Income [10000+]"]
-                average["Income From Work"]["Percentage High Income [10000+]"]['Count'] += 1
-
-            except:
-                pass
-
-        except:
-            pass
-
-        # Highest % of Population Age Group
-        try:
-            pag = out[region]["Population Age Group"]
-
-            try:
-                average["Population Age Group"]["Percentage 19 and below"]["Total"] = pag["Percentage 19 and below"]
-                average["Population Age Group"]["Percentage 19 and below"]["Count"] += 1
-            except:
-                pass
-            
-            try:
-                average["Population Age Group"]["Percentage 20-59"]["Total"] = pag["Percentage 20-59"]
-                average["Population Age Group"]["Percentage 20-59"]["Count"] += 1
-            except:
-                pass
-            
-            try:
-                average["Population Age Group"]["Percentage 60 and above"]["Total"] = pag["Percentage 60 and above"]
-                average["Population Age Group"]["Percentage 60 and above"]["Count"] += 1
-            except:
-                pass
-
-        except:
-            pass
-
     for category, subcategories in average.items():
         for subcategory_name, subcategory_value in subcategories.items():
-            average[category][subcategory_name] = round(average[category][subcategory_name]["Total"] / average[category][subcategory_name]["Count"],1)
+            if subcategory_name == "Total":
+                pass
+            else:
+                average[category][subcategory_name] = round((subcategory_value*100 / average[category]["Total"]) ,1)
+        average[category].pop("Total", None)
 
     out['average'] = average
 
