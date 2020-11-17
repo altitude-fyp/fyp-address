@@ -51,7 +51,7 @@
         outlined
         color="#004D8E"
         width="240"
-        @click="$router.push({path: '/region', query: {regions: ['bishan']}})"
+        to="/region"
       >
         <v-icon left>mdi-eye</v-icon>
         Switch to Region View

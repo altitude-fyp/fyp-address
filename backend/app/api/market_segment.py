@@ -65,7 +65,7 @@ def get_market_segment(item:Item):
         for region in regions:
             final_ranking[region] += regions.index(region)
 
-    final_ranking = list(dict(sorted(final_ranking.items(), key=lambda kv: kv[1], reverse = True)[1:10]).keys())
+    final_ranking = list(dict(sorted(final_ranking.items(), key=lambda kv: kv[1], reverse = True)[:5]).keys())
     
     final_output = []
 
