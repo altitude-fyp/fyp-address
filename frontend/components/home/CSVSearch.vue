@@ -33,13 +33,13 @@
         <v-file-input
           placeholder="Upload CSV"
           v-model="csv"
-          prepend-icon="mdi-upload"
           accept=".csv"
           dense
-          outlined
           @change="csvAccept">
 
         </v-file-input>
+
+        <v-icon >mdi-upload</v-icon>
 
       </v-col>
     </v-row>
@@ -99,14 +99,12 @@ export default {
         complete: (results) => {
           // this function is called when papaparse finishes parsing the CSV
           // this function sends the CSV data to the backend
-
           let url = process.env.BACKEND + "/api/address/csv/"
-          this.$axios.post(url, {"csvdata": url}).then((response) => {
-            console.log(response.data)
+          this.$axios.post(url, {"addresses": results.data}).then((response) => {
+            localStorage.setItem("result", response["data"])
+            window.href.location(window.location.origin + "/analytics")
           })
-
         }
-
       });
 
     }

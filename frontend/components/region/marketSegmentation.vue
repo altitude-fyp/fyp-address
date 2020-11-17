@@ -76,7 +76,7 @@
             v-model="panel[i]">
 
             <v-row justify="space-around">
-              <!--              Population Age Group-->
+              <!-- Population Age Group-->
               <div v-if="content[i]['ticksLabels'].length > 3" v-for="j in content[i]['ticksLabels']" :key="j">
                 <v-col>
                   <v-radio

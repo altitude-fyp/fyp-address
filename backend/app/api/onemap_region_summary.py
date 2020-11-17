@@ -1,12 +1,12 @@
 from app import app
 from mongodb_helper import *
 
-@app.get("/api/onemap_region_summary")
+@app.get("/api/regions/summary")
 def onemap_region_summary():
     db = get_database()
 
     regions = [i for i in db["onemap.summary"].find()]
-    out = []
+    out = {}
 
     for region in regions:
         
@@ -67,19 +67,16 @@ def onemap_region_summary():
 
         data["Population Age Group"] = psum
 
-        out.append({
-            "_id": region["_id"],
-            "data": data
-        })
+        out[region["_id"]] = data
 
     return out
 
-@app.get("/api/onemap_region_summary/{region}")
+@app.get("/api/regions/summary/{region}")
 def onemap_region_summary_by_region(region):
     db = get_database()
 
     region = db["onemap.summary"].find_one({"_id": region})
-         
+
     data = {}
 
     # EMPLOYMENT 

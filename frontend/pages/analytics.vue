@@ -221,9 +221,9 @@ export default {
     }
   },
 
-  mounted() {
-    this.getEverything();
-  },
+    mounted() {
+      this.getEverything();
+    },
 
     methods: {
 
