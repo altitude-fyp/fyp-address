@@ -6,26 +6,12 @@
 
             <!-- File Info -->
             <v-row>
-              <h2 class="headerText">File Info</h2>
+              <h2 class="headerText">Input Address</h2>
             </v-row>
             
             <v-row>
               <div class="file">
-                <span class="fileName">
-                  sample_csv.csv
-                </span>
-                <div class="fileResults">
-                  <span class="fileResultsSuccess">
-                    {{ this.analyticsResult["valid_no"] }} records
-                    <v-icon color="green">mdi-check</v-icon>
-                  </span>
-                  <span class="fileResultsError">
-                    {{ this.analyticsResult["invalid_no"] }} records
-                    <v-icon color="red">mdi-close</v-icon>
-                  </span>
-                  <span class="link">View
-                  </span>
-                </div>
+                <h3> {{ this.$route.params.address }} </h3>                
               </div>
             </v-row><br/>
 
@@ -58,31 +44,16 @@
                   <v-expansion-panel-content>
 
                     <v-row class="atAGlanceResults">
-                      <v-col>{{ this.analyticsResult["valid_no"] }}</v-col>
-                      <v-col>{{ this.analyticsResult["no_of_region"] }}</v-col>
-                      <v-col>{{ this.analyticsResult["most_region"] }}</v-col>
-
+                      <v-col>{{ this.housingType }}</v-col>
+                      <v-col>{{ this.selectedRegions[0] }}</v-col>
+                      <v-col>{{ this.selectedCountries[0] }}</v-col>
                     </v-row>
                     <v-row class="atAGlanceSubHeader">
-                      <v-col>addresses in Singapore</v-col>
-                      <v-col>regions</v-col>
-                      <v-col>region with the highest no. of addresses</v-col>
+                      <v-col>Housing Type</v-col>
+                      <v-col>Region</v-col>
+                      <v-col>Country</v-col>
                     </v-row>
 
-                    <v-divider></v-divider><br/>
-
-                    <v-row class="atAGlanceResults">
-                      <v-col>{{ this.analyticsResult["hdb"] }}</v-col>
-                      <v-col>{{ this.analyticsResult["private"] }}</v-col>
-                      <v-col>{{ this.analyticsResult["others"] }}</v-col>
-                    </v-row>
-
-                    <v-row class="atAGlanceSubHeader">
-                      <v-col>HDB</v-col>
-                      <v-col>Private</v-col>
-                      <v-col>Others</v-col>
-                    </v-row>
-                    
                   </v-expansion-panel-content>
                 </v-expansion-panel>
 
@@ -147,19 +118,22 @@ import BarChart from "@/components/analytics/barChart";
 import GoogleMapAnalytics from "@/components/home/GoogleMapAnalytics";
 import CountryStatistics from "@/components/analytics/CountryStatisticsAnalytics.vue"
 import KeyFinancialIndicatorsAnalytics from "@/components/analytics/KeyFinancialIndicatorsAnalytics.vue"
-import tabs from "@/components/region/tabs";
+import KeyFinancialIndicators from "@/components/home/GoogleBottomSheet/components/KeyFinancialIndicators.vue"
+import tabs from "@/components/region/tabs"
 
 export default {
-  name: "analytics",
+  name: "address",
   components: {
     BarChart, lineChart, GoogleMapAnalytics,
     "country-statistics": CountryStatistics,
+    "key-financial-indicators": KeyFinancialIndicators,
     "key-financial-indicators-analytics": KeyFinancialIndicatorsAnalytics
   },
 
   data() {
     return {
-      selectedRegions: null,
+      selectedRegions: [],
+      housingType: null,
       analyticsResult: {},
       selectedCountries: ["Singapore"],
       countryStatistics: null,
@@ -181,26 +155,9 @@ export default {
   },
 
     mounted() {
-      // this.analyticsResult = JSON.parse(localStorage.getItem("analytics_result"))
-      // this.analyticsResult = this.$router.params.analytics_result
-      // console.log(this.analyticsResult)
-      // this.analyticsResult = JSON.parse(JSON.stringify(this.$route.params.analytics_result))
-
-      // console.log(this.$route.params.analytics_result)
-      // console.log(typeof this.$route.params.analytics_result)
-
-      // this.analyticsResult = this.$route.params.analytics_result
-      this.analyticsResult["valid_no"] = this.$route.params.analytics_result.valid.total
-      this.analyticsResult["invalid_no"] = this.$route.params.analytics_result.invalid.total
-      this.analyticsResult["no_of_region"] = Object.keys(this.$route.params.analytics_result.valid.region_found).length
-      this.analyticsResult["most_region"] = Object.keys(this.$route.params.analytics_result.valid.region_found)[0]
-      this.analyticsResult["selectedRegions"] = Object.keys(this.$route.params.analytics_result.valid.region_found)
-      this.analyticsResult["hdb"] = this.$route.params.analytics_result.valid.housing_type["HDB"]
-      this.analyticsResult["private"] = this.$route.params.analytics_result.valid.housing_type["Private"]
-      this.analyticsResult["others"] = this.$route.params.analytics_result.valid.housing_type["Others"]
-
-      this.selectedRegions = this.analyticsResult["selectedRegions"]
-
+      this.housingType = this.$route.params.analytics_result.property_type
+      this.selectedRegions.push(this.$route.params.analytics_result.region_found)
+            
       this.getEverything();
 
     },
