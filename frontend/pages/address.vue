@@ -160,8 +160,8 @@ export default {
   },
 
     mounted() {
-      this.housingType = this.$route.params.analytics_result.property_type
-      this.selectedRegions.push(this.$route.params.analytics_result.region_found)
+      this.housingType = this.$route.params.analytics_result.property_type.toLowerCase()
+      this.selectedRegions.push(this.$route.params.analytics_result.region_found.toLowerCase())
       this.addressFound = this.$route.params.analytics_result.address_found
 
       this.getEverything();
