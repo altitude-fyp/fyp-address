@@ -98,7 +98,7 @@ import RegionMap from "@/components/region/region-map";
 import tabs from "@/components/region/tabs";
 import MetadataPanel from "@/components/home/GoogleBottomSheet/components/MetadataPanel";
 import RegionSelectionDialog from "@/components/home/GoogleBottomSheet/components/RegionSelectionDialog";
-import MarketSegmentation from "@/components/region/lzl";
+import MarketSegmentation from "@/components/region/market-segmentation";
 
 export default {
 
