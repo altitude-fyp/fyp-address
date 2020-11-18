@@ -311,7 +311,7 @@ export default {
     font-weight:700;
     text-transform:capitalize;
   }
-  .regionNameInfoButton {
+  .regionNameInfoWindowButton {
     text-transform:capitalize;
   }
 </style>
