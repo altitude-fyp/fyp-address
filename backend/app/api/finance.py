@@ -18,14 +18,14 @@ def get_individual_address_data(regions):
     products = [ { "region": region, "products": [ast.literal_eval(df.loc[region, 'citi_products'])] } for region in region_list ]
 
     graph1 = {
-        "title": "Indifference curve",
+        "title": "Utility as a Function of Allocation to the Risky Asset",
         "regions": [region for region in region_list],
         "x-axis": ast.literal_eval(df.loc[region_list[0], 'graph_1_x']),
         "y-axis": [ast.literal_eval(df.loc[region, 'graph_1_y']) for region in region_list]
     }
 
     graph2 = {
-        "title": "Utility as a Function of Allocation to the Risky Asset",
+        "title": "Indifference curve",
         "regions": [region for region in region_list],
         "x-axis": ast.literal_eval(df.loc[region_list[0], 'graph_2_x']),
         "y-axis": [ast.literal_eval(df.loc[region, 'graph_2_y']) for region in region_list]

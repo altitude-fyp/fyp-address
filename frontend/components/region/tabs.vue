@@ -21,7 +21,7 @@
     </v-tabs>
 
     <!-- v-tab-items goes here -->
-    <v-tabs-items v-model="tab" v-if="selectedRegions && productsChartData">
+    <v-tabs-items v-model="tab" v-if="selectedRegions && onemapSummaryData && productsChartData && chartData">
       <v-tab-item v-for="(value, name, index) in chartData" :key="index"><!--First Tab Content-->
         <v-card
           flat
@@ -39,7 +39,7 @@
       </v-tab-item> <!--First Tab Content-->
 
       <!--Product Charts-->
-      <v-tab-item>
+      <v-tab-item v-if="chartData ">
         <region-products-tab :productsChartData=productsChartData></region-products-tab>
       </v-tab-item>
 
@@ -72,7 +72,7 @@ export default {
       tabItem: 0,
       chartData: null,
       productsChartData: null,
-
+      onemapSummaryData:null,
 
       items: [
         {
@@ -105,9 +105,9 @@ export default {
 
   methods: {
     getEverything() {
+      this.getOneMapSummaryData()
       this.getChartData(this.selectedRegions)
       this.getProductsChartData(this.selectedRegions)
-      this.getOneMapSummaryData()
     },
 
     getChartData(selectedRegions) {

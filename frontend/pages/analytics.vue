@@ -129,11 +129,15 @@
                  
               </v-expansion-panels>
             </v-row>
+
           </div>
 
       <!--Google Maps-->
       <div class="right">
-        <google-map-analytics :coordinates="coordinates"/>
+
+        <google-map-analytics 
+          :selectedRegions=selectedRegions
+          />
       </div>
       <!--Google Maps-->
       </div>
@@ -196,8 +200,8 @@ export default {
       this.analyticsResult["most_region"] = Object.keys(this.$route.params.analytics_result.valid.region_found)[0]
       this.analyticsResult["selectedRegions"] = Object.keys(this.$route.params.analytics_result.valid.region_found)
       this.analyticsResult["hdb"] = this.$route.params.analytics_result.valid.housing_type["HDB"]
-      this.analyticsResult["private"] = this.$route.params.analytics_result.valid.housing_type["Private"]
-      this.analyticsResult["others"] = this.$route.params.analytics_result.valid.housing_type["Others"]
+      this.analyticsResult["private"] = this.$route.params.analytics_result.valid.housing_type["PRIVATE"]
+      this.analyticsResult["others"] = this.$route.params.analytics_result.valid.housing_type["OTHERS"]
 
       this.selectedRegions = this.analyticsResult["selectedRegions"]
 

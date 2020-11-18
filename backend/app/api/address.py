@@ -119,6 +119,7 @@ def get_individual_address_data_for_frontend(item:Item):
     return {
         "status": "success",
         "data": {
+            "address_found": onemap_address["ADDRESS"],
             "property_type": property_type,
             "region_found": region_name,
             "country_found": "Singapore"
@@ -241,7 +242,7 @@ def get_address_csv_data(item:Addresses):
 
     addresses = item.addresses
 
-    property_type_list = {"HDB": 0, "Private": 0, "Others": 0}
+    property_type_list = {"HDB": 0, "PRIVATE": 0, "OTHERS": 0}
 
     # Region  
     postal_code_list = []
