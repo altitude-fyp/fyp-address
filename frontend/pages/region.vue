@@ -9,7 +9,7 @@
     />
 
     <v-row style="padding-left: 80px; padding-right: 80px; padding-top: 20px;">
-      <!--    Select Regions to Compare Button-->
+      <!-- Select Regions to Compare Button-->
       <v-col>
         <v-btn
           color="#D9261C"
@@ -27,7 +27,7 @@
         >
         </region-selection-dialog>
       </v-col>
-      <!--    Switch to Country View-->
+      <!-- Switch to Country View-->
       <v-col align="right">
         <v-btn
           outlined
@@ -42,19 +42,19 @@
     </v-row>
 
 
-    <!--    Selected Regions List-->
-    <h4 style="padding-left: 80px;">
-      Selected Regions
-    </h4>
-    <v-row style="padding-left: 100px; padding-right:80px;">
-      <div v-for="(item, i) in selectedRegions" :key=i>
-        <v-col>
-          <div class="productRegionName">
+    <!-- Selected Regions List-->
+    <div align="center">
+      <h4 style="margin-bottom:10px;">
+          Selected Regions
+      </h4>
+      <span v-for="(item, i) in selectedRegions" :key=i>
+          <span class="productRegionName">
             {{ item }}
-          </div>
-        </v-col>
-      </div>
-    </v-row>
+          </span>
+      </span>
+    </div>
+
+    <br/><v-divider></v-divider><br/>
 
     <v-tabs
       v-model=tabIndex
@@ -176,11 +176,14 @@ export default {
 
 <style scoped>
 .productRegionName {
-  font-size: 20px;
-  font-weight: 500;
+  font-size: 30px;
+  font-weight: 700;
   text-transform: capitalize;
-  color: #215085;
-  margin-bottom: 10px;
+  color: #d29a42;
+  margin-bottom: 30px;
+  text-align:center;
+  margin-left:30px;
+  margin-right:30px;
 }
 
 </style>
