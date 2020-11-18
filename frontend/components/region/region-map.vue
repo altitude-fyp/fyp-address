@@ -5,7 +5,7 @@
             :options=gmapOptions
             :center=center
             :zoom="11.8"
-            style="min-width:100%; min-height: 600px;">
+            style="min-width:100%; min-height: 500px;">
 
 
             <div v-if="!marketSegmentation">
@@ -33,8 +33,8 @@
 
                     <v-container align="center" justify="center">
 
-                        <span class="font-weight-medium">
-                            {{infoWindowRegionName}}
+                        <span class="regionNameInfoWindow">
+                            {{infoWindowRegionName}}<br/>
                         </span>
 
                         <br>
@@ -43,8 +43,14 @@
 
                         <br>
 
-                        <v-btn block @click="goToRegion">
-                            Go to {{infoWindowRegionName}}
+                        <v-btn 
+                            style="color:#fff"
+                            color="#D9261C"
+                            block 
+                            depressed 
+                            @click="goToRegion"
+                        >
+                            Go to&nbsp;<span class="regionNameInfoWindowButton">{{infoWindowRegionName}}</span>
                         </v-btn>
 
                     </v-container>
@@ -76,7 +82,7 @@
 
                     <v-container align="center" justify="center">
 
-                        <span class="font-weight-medium">
+                        <span class="regionNameInfoWindow">
                             {{infoWindowRegionName}}
                         </span>
 
@@ -88,8 +94,14 @@
 
                         <br>
 
-                        <v-btn block @click="goToRegion">
-                            Go to {{infoWindowRegionName}}
+                       <v-btn 
+                            style="color:#fff"
+                            color="#D9261C"
+                            block 
+                            depressed 
+                            @click="goToRegion"
+                        >
+                            Go to&nbsp;<span class="regionNameInfoWindowButton">{{infoWindowRegionName}}</span>
                         </v-btn>
 
                     </v-container>
@@ -251,7 +263,7 @@ export default {
                 let age60 = this.percentage(ageGroup, ["60+"])
 
                 return `
-                    % employed: ${employed}% <br>
+                    % employed: ${employed}%</span> <br>
                     % tertiary education & above: ${edu}% <br>
                     % household size [4 and above]: ${hhs}% <br>
                     % household monthly income low [0-5000]: ${hmilow}% <br>
@@ -291,3 +303,15 @@ export default {
 }
 
 </script>
+
+<style scoped>
+  .regionNameInfoWindow {
+    color:#215085;
+    font-size:18px;
+    font-weight:700;
+    text-transform:capitalize;
+  }
+  .regionNameInfoButton {
+    text-transform:capitalize;
+  }
+</style>
