@@ -39,7 +39,7 @@
 
         </v-file-input>
 
-        <v-icon >mdi-upload</v-icon>
+        <!-- <v-icon >mdi-upload</v-icon> -->
 
       </v-col>
     </v-row>
@@ -85,8 +85,18 @@ export default {
   methods: {
 
     lookUpAddress() {
-      /*console.log(this.preselect)
-      console.log(this.address)*/
+
+      let url = process.env.BACKEND + "/api/address/frontend/"
+      this.$axios.post(url, {"address": this.address}).then((response) => {
+        localStorage.setItem("analytics_result", JSON.stringify(response["data"]["data"]))
+        
+        // this.$router.push({path: '/analytics', params: { analytics_result: response }})
+        console.log(response)
+        
+        this.$router.push({name: 'address', params: { analytics_result: response["data"]["data"], address: this.address }})
+
+      }) 
+
     },
 
     csvAccept() {
@@ -99,16 +109,18 @@ export default {
         complete: (results) => {
           // this function is called when papaparse finishes parsing the CSV
           // this function sends the CSV data to the backend
-          let url = process.env.BACKEND + "/api/address/csv/"
+          let url = process.env.BACKEND + "/api/address/frontend/csv/"
           this.$axios.post(url, {"addresses": results.data}).then((response) => {
-            localStorage.setItem("result", response["data"])
-            window.href.location(window.location.origin + "/analytics")
-          })
+            localStorage.setItem("analytics_result", JSON.stringify(response["data"]))
+            
+            // this.$router.push({path: '/analytics', params: { analytics_result: response }})
+            
+            this.$router.push({name: 'analytics', params: { analytics_result: response["data"]["data"] }})
+  
+          }) 
         }
       });
-
     }
-
   }
 
 }
