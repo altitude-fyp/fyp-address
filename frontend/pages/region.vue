@@ -113,7 +113,7 @@ export default {
 
   data() {
     return {
-      tabIndex:1, // 0 if region information, 1 if market segmentation
+      tabIndex:0, // 0 if region information, 1 if market segmentation
       selectedRegions: ["bishan"],
       showRegionSelectionDialog: false,
 

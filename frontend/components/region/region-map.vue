@@ -79,10 +79,6 @@
 
         </GmapMap>
 
-        <div v-for="(region,i) in marketSegmentationRegions" :key=i>
-            {{region}}
-        </div>
-
         <br><br>
 
     </div>
