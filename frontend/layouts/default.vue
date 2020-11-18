@@ -7,8 +7,11 @@
           <v-app-bar-nav-icon  @click="drawer=true"></v-app-bar-nav-icon>
 
           <v-toolbar-title>
+            
+            <img :src="require('../images/citi_logo.png')" height="40" 
+              @click=gohome
+              />
 
-            <img :src="require('../images/citi_logo.png')" height="40"/>
             <span class="logoTitle">Address Analytics Tool</span>
 
           </v-toolbar-title>
@@ -178,8 +181,7 @@ export default {
 
       items: [
         {title: 'Home', icon: 'mdi-home', link: '/'},
-        {title: 'Analytics', icon: 'mdi-chart-areaspline',link: '/analytics'},
-        {title: "Non-performing Loans", icon: "mdi-cash-usd-outline", link: "/nonperformingloans"},
+        {title: "Non-performing Loans", icon: 'mdi-chart-areaspline', link: "/nonperformingloans"},
         {title: 'Scheduled Job', icon: 'mdi-history',link: '/scheduledJob'},
         {title: 'API Documentation', icon: 'mdi-note-text',link: '/apidocs'},
 
@@ -209,6 +211,12 @@ export default {
       ],
     }
   },
+
+  methods: {
+    gohome() {
+      this.$router.push("/")
+    }
+  }
 }
 </script>
 <style scoped>
