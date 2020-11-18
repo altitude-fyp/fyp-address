@@ -47,7 +47,7 @@
       Selected Regions
     </h4>
     <v-row style="padding-left: 100px; padding-right:80px;">
-      <div v-for="item in selectedRegions">
+      <div v-for="(item, i) in selectedRegions" :key=i>
         <v-col>
           <div class="productRegionName">
             {{ item }}
@@ -113,7 +113,7 @@ export default {
 
   data() {
     return {
-      tabIndex:1, // 0 if region information, 1 if market segmentation
+      tabIndex:0, // 0 if region information, 1 if market segmentation
       selectedRegions: ["bishan"],
       showRegionSelectionDialog: false,
 
@@ -157,6 +157,7 @@ export default {
       //this function is called after user submits his selected countries from the country selection dialog
       console.log("SELECTED REGIONS:", this.selectedRegions, selectedRegions)
       this.selectedRegions = selectedRegions.map(r => r.toLowerCase())
+      this.tabIndex = 0
     },
 
 

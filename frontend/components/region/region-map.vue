@@ -64,8 +64,37 @@
                             fillColor: '#FF0000',
                             fillOpacity: 0.55 - (i*0.1),
                         }"
+
+                        @click=setMarketSegmentationInfoWindowRegion(i)
                         />
                 </div>
+
+                <GmapInfoWindow 
+                    v-if="infoWindowRegion"
+                    :position=infoWindowRegion.center
+                    @closeclick="infoWindowRegion=null"> 
+
+                    <v-container align="center" justify="center">
+
+                        <span class="font-weight-medium">
+                            {{infoWindowRegionName}}
+                        </span>
+
+                        <br><br>
+
+                        <div v-for="(val,i) in infoWindowRegion.value" :key=i>
+                            {{val.name}}: {{val.value}}%
+                        </div>
+
+                        <br>
+
+                        <v-btn block @click="goToRegion">
+                            Go to {{infoWindowRegionName}}
+                        </v-btn>
+
+                    </v-container>
+
+                </GmapInfoWindow>
 
             </div>
 
@@ -78,8 +107,6 @@
 
 
         </GmapMap>
-
-        <br><br>
 
     </div>
 </template>
@@ -135,6 +162,21 @@ export default {
 
         setInfoWindowRegion(i) {
             this.infoWindowRegion = this.regionPolygons[i]
+        },
+
+        setMarketSegmentationInfoWindowRegion(i) {
+            this.infoWindowRegion = this.marketSegmentationRegions[i]
+            let polygon = this.regionPolygonsMap[this.infoWindowRegion.name]
+            
+            // calculating middle latitude
+            let lat = polygon.map(point => point.lat)
+            lat = lat.reduce((a,b)=> {return a+b}) / lat.length
+
+            // calculating middle longitude
+            let lng = polygon.map(point => point.lng)
+            lng = lng.reduce((a,b) => {return a+b}) / lng.length
+
+            this.infoWindowRegion.center = {lat:lat, lng:lng}
         },
 
         goToRegion() {
