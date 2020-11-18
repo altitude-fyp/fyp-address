@@ -20,6 +20,8 @@
     <div v-if="selectedCountry && countriesMetadata && countryStatistics" style="padding-top: 50px">
         <v-container>
 
+              <div class="nplTitle" align="center"><v-icon color="#454545" style="margin-right:10px;margin-bottom:5px">mdi-cash-usd</v-icon>Non-Performing Loans Performance</div>
+           
             <v-row v-if="countriesMetadata[selectedCountry] && countriesMetadata[selectedCountry]['flag']">
               <img :src="countriesMetadata[selectedCountry]['flag']" style="height:40px;margin-right:10px;" contain/>
               <h2 class="headerText">{{ selectedCountry}}</h2>
@@ -36,6 +38,23 @@
                 </div>
 
                 <span style="margin-top:8px;font-weight:700">2021 Forecast</span>
+
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-icon
+                      style="margin-left:10px;margin-bottom:3px"
+                      color="#454545"
+                      dark
+                      v-bind="attrs"
+                      v-on="on"
+                    >
+                      mdi-information-outline
+                    </v-icon>
+                  </template>
+                  <span>Performance forecast for 2021</span>
+                </v-tooltip>
+                
+                
                 <!-- Country Forecast -->
             </v-row>
 
@@ -254,6 +273,14 @@ export default {
     height:20px;
     margin-top:10px;
     margin-right:15px
+  }
+
+  .nplTitle {
+    color:#454545;
+    font-size:28px;
+    font-weight:700;
+    margin-top:10px;
+    margin-bottom:30px;
   }
 
 </style>
