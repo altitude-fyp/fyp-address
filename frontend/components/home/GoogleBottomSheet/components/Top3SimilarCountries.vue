@@ -1,6 +1,6 @@
 <template>
 
-    <div v-if="top3similarCountries">
+    <div v-if="top3similarCountries" style="padding-top: 50px;">
 
         <!-- title comes here -->
         <h2 class="sectionTitle">Top 3 Similar Countries</h2>
@@ -80,9 +80,10 @@ export default {
 </script>
 
 <style>
-    
+
 .sectionTitle {
     margin-bottom:10px;
+    padding-left: 15px;
 }
 
 .top3CountryName {
