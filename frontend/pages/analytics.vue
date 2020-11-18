@@ -130,8 +130,6 @@
               </v-expansion-panels>
             </v-row>
 
-            {{selectedRegions}}
-
           </div>
 
       <!--Google Maps-->
