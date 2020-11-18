@@ -1,6 +1,8 @@
 <template>
     <div>
 
+        {{selectedRegions}}
+
         <GmapMap
             :options=gmapOptions
             :center=center
@@ -15,6 +17,8 @@
 <script>
 
 export default {
+
+    props: ["selectedRegions"],
     
     data() {
         return {
