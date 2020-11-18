@@ -4,7 +4,7 @@
       <v-card>
         <v-app-bar fixed color="white">
 
-          <v-app-bar-nav-icon  @click="drawer = true"></v-app-bar-nav-icon>
+          <v-app-bar-nav-icon  @click="drawer=true"></v-app-bar-nav-icon>
 
           <v-toolbar-title>
 
@@ -42,7 +42,7 @@
               <v-divider></v-divider>
 
               <div class="notification_row">
-              <v-list-item v-for="(notification, index) in notifications" :key="index" @click="">
+              <v-list-item v-for="(notification, index) in notifications" :key="index">
 
                 <v-list-item-title v-if="index === 0">
 
@@ -92,9 +92,11 @@
           <div class="logout">
             <v-btn justify-left outlined color="secondary" dark>Log Out</v-btn>
           </div>
+
         </v-app-bar>
 
-        <v-navigation-drawer v-model="drawer" absolute temporary>
+        <!-- navigation drawer goes here -->
+        <v-navigation-drawer v-model="drawer" fixed temporary>
 
           <v-list nav dense>
 
@@ -131,13 +133,14 @@
 
         </v-navigation-drawer>
 
-          <v-sheet style="padding-top: 50px;">
-            <!--This is the code to render the page do not remove-->
-            <v-main>
-              <nuxt/>
-            </v-main>
+        <v-sheet style="padding-top: 50px;">
+          <!--This is the code to render the page do not remove-->
+          <v-main>
+            <br>
+            <nuxt/>
+          </v-main>
 
-          </v-sheet>
+        </v-sheet>
 
       </v-card>
 
