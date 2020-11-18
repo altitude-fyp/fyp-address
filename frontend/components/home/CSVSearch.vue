@@ -21,7 +21,7 @@
         <v-text-field
           v-model="address"
           prepend-inner-icon="mdi-magnify"
-          placeholder="Enter an address, hit 'Enter' to search"
+          placeholder="Enter a postal code, hit 'Enter' to search"
           v-on:keypress.enter="lookUpAddress"
         >
         </v-text-field>
