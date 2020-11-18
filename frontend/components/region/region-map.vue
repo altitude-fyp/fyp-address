@@ -62,7 +62,7 @@
                             strokeOpacity: 1,
                             strokeWeight: 2,
                             fillColor: '#FF0000',
-                            fillOpacity: 0.55 - (i*0.05),
+                            fillOpacity: 0.55 - (i*0.1),
                         }"
                         />
                 </div>

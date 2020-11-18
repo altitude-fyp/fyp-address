@@ -98,7 +98,7 @@ import RegionMap from "@/components/region/region-map";
 import tabs from "@/components/region/tabs";
 import MetadataPanel from "@/components/home/GoogleBottomSheet/components/MetadataPanel";
 import RegionSelectionDialog from "@/components/home/GoogleBottomSheet/components/RegionSelectionDialog";
-import MarketSegmentation from "@/components/region/marketSegmentation";
+import MarketSegmentation from "@/components/region/lzl";
 
 export default {
 
@@ -113,7 +113,7 @@ export default {
 
   data() {
     return {
-      tabIndex:0, // 0 if region information, 1 if market segmentation
+      tabIndex:1, // 0 if region information, 1 if market segmentation
       selectedRegions: ["bishan"],
       showRegionSelectionDialog: false,
 

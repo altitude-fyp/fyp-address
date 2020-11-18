@@ -53,7 +53,7 @@
                 depressed
                 small
                 @click=resetAllFilters>
-                Reset all filter
+                Reset all filters
               </v-btn>
             </v-row>
           </v-card-actions>
@@ -76,6 +76,9 @@
             v-model="panel[i]">
 
             <v-row justify="space-around">
+
+
+              
               <!-- Population Age Group-->
               <div v-if="content[i]['ticksLabels'].length > 3" >
                 <div v-for="j in content[i]['ticksLabels']" :key="j">
@@ -144,12 +147,24 @@
         </v-btn>
       </v-col>
     </v-row>
+
+    <br><br><br>
+
+
   </v-container>
 </template>
 
 <script>
+
+import LZL from "./lzl"
+
+
 export default {
   name: "marketSegmentation",
+
+
+
+
   data() {
     return {
       panel: [0, 0, 0, 0],
