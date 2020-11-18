@@ -12,15 +12,15 @@
             <v-row>
               <div class="file">
                 <span class="fileName">
-                  address_SG_14102020.csv
+                  sample_csv.csv
                 </span>
                 <div class="fileResults">
                   <span class="fileResultsSuccess">
-                    418 records
+                    {{ this.analyticsResult["valid_no"] }} records
                     <v-icon color="green">mdi-check</v-icon>
                   </span>
                   <span class="fileResultsError">
-                    23 records
+                    {{ this.analyticsResult["invalid_no"] }} records
                     <v-icon color="red">mdi-close</v-icon>
                   </span>
                   <span class="link">View
@@ -30,7 +30,7 @@
             </v-row><br/>
 
             <v-row>
-              <span class="uploadDate">Last uploaded on 18 October 2020, 07:30 AM</span>
+              <span class="uploadDate">Last uploaded on {{ new Date().toLocaleString() }}</span>
             </v-row>
             <!-- File Info -->
 
@@ -56,16 +56,33 @@
                   </v-expansion-panel-header>
 
                   <v-expansion-panel-content>
+
                     <v-row class="atAGlanceResults">
-                      <v-col>Test</v-col>
-                      <v-col>10</v-col>
-                      <v-col>Toa Payoh</v-col>
+                      <v-col>{{ this.analyticsResult["valid_no"] }}</v-col>
+                      <v-col>{{ this.analyticsResult["no_of_region"] }}</v-col>
+                      <v-col>{{ this.analyticsResult["most_region"] }}</v-col>
+
                     </v-row>
                     <v-row class="atAGlanceSubHeader">
-                      <v-col>Singapore</v-col>
+                      <v-col>addresses in Singapore</v-col>
                       <v-col>regions</v-col>
                       <v-col>region with the highest no. of addresses</v-col>
                     </v-row>
+
+                    <v-divider></v-divider><br/>
+
+                    <v-row class="atAGlanceResults">
+                      <v-col>{{ this.analyticsResult["hdb"] }}</v-col>
+                      <v-col>{{ this.analyticsResult["private"] }}</v-col>
+                      <v-col>{{ this.analyticsResult["others"] }}</v-col>
+                    </v-row>
+
+                    <v-row class="atAGlanceSubHeader">
+                      <v-col>HDB</v-col>
+                      <v-col>Private</v-col>
+                      <v-col>Others</v-col>
+                    </v-row>
+                    
                   </v-expansion-panel-content>
                 </v-expansion-panel>
 
@@ -87,9 +104,9 @@
                           :selectedFeatures=selectedCountryStatisticsFeatures>
                       </country-statistics>
 
-                      <key-financial-indicators
+                      <key-financial-indicators-analytics
                         :chartData=chartData>
-                      </key-financial-indicators>
+                      </key-financial-indicators-analytics>
                   </v-expansion-panel-content>
                 </v-expansion-panel>
 
@@ -104,73 +121,12 @@
                   </v-expansion-panel-header>
 
                   <v-expansion-panel-content>
-                    <v-toolbar elevation="0">
-                      <v-tabs
-                        v-model="tabs"
-                        fixed-tabs
-                      >
-                        <v-tabs-slider></v-tabs-slider>
-                        <v-tab
-                          href="#tab-1"
-                          class="primary--text"
-                        >
-                          <v-icon>mdi-phone</v-icon>
-                          
-                        </v-tab>
 
-                        <v-tab
-                          href="#tab-2"
-                          class="primary--text"
-                        >
-                          <v-icon>mdi-heart</v-icon>
-                          
-                        </v-tab>
+                      <tabs v-if="selectedRegions" :selected-regions="selectedRegions"/>
 
-                        <v-tab
-                          href="#tab-3"
-                          class="primary--text"
-                        >
-                          <v-icon>mdi-account-box</v-icon>
-                        </v-tab>
-
-                        <v-tab
-                          href="#tab-4"
-                          class="primary--text"
-                        >
-                          <v-icon>mdi-account-box</v-icon>
-                        </v-tab>
-
-                      </v-tabs>
-                    </v-toolbar>
-
-                    <v-tabs-items v-model="tabs">
-                      <v-tab-item
-                        v-for="i in 4"
-                        :key="i"
-                        :value="'tab-' + i"
-                      >
-                        <v-card flat>
-                          <v-card-text v-text="text"></v-card-text>
-                        </v-card>
-                      </v-tab-item>
-                    </v-tabs-items>
                   </v-expansion-panel-content>
                 </v-expansion-panel>
-
-                <v-expansion-panel>
-                  <v-expansion-panel-header>
-                    <v-img class="analyticsIcons"
-                      max-height="18"
-                      max-width="18"
-                      :src="require('../images/icons/code.png')"
-                    ></v-img>
-                    <h3>Code Snippet</h3>
-                  </v-expansion-panel-header>
-
-                  <v-expansion-panel-content>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                  </v-expansion-panel-content>
-                </v-expansion-panel>              
+                 
               </v-expansion-panels>
             </v-row>
           </div>
@@ -190,18 +146,21 @@ import lineChart from "@/components/analytics/lineChart";
 import BarChart from "@/components/analytics/barChart";
 import GoogleMapAnalytics from "@/components/home/GoogleMapAnalytics";
 import CountryStatistics from "@/components/analytics/CountryStatisticsAnalytics.vue"
-import KeyFinancialIndicators from "@/components/analytics/KeyFinancialIndicatorsAnalytics.vue"
+import KeyFinancialIndicatorsAnalytics from "@/components/analytics/KeyFinancialIndicatorsAnalytics.vue"
+import tabs from "@/components/region/tabs";
 
 export default {
   name: "analytics",
   components: {
     BarChart, lineChart, GoogleMapAnalytics,
     "country-statistics": CountryStatistics,
-    "key-financial-indicators": KeyFinancialIndicators,
-    },
+    "key-financial-indicators-analytics": KeyFinancialIndicatorsAnalytics
+  },
 
   data() {
     return {
+      selectedRegions: null,
+      analyticsResult: {},
       selectedCountries: ["Singapore"],
       countryStatistics: null,
       selectedCountryStatisticsFeatures: [
@@ -222,7 +181,28 @@ export default {
   },
 
     mounted() {
+      // this.analyticsResult = JSON.parse(localStorage.getItem("analytics_result"))
+      // this.analyticsResult = this.$router.params.analytics_result
+      // console.log(this.analyticsResult)
+      // this.analyticsResult = JSON.parse(JSON.stringify(this.$route.params.analytics_result))
+
+      // console.log(this.$route.params.analytics_result)
+      // console.log(typeof this.$route.params.analytics_result)
+
+      // this.analyticsResult = this.$route.params.analytics_result
+      this.analyticsResult["valid_no"] = this.$route.params.analytics_result.valid.total
+      this.analyticsResult["invalid_no"] = this.$route.params.analytics_result.invalid.total
+      this.analyticsResult["no_of_region"] = Object.keys(this.$route.params.analytics_result.valid.region_found).length
+      this.analyticsResult["most_region"] = Object.keys(this.$route.params.analytics_result.valid.region_found)[0]
+      this.analyticsResult["selectedRegions"] = Object.keys(this.$route.params.analytics_result.valid.region_found)
+      this.analyticsResult["hdb"] = this.$route.params.analytics_result.valid.housing_type["HDB"]
+      this.analyticsResult["private"] = this.$route.params.analytics_result.valid.housing_type["Private"]
+      this.analyticsResult["others"] = this.$route.params.analytics_result.valid.housing_type["Others"]
+
+      this.selectedRegions = this.analyticsResult["selectedRegions"]
+
       this.getEverything();
+
     },
 
     methods: {
@@ -243,8 +223,8 @@ export default {
       },
 
       getChartData() {
-        // this function gets chart data and stores in this.chartData
         this.chartData = null
+        // this function gets chart data and stores in this.chartData
         var url = process.env.BACKEND + "/api/charts/" + this.selectedCountries
 
         this.$axios.get(url).then((response) => {
