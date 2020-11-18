@@ -11,7 +11,7 @@
             
             <v-row>
               <div class="file">
-                <h3> {{ this.$route.params.address }} </h3>                
+                <h3> {{ addressFound }} </h3>                
               </div>
             </v-row><br/>
 
@@ -76,6 +76,7 @@
                       </country-statistics>
 
                       <key-financial-indicators-analytics
+                        v-if="chartData"
                         :chartData=chartData>
                       </key-financial-indicators-analytics>
                   </v-expansion-panel-content>
@@ -134,6 +135,7 @@ export default {
     return {
       selectedRegions: [],
       housingType: null,
+      addressFound: null,
       analyticsResult: {},
       selectedCountries: ["Singapore"],
       countryStatistics: null,
@@ -157,7 +159,8 @@ export default {
     mounted() {
       this.housingType = this.$route.params.analytics_result.property_type
       this.selectedRegions.push(this.$route.params.analytics_result.region_found)
-            
+      this.addressFound = this.$route.params.analytics_result.address_found
+
       this.getEverything();
 
     },
