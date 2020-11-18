@@ -107,7 +107,9 @@
 
       <!--Google Maps-->
       <div class="right">
-        <google-map-analytics :coordinates="coordinates"/>
+        <google-map-analytics
+          :selectedRegions=selectedRegions
+          />
       </div>
       <!--Google Maps-->
       </div>
