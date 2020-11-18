@@ -33,15 +33,25 @@ export default {
 
     name: "key-financial-indicators-analytics",
 
-    props: ["chartData"],
+    props: ["selectedCountries"],
 
     components: {
         "line-chart": LineChart
     },
 
     data() {
-        return {}
+        return {
+            chartData: null,
+        }
     },
+
+    mounted() {
+        let url = process.env.BACKEND + "/api/charts/" + this.selectedCountries
+
+        this.$axios.get(url).then((response) => {
+            this.chartData = response.data.charts
+        })
+    }
 
 }
 

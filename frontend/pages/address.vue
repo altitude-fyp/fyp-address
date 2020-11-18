@@ -77,10 +77,11 @@
                           :selectedFeatures=selectedCountryStatisticsFeatures>
                       </country-statistics>
 
+                      <!-- KEY FINANCIAL INDICATORS GOES HERE!!!! -->
                       <key-financial-indicators-analytics
-                        v-if="chartData"
-                        :chartData=chartData>
+                        :selectedCountries=selectedCountries>
                       </key-financial-indicators-analytics>
+
                   </v-expansion-panel-content>
                 </v-expansion-panel>
 
