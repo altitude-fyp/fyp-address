@@ -113,7 +113,7 @@
                   </v-expansion-panel-header>
 
                   <v-expansion-panel-content>
-                     <analyticsResultDocs :address="postalCode" :endpoint="'/api/address'" :type="address"/> 
+                     <analyticsResultDocs :address="postalCode" :endpoint="'/api/address'" :type="'address'"/> 
                   </v-expansion-panel-content>
                 </v-expansion-panel>
                  

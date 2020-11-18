@@ -23,7 +23,10 @@
                     {{ this.analyticsResult["invalid_no"] }} records
                     <v-icon color="red">mdi-close</v-icon>
                   </span>
-                  <span class="link">View
+                  <span class="link">
+                    <vue-json-to-csv :json-data="invalidData" :csv-title="'invalid_data'">
+                      View
+                    </vue-json-to-csv>
                   </span>
                 </div>
               </div>
@@ -171,17 +174,20 @@ import CountryStatistics from "@/components/analytics/CountryStatisticsAnalytics
 import KeyFinancialIndicatorsAnalytics from "@/components/analytics/KeyFinancialIndicatorsAnalytics.vue"
 import tabs from "@/components/region/tabs"
 import analyticsResultDocs from "@/components/apidocs/analyticsResultDocs"
+import VueJsonToCsv from 'vue-json-to-csv'
 
 export default {
   name: "analytics",
   components: {
     BarChart, lineChart, GoogleMapAnalytics, analyticsResultDocs,
     "country-statistics": CountryStatistics,
-    "key-financial-indicators-analytics": KeyFinancialIndicatorsAnalytics
+    "key-financial-indicators-analytics": KeyFinancialIndicatorsAnalytics,
+    "vue-json-to-csv": VueJsonToCsv
   },
 
   data() {
     return {
+      invalidData: null,
       addresses: null,
       selectedRegions: null,
       analyticsResult: {},
@@ -225,6 +231,7 @@ export default {
 
       this.selectedRegions = this.analyticsResult["selectedRegions"]
       this.addresses = this.$route.params.address
+      this.invalidData = this.$route.params.analytics_result.invalid.invalid_data
       this.getEverything();
 
     },
@@ -373,6 +380,10 @@ export default {
     color:#215085;
     font-size:14px;
     font-weight:700;
+  }
+
+  .link:hover {
+    cursor: pointer;
   }
 
   .headerText {
