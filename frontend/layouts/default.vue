@@ -179,6 +179,7 @@ export default {
       items: [
         {title: 'Home', icon: 'mdi-home', link: '/'},
         {title: 'Analytics', icon: 'mdi-chart-areaspline',link: '/analytics'},
+        {title: "Non-performing Loans", icon: "mdi-cash-usd-outline", link: "/nonperformingloans"},
         {title: 'Scheduled Job', icon: 'mdi-history',link: '/scheduledJob'},
         {title: 'API Documentation', icon: 'mdi-note-text',link: '/apidocs'},
 
