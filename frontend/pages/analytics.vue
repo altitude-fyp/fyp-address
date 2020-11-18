@@ -69,9 +69,11 @@
                       <v-col>region with the highest no. of addresses</v-col>
                     </v-row>
 
-                    <v-divider></v-divider><br/>
+                     <br/><v-divider></v-divider><br/>
 
-                    <v-row class="atAGlanceResults">
+                    <div class="housingTypeTitle" align="center"> <v-icon style="margin-bottom:5px;margin-right:5px;color:#d29a42">mdi-home</v-icon>Housing Type Breakdown</div>
+
+                    <v-row class="atAGlanceHousingResults">
                       <v-col>{{ this.analyticsResult["hdb"] }}</v-col>
                       <v-col>{{ this.analyticsResult["private"] }}</v-col>
                       <v-col>{{ this.analyticsResult["others"] }}</v-col>
@@ -368,9 +370,24 @@ export default {
     font-weight:700;
   }
 
+  .atAGlanceHousingResults {
+    text-align:center;
+    font-size:30px;
+    color:#d29a42;
+    font-weight:700;
+  }
+
   .atAGlanceSubHeader {
     text-align:center;
     font-size:14px;
     margin-top:-15px;
+  }
+
+  .housingTypeTitle {
+    font-size:18px;
+    font-weight:700;
+    margin-top:20px;
+    margin-bottom:10px;
+    color:#d29a42;
   }
 </style>
