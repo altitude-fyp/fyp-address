@@ -86,24 +86,25 @@ import NPLCountryChart from "@/components/nonperformingloans/NPLCountryChart.vue
 import NPLTop10Chart from "@/components/nonperformingloans/NPLTop10Chart.vue"
 import CountrySelection from "@/components/nonperformingloans/CountrySelection.vue"
 
-  export default {
-    components: {
-      "npl-country-chart": NPLCountryChart,
-      "npl-top10-chart": NPLTop10Chart,
-      "npl-country-selection": CountrySelection,
-    },
-    data: () => ({
-      value: null,
-      selectedCountry: "Singapore",
-      countryStatistics: null,
-      chartData: null,
-      top10ChartData: null,
-      forecastValue: 1,
-      countriesMetadata: null,
-      selectedFeatures: [],
-    }),
+export default {
+  components: {
+    "npl-country-chart": NPLCountryChart,
+    "npl-top10-chart": NPLTop10Chart,
+    "npl-country-selection": CountrySelection,
+  },
+  data: () => ({
+    value: null,
+    selectedCountry: "Singapore",
+    countryStatistics: null,
+    chartData: null,
+    top10ChartData: null,
+    forecastValue: 1,
+    countriesMetadata: null,
+    selectedFeatures: [],
+  }),
 
-    mounted() {
+  mounted() {
+    console.log(process.env.BACKEND)
     this.getEverything();
   },
 

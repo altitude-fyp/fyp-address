@@ -18,7 +18,7 @@
 
                     <!-- the following filter r in place message goes here -->
                     <v-card-title>
-                        Current filters:
+                        <span style="font-size:18px">Selected Filters:</span>
                     </v-card-title>
 
                     <v-card-subtitle>
@@ -30,7 +30,7 @@
 
                     <br>
 
-                    <v-btn style="color:#D9261C"
+                    <v-btn style="color:#d9261c"
                         outlined
                         block
                         @click=resetAllFilters
@@ -51,10 +51,10 @@
 
                         <!-- Employment status -->
                         <v-card-title>
-                            Employment status
+                            <span class="filterName">Employment status</span>
                         </v-card-title>
 
-                        <v-btn-toggle style="width:100%" mandatory v-model=selectedEmploymentStatus>
+                        <v-btn-toggle style="width:100%" color="#d9261c" mandatory v-model=selectedEmploymentStatus>
                             <v-btn v-for="(option,i) in employmentStatusOptions" 
                                 :key=i
                                 :value=option
@@ -69,10 +69,10 @@
 
                         <!-- household monthly income -->
                         <v-card-title>
-                            Household monthly income
+                            <span class="filterName">Household monthly income</span>
                         </v-card-title>
 
-                        <v-btn-toggle style="width:100%" mandatory v-model=selectedHouseholdMonthlyIncome>
+                        <v-btn-toggle style="width:100%" color="#d9261c" mandatory v-model=selectedHouseholdMonthlyIncome>
                             <v-btn v-for="(option,i) in householdMonthlyIncomeOptions" 
                                 :key=i
                                 :value=option
@@ -86,10 +86,10 @@
 
                         <!-- Monthly income from work -->
                         <v-card-title>
-                            Monthly income from work
+                            <span class="filterName">Monthly income from work</span>
                         </v-card-title> 
 
-                        <v-btn-toggle style="width:100%" mandatory v-model=selectedIncome>
+                        <v-btn-toggle style="width:100%" color="#d9261c" mandatory v-model=selectedIncome>
                             <v-btn v-for="(option,i) in monthlyIncomeOptions" 
                                 :key=i
                                 :value=option
@@ -104,10 +104,10 @@
 
                         <!-- Population age group -->
                         <v-card-title>
-                            Population age group
+                            <span class="filterName">Population age group</span>
                         </v-card-title>
 
-                        <v-btn-toggle style="width:100%" mandatory v-model=selectedPopulationAgeGroup>
+                        <v-btn-toggle style="width:100%" color="#d9261c" mandatory v-model=selectedPopulationAgeGroup>
                             <v-btn v-for="(option,i) in populationAgeGroupOptions" 
                                 :key=i
                                 :value=option
@@ -117,18 +117,17 @@
                             </v-btn>
                         </v-btn-toggle>
 
-                        <br><br><br><br>
+                        <br><br><br>
 
-                        <v-btn style="color:#D9261C"
-                            outlined
+                        <v-btn style="color:#fff"
+                            color="#D9261C"
+                            depressed
+                            large
                             block
                             @click=submit
                             >
-                            Filter data
+                            <span style="font-size:17px">Filter data</span>
                         </v-btn>
-
-
-
                     </v-container>
                 </v-card>
             </v-col>
@@ -184,6 +183,12 @@ export default {
                 else console.log("failed")
             })
 
+            window.scrollTo({
+                top: 0,
+                left: 0,
+                behavior: 'smooth'
+            });
+
             this.resetAllFilters()
 
         }
@@ -193,3 +198,12 @@ export default {
 }
 
 </script>
+
+<style scoped>
+  .filterName {
+    color:#464646;
+    font-size:16px;
+    font-weight:500;
+    text-align:center;
+  }
+</style>

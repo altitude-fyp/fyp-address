@@ -48,6 +48,8 @@
                       <v-col>{{ this.selectedRegions[0] }}</v-col>
                       <v-col>{{ this.selectedCountries[0] }}</v-col>
                     </v-row>
+
+                  
                     <v-row class="atAGlanceSubHeader">
                       <v-col>Housing Type</v-col>
                       <v-col>Region</v-col>
@@ -149,6 +151,7 @@ export default {
           "gini",
           "Consumer Price Index, All items",
       ],
+      countriesMetadata: null,
       chartData: null,
       tabs: null,
       panel: [0, 0],
@@ -157,8 +160,8 @@ export default {
   },
 
     mounted() {
-      this.housingType = this.$route.params.analytics_result.property_type
-      this.selectedRegions.push(this.$route.params.analytics_result.region_found)
+      this.housingType = this.$route.params.analytics_result.property_type.toLowerCase()
+      this.selectedRegions.push(this.$route.params.analytics_result.region_found.toLowerCase())
       this.addressFound = this.$route.params.analytics_result.address_found
 
       this.getEverything();
@@ -170,6 +173,7 @@ export default {
       getEverything() {
         this.getCountryStatistics()
         this.getChartData()
+        this.getCountriesMetadata()
       },
 
       getCountryStatistics() {
@@ -179,6 +183,16 @@ export default {
 
           this.$axios.get(url).then((response) => {
               this.countryStatistics = response.data
+          })
+      },
+
+      getCountriesMetadata() {
+          // get flag, lat, lon, country code of each country in countries
+          this.countriesMetadata = null
+          var url = process.env.BACKEND + "/api/countries/metadata/" + this.selectedCountries[0]
+
+          this.$axios.get(url).then((response) => {
+              this.countriesMetadata = response.data
           })
       },
 
@@ -320,6 +334,7 @@ export default {
     font-size:30px;
     color:#215085;
     font-weight:700;
+    text-transform:capitalize;
   }
 
   .atAGlanceSubHeader {
