@@ -65,6 +65,7 @@ def get_individual_address_data(item:Item):
         "status": "success",
         "data": {
             "summary": {
+                "address_found": onemap_address["ADDRESS"],
                 "property_type": property_type,
                 "region_found": region_name,
                 "country_found": country,

@@ -23,7 +23,10 @@
                     {{ this.analyticsResult["invalid_no"] }} records
                     <v-icon color="red">mdi-close</v-icon>
                   </span>
-                  <span class="link">View
+                  <span class="link">
+                    <vue-json-to-csv :json-data="invalidData" :csv-title="'invalid_data'">
+                      View
+                    </vue-json-to-csv>
                   </span>
                 </div>
               </div>
@@ -130,7 +133,23 @@
 
                   </v-expansion-panel-content>
                 </v-expansion-panel>
-                 
+
+                <v-expansion-panel>
+                  <v-expansion-panel-header>
+                    <v-img class="analyticsIcons"
+                      max-height="18"
+                      max-width="18"
+                      :src="require('../images/icons/code.png')"
+                    ></v-img>
+                    <h3>Code Snippet</h3>
+                  </v-expansion-panel-header>
+
+                  <v-expansion-panel-content>
+                     <analyticsResultDocs :address="addresses" :endpoint="'/api/address/csv'" :type="'addresses'"/> 
+                  </v-expansion-panel-content>
+
+                </v-expansion-panel>
+
               </v-expansion-panels>
             </v-row>
 
@@ -155,18 +174,23 @@ import BarChart from "@/components/analytics/barChart";
 import GoogleMapAnalytics from "@/components/home/GoogleMapAnalytics";
 import CountryStatistics from "@/components/analytics/CountryStatisticsAnalytics.vue"
 import KeyFinancialIndicatorsAnalytics from "@/components/analytics/KeyFinancialIndicatorsAnalytics.vue"
-import tabs from "@/components/region/tabs";
+import tabs from "@/components/region/tabs"
+import analyticsResultDocs from "@/components/apidocs/analyticsResultDocs"
+import VueJsonToCsv from 'vue-json-to-csv'
 
 export default {
   name: "analytics",
   components: {
-    BarChart, lineChart, GoogleMapAnalytics,
+    BarChart, lineChart, GoogleMapAnalytics, analyticsResultDocs,
     "country-statistics": CountryStatistics,
-    "key-financial-indicators-analytics": KeyFinancialIndicatorsAnalytics
+    "key-financial-indicators-analytics": KeyFinancialIndicatorsAnalytics,
+    "vue-json-to-csv": VueJsonToCsv
   },
 
   data() {
     return {
+      invalidData: null,
+      addresses: null,
       selectedRegions: null,
       analyticsResult: {},
       selectedCountries: ["Singapore"],
@@ -208,7 +232,8 @@ export default {
       this.analyticsResult["others"] = this.$route.params.analytics_result.valid.housing_type["OTHERS"]
 
       this.selectedRegions = this.analyticsResult["selectedRegions"]
-
+      this.addresses = this.$route.params.address
+      this.invalidData = this.$route.params.analytics_result.invalid.invalid_data
       this.getEverything();
 
     },
@@ -357,6 +382,10 @@ export default {
     color:#215085;
     font-size:14px;
     font-weight:700;
+  }
+
+  .link:hover {
+    cursor: pointer;
   }
 
   .headerText {

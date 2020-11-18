@@ -101,6 +101,21 @@
 
                   </v-expansion-panel-content>
                 </v-expansion-panel>
+
+                <v-expansion-panel>
+                  <v-expansion-panel-header>
+                    <v-img class="analyticsIcons"
+                      max-height="18"
+                      max-width="18"
+                      :src="require('../images/icons/code.png')"
+                    ></v-img>
+                    <h3>Code Snippet</h3>
+                  </v-expansion-panel-header>
+
+                  <v-expansion-panel-content>
+                     <analyticsResultDocs :address="postalCode" :endpoint="'/api/address'" :type="'address'"/> 
+                  </v-expansion-panel-content>
+                </v-expansion-panel>
                  
               </v-expansion-panels>
             </v-row>
@@ -126,11 +141,12 @@ import CountryStatistics from "@/components/analytics/CountryStatisticsAnalytics
 import KeyFinancialIndicatorsAnalytics from "@/components/analytics/KeyFinancialIndicatorsAnalytics.vue"
 import KeyFinancialIndicators from "@/components/home/GoogleBottomSheet/components/KeyFinancialIndicators.vue"
 import tabs from "@/components/region/tabs"
+import analyticsResultDocs from "@/components/apidocs/analyticsResultDocs"
 
 export default {
   name: "address",
   components: {
-    BarChart, lineChart, GoogleMapAnalytics,
+    BarChart, lineChart, GoogleMapAnalytics,analyticsResultDocs,
     "country-statistics": CountryStatistics,
     "key-financial-indicators": KeyFinancialIndicators,
     "key-financial-indicators-analytics": KeyFinancialIndicatorsAnalytics
@@ -139,6 +155,7 @@ export default {
   data() {
     return {
       selectedRegions: [],
+      postalCode: null,
       housingType: null,
       addressFound: null,
       analyticsResult: {},
@@ -166,7 +183,7 @@ export default {
       this.housingType = this.$route.params.analytics_result.property_type.toLowerCase()
       this.selectedRegions.push(this.$route.params.analytics_result.region_found.toLowerCase())
       this.addressFound = this.$route.params.analytics_result.address_found
-
+      this.postalCode = this.$route.params.address
       this.getEverything();
 
     },

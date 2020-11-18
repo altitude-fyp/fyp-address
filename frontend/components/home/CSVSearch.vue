@@ -88,7 +88,7 @@ export default {
 
       let url = process.env.BACKEND + "/api/address/frontend/"
       this.$axios.post(url, {"address": this.address}).then((response) => {
-        localStorage.setItem("analytics_result", JSON.stringify(response["data"]["data"]))
+        // localStorage.setItem("analytics_result", JSON.stringify(response["data"]["data"]))
         
         // this.$router.push({path: '/analytics', params: { analytics_result: response }})
         console.log(response)
@@ -111,11 +111,11 @@ export default {
           // this function sends the CSV data to the backend
           let url = process.env.BACKEND + "/api/address/frontend/csv/"
           this.$axios.post(url, {"addresses": results.data}).then((response) => {
-            localStorage.setItem("analytics_result", JSON.stringify(response["data"]))
+            // localStorage.setItem("analytics_result", JSON.stringify(response["data"]))
             
             // this.$router.push({path: '/analytics', params: { analytics_result: response }})
             
-            this.$router.push({name: 'analytics', params: { analytics_result: response["data"]["data"] }})
+            this.$router.push({name: 'analytics', params: { analytics_result: response["data"]["data"], address: results.data }})
   
           }) 
         }
