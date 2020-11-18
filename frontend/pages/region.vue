@@ -44,9 +44,11 @@
 
     <!-- Selected Regions List-->
     <div align="center">
-      <h4 style="margin-bottom:10px;">
-          Selected Regions
-      </h4>
+      
+        <h4 style="margin-bottom:10px;">
+          Selected Regions in Singapore
+        </h4>
+    
       <span v-for="(item, i) in selectedRegions" :key=i>
           <span class="productRegionName">
             {{ item }}
@@ -159,10 +161,6 @@ export default {
       this.selectedRegions = selectedRegions.map(r => r.toLowerCase())
       this.tabIndex = 0
     },
-
-
-
-
 
     handleFilteredRegionsDataReceived(data) {
       this.marketSegmentationRegions = data
