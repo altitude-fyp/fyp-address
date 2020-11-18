@@ -27,11 +27,11 @@
 
 <script>
 
-import LineChart from "@/components/analytics/lineChart.vue"
+import LineChart from "../../components/analytics/lineChart"
 
 export default {
 
-    name: "key-financial-indicators",
+    name: "key-financial-indicators-analytics",
 
     props: ["chartData"],
 
