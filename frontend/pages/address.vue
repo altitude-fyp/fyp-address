@@ -11,7 +11,7 @@
             
             <v-row>
               <div class="file">
-                <h3> {{ addressFound }} </h3>                
+                <h3 style="color:#d29a42"> {{ addressFound }} </h3>                
               </div>
             </v-row><br/>
 
