@@ -115,6 +115,7 @@ export default {
             
             // this.$router.push({path: '/analytics', params: { analytics_result: response }})
             
+            console.log("DATA FROM POST /api/address/frontend/csv/",response.data)
             this.$router.push({name: 'analytics', params: { analytics_result: response["data"]["data"], address: results.data }})
   
           }) 
