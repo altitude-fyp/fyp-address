@@ -1,38 +1,42 @@
 <template>
+
   <v-app style="padding-top: 50px">
+    <v-container>
+
+
+              <div class="nplTitle" align="center">API Documentation</div>
+
     <v-card>
+
       <v-tabs
         background-color="grey lighten-4"
         dense
         vertical>
-        <v-tab>
-          REST APIs
-        </v-tab>
+
         <v-tab>
           Explore the APIs
         </v-tab>
+
         <v-tab>
           Response Formats
         </v-tab>
-        <!--Documentation for #REST APIs goes here-->
-        <v-tab-item>
-          <v-card flat>
-            <v-card-text>
-              The Citi Address Analytics Tool APIs (Application Programming Interfaces) power its platform for communications. Behind these APIs is a software layer connecting and optimizing communications networks around the world to allow Citi employees to connect to their existing Citi applications for data augmentation purposes.
 
 
-              The APIs were built with Python FastAPI and served over Uvicorn. It is now temporarily deployed on an AWS Ubuntu 18.04 EC2 instance, served through Nginx.
 
-
-            </v-card-text>
-          </v-card>
-        </v-tab-item>
         <!--Documentation for #Explore the APIs goes here-->
         <v-tab-item>
+
           <v-card flat>
             <v-card-text>
               <!--/api/address CODE BLOCK-->
               <div style="padding-left: 10px">
+
+              The Citi Address Analytics Tool APIs (Application Programming Interfaces) power its platform for communications. Behind these APIs is a software layer connecting and optimizing communications networks around the world to allow Citi employees to connect to their existing Citi applications for data augmentation purposes.
+
+
+              The APIs were built with Python FastAPI and served over Uvicorn. It is now temporarily deployed on an AWS Ubuntu 18.04 EC2 instance, served through Nginx. <br><br>
+
+
               You can make a raw HTTP request in your code (for example, using a module like got in Python) or by using a tool like Postman. CAAT uses mostly GET, POST methods.
 
               <h3>/api/address - Get Address Data</h3>
@@ -52,14 +56,16 @@
                 <v-tab-item>
                   <v-card flat>
                     <v-card-text>
-                      <pre v-highlightjs><code class="python">
+                      <pre v-highlightjs>
+                        <code class="python">
 1 import requests
 2 url = "{{API_URL}}/api/address/"
 3 payload  = {"address": "1234567"}
 4 headers= {}
 5 response = requests.request("HEAD", url, headers=headers, data = payload)
 6 print(response.text.encode('utf8'))
-              </code></pre>
+                        </code>
+                      </pre>
                     </v-card-text>
                   </v-card>
                 </v-tab-item>
@@ -69,13 +75,13 @@
                   <v-card flat>
                     <v-card-text>
                       <div>
-              <pre v-highlightjs><code class="python">
+                        <pre v-highlightjs><code class="python">
 1 curl --location --head '{{API_URL}}/api/address' \
 2 --data-raw '{
 3     "address": "1234567",
 4 }'
 
-</code></pre>
+                          </code></pre>
                       </div>
                     </v-card-text>
                   </v-card>
@@ -848,7 +854,7 @@
         </v-tab-item>
       </v-tabs>
     </v-card>
-
+</v-container>
   </v-app>
 </template>
 
@@ -949,6 +955,14 @@ Lightfair style (c) Tristian Kelly <tristian.kelly560@gmail.com>
 .hljs-strong {
   font-weight: bold
 }
+
+  .nplTitle {
+    color:#454545;
+    font-size:28px;
+    font-weight:700;
+    margin-top:10px;
+    margin-bottom:30px;
+  }
 
 
 
