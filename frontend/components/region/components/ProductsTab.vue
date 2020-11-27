@@ -33,8 +33,10 @@
                         <!-- Title of 1st Graph -->
                         <div class="chartsTitle">
                             <h3>{{productsChartData.graph_1.title}}</h3><br/>
+                        </div>
                             <indifference-line-chart :productsChartData=productsChartData></indifference-line-chart>
-                        </div><br/>
+                             <p class="chartsDescription">{{productsChartData.graph_1.description}}</p>
+                        <br/>
                     </v-col>
 
                     <!-- 2nd Graph -->
@@ -46,6 +48,7 @@
 
                         <div class="charts">
                             <utility-line-chart :productsChartData=productsChartData></utility-line-chart>
+                            <p class="chartsDescription">{{productsChartData.graph_2.description}}</p>
                         </div>   
                     </v-col>
                 </v-row>
@@ -93,6 +96,7 @@ export default {
     font-size:13px;
     padding-left:10px;
     padding-right:10px;
+    margin-top:20px;
 }
 
 .charts {

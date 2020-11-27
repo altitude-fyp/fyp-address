@@ -3,7 +3,25 @@
     <div v-if="top3similarCountries" style="padding-top: 50px;">
 
         <!-- title comes here -->
-        <h2 class="sectionTitle">Top 3 Similar Countries</h2>
+        <v-row>
+            <h2 class="sectionTitle">Top 3 Similar Countries</h2>
+
+            <v-tooltip bottom>
+                <template v-slot:activator="{ on, attrs }">
+                <v-icon
+                    style="margin-left:10px;margin-bottom:10px"
+                    color="#454545"
+                    dark
+                    v-bind="attrs"
+                    v-on="on"
+                >
+                    mdi-information-outline
+                </v-icon>
+                </template>
+                <span>The similarity score is calculated by comparing financial indicators such as</span><br/> 
+                <span>Financial Development Index and Financial Institutions Index using cosine similarity.</span>
+            </v-tooltip>
+        </v-row>
 
         <v-card class="mx-auto">
             <v-container>
