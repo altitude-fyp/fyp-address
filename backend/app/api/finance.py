@@ -19,6 +19,7 @@ def get_individual_address_data(regions):
 
     graph1 = {
         "title": "Utility as a Function of Allocation to the Risky Asset",
+        "description": "Utility as a function of allocation to the risky asset shows how the utility value changes when more risky assets are being included into the portfolio",
         "regions": [region for region in region_list],
         "x-axis": ast.literal_eval(df.loc[region_list[0], 'graph_1_x']),
         "y-axis": [ast.literal_eval(df.loc[region, 'graph_1_y']) for region in region_list]
@@ -26,6 +27,7 @@ def get_individual_address_data(regions):
 
     graph2 = {
         "title": "Indifference curve",
+        "description": "Indifference curve shows the points on the graph where the investor is indifferent on the returns for any given level of risk",
         "regions": [region for region in region_list],
         "x-axis": ast.literal_eval(df.loc[region_list[0], 'graph_2_x']),
         "y-axis": [ast.literal_eval(df.loc[region, 'graph_2_y']) for region in region_list]
